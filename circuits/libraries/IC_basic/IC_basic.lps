@@ -1,0 +1,1296 @@
+%! PostScript set of library objects for XCircuit
+%  Version: 3.3
+%  Library name is: basic
+%  Author: ricardo <ricardo@localhost.localdomain>
+%
+
+% Depend _gnd gnd
+
+% XCircuitLib library objects
+/l01n {
+begingate
+1.000 0.000 0.000 scb
+(minus) {/Helvetica cf} 2 16 0 1.00 -32 -64 pinlabel
+(plus) {/Helvetica cf} 2 16 0 1.00 -32 64 pinlabel
+sce
+1 1.00 -32 0 16 90.00 270.00 xcarc
+1 1.00 -32 32 16 90.00 270.00 xcarc
+1 1.00 -32 -32 16 90.00 270.00 xcarc
+1 1.00 -32 -48 -32 -64 2 polygon
+1 1.00 -32 48 -32 64 2 polygon
+(l 0.1n) {/Helvetica cf} 2 16 0 1.00 -16 0 label
+0.180 0.545 0.341 scb
+(spice:L%i %pplus %pminus 0.1n) {/Times-Roman cf} 2 4 0 1.00 -244 -139 
+infolabel
+(sim:n %pplus %pminus) {/Times-Roman cf} 2 4 0 1.00 -244 -187 infolabel
+endgate
+} def
+
+/l02n {
+begingate
+1.000 0.000 0.000 scb
+(minus) {/Helvetica cf} 2 16 0 1.00 -32 -64 pinlabel
+(plus) {/Helvetica cf} 2 16 0 1.00 -32 64 pinlabel
+sce
+1 1.00 -32 0 16 90.00 270.00 xcarc
+1 1.00 -32 32 16 90.00 270.00 xcarc
+1 1.00 -32 -32 16 90.00 270.00 xcarc
+1 1.00 -32 -48 -32 -64 2 polygon
+1 1.00 -32 48 -32 64 2 polygon
+(l 0.2n) {/Helvetica cf} 2 16 0 1.00 -16 0 label
+0.180 0.545 0.341 scb
+(spice:L%i %pplus %pminus 0.2n) {/Times-Roman cf} 2 4 0 1.00 -244 -139 
+infolabel
+(sim:n %pplus %pminus) {/Times-Roman cf} 2 4 0 1.00 -244 -187 infolabel
+endgate
+} def
+
+/l05n {
+begingate
+1.000 0.000 0.000 scb
+(minus) {/Helvetica cf} 2 16 0 1.00 -32 -64 pinlabel
+(plus) {/Helvetica cf} 2 16 0 1.00 -32 64 pinlabel
+sce
+1 1.00 -32 0 16 90.00 270.00 xcarc
+1 1.00 -32 32 16 90.00 270.00 xcarc
+1 1.00 -32 -32 16 90.00 270.00 xcarc
+1 1.00 -32 -48 -32 -64 2 polygon
+1 1.00 -32 48 -32 64 2 polygon
+(l 0.5n) {/Helvetica cf} 2 16 0 1.00 -16 0 label
+0.180 0.545 0.341 scb
+(spice:L%i %pplus %pminus 0.5n) {/Times-Roman cf} 2 4 0 1.00 -244 -139 
+infolabel
+(sim:n %pplus %pminus) {/Times-Roman cf} 2 4 0 1.00 -244 -187 infolabel
+endgate
+} def
+
+/l1n {
+begingate
+1.000 0.000 0.000 scb
+(minus) {/Helvetica cf} 2 16 0 1.00 -32 -64 pinlabel
+(plus) {/Helvetica cf} 2 16 0 1.00 -32 64 pinlabel
+sce
+1 1.00 -32 0 16 90.00 270.00 xcarc
+1 1.00 -32 32 16 90.00 270.00 xcarc
+1 1.00 -32 -32 16 90.00 270.00 xcarc
+1 1.00 -32 -48 -32 -64 2 polygon
+1 1.00 -32 48 -32 64 2 polygon
+(l 1n) {/Helvetica cf} 2 16 0 1.00 -16 0 label
+0.180 0.545 0.341 scb
+(spice:L%i %pplus %pminus 1n) {/Times-Roman cf} 2 4 0 1.00 -244 -139 infolabel
+(sim:n %pplus %pminus) {/Times-Roman cf} 2 4 0 1.00 -244 -187 infolabel
+endgate
+} def
+
+/l2n {
+begingate
+1.000 0.000 0.000 scb
+(minus) {/Helvetica cf} 2 16 0 1.00 -32 -64 pinlabel
+(plus) {/Helvetica cf} 2 16 0 1.00 -32 64 pinlabel
+sce
+1 1.00 -32 0 16 90.00 270.00 xcarc
+1 1.00 -32 32 16 90.00 270.00 xcarc
+1 1.00 -32 -32 16 90.00 270.00 xcarc
+1 1.00 -32 -48 -32 -64 2 polygon
+1 1.00 -32 48 -32 64 2 polygon
+(l 2n) {/Helvetica cf} 2 16 0 1.00 -16 0 label
+0.180 0.545 0.341 scb
+(spice:L%i %pplus %pminus 2n) {/Times-Roman cf} 2 4 0 1.00 -244 -139 infolabel
+(sim:n %pplus %pminus) {/Times-Roman cf} 2 4 0 1.00 -244 -187 infolabel
+endgate
+} def
+
+/l5n {
+begingate
+1.000 0.000 0.000 scb
+(minus) {/Helvetica cf} 2 16 0 1.00 -32 -64 pinlabel
+(plus) {/Helvetica cf} 2 16 0 1.00 -32 64 pinlabel
+sce
+1 1.00 -32 0 16 90.00 270.00 xcarc
+1 1.00 -32 32 16 90.00 270.00 xcarc
+1 1.00 -32 -32 16 90.00 270.00 xcarc
+1 1.00 -32 -48 -32 -64 2 polygon
+1 1.00 -32 48 -32 64 2 polygon
+(l 5n) {/Helvetica cf} 2 16 0 1.00 -16 0 label
+0.180 0.545 0.341 scb
+(spice:L%i %pplus %pminus 5n) {/Times-Roman cf} 2 4 0 1.00 -244 -139 infolabel
+(sim:n %pplus %pminus) {/Times-Roman cf} 2 4 0 1.00 -244 -187 infolabel
+endgate
+} def
+
+/l10n {
+begingate
+1.000 0.000 0.000 scb
+(minus) {/Helvetica cf} 2 16 0 1.00 -32 -64 pinlabel
+(plus) {/Helvetica cf} 2 16 0 1.00 -32 64 pinlabel
+sce
+1 1.00 -32 0 16 90.00 270.00 xcarc
+1 1.00 -32 32 16 90.00 270.00 xcarc
+1 1.00 -32 -32 16 90.00 270.00 xcarc
+1 1.00 -32 -48 -32 -64 2 polygon
+1 1.00 -32 48 -32 64 2 polygon
+(l 10n) {/Helvetica cf} 2 16 0 1.00 -16 0 label
+0.180 0.545 0.341 scb
+(spice:L%i %pplus %pminus 10n) {/Times-Roman cf} 2 4 0 1.00 -244 -139 infolabel
+(sim:n %pplus %pminus) {/Times-Roman cf} 2 4 0 1.00 -244 -187 infolabel
+endgate
+} def
+
+/l20n {
+begingate
+1.000 0.000 0.000 scb
+(minus) {/Helvetica cf} 2 16 0 1.00 -32 -64 pinlabel
+(plus) {/Helvetica cf} 2 16 0 1.00 -32 64 pinlabel
+sce
+1 1.00 -32 0 16 90.00 270.00 xcarc
+1 1.00 -32 32 16 90.00 270.00 xcarc
+1 1.00 -32 -32 16 90.00 270.00 xcarc
+1 1.00 -32 -48 -32 -64 2 polygon
+1 1.00 -32 48 -32 64 2 polygon
+(l 20n) {/Helvetica cf} 2 16 0 1.00 -16 0 label
+0.180 0.545 0.341 scb
+(spice:L%i %pplus %pminus 20n) {/Times-Roman cf} 2 4 0 1.00 -244 -139 infolabel
+(sim:n %pplus %pminus) {/Times-Roman cf} 2 4 0 1.00 -244 -187 infolabel
+endgate
+} def
+
+/rm005 {
+begingate
+1.000 0.000 0.000 scb
+(plus) {/Helvetica cf} 2 16 0 1.00 -96 64 pinlabel
+sce
+1 1.00 -96 -16 -64 0 -96 16 -64 32 -96 48 -96 64 6 polygon
+1 1.00 -96 -16 -64 -32 -96 -48 -96 -64 4 polygon
+1.000 0.000 0.000 scb
+(minus) {/Helvetica cf} 2 16 0 1.00 -96 -64 pinlabel
+sce
+(rm 0.05) {/Helvetica cf} 2 16 0 1.00 -48 0 label
+0.180 0.545 0.341 scb
+(spice:R%i %pplus %pminus 0.05) {/Times-Roman cf} 2 4 0 1.00 -244 -139 
+infolabel
+(sim:n %pplus %pminus) {/Times-Roman cf} 2 4 0 1.00 -244 -187 infolabel
+endgate
+} def
+
+/rm01 {
+begingate
+1.000 0.000 0.000 scb
+(plus) {/Helvetica cf} 2 16 0 1.00 -96 64 pinlabel
+sce
+1 1.00 -96 -16 -64 0 -96 16 -64 32 -96 48 -96 64 6 polygon
+1 1.00 -96 -16 -64 -32 -96 -48 -96 -64 4 polygon
+1.000 0.000 0.000 scb
+(minus) {/Helvetica cf} 2 16 0 1.00 -96 -64 pinlabel
+sce
+(rm 0.1) {/Helvetica cf} 2 16 0 1.00 -48 0 label
+0.180 0.545 0.341 scb
+(spice:R%i %pplus %pminus 0.1) {/Times-Roman cf} 2 4 0 1.00 -244 -139 infolabel
+(sim:n %pplus %pminus) {/Times-Roman cf} 2 4 0 1.00 -244 -187 infolabel
+endgate
+} def
+
+/rm02 {
+begingate
+1.000 0.000 0.000 scb
+(plus) {/Helvetica cf} 2 16 0 1.00 -96 64 pinlabel
+sce
+1 1.00 -96 -16 -64 0 -96 16 -64 32 -96 48 -96 64 6 polygon
+1 1.00 -96 -16 -64 -32 -96 -48 -96 -64 4 polygon
+1.000 0.000 0.000 scb
+(minus) {/Helvetica cf} 2 16 0 1.00 -96 -64 pinlabel
+sce
+(rm 0.2) {/Helvetica cf} 2 16 0 1.00 -48 0 label
+0.180 0.545 0.341 scb
+(spice:R%i %pplus %pminus 0.2) {/Times-Roman cf} 2 4 0 1.00 -244 -139 infolabel
+(sim:n %pplus %pminus) {/Times-Roman cf} 2 4 0 1.00 -244 -187 infolabel
+endgate
+} def
+
+/rm05 {
+begingate
+1.000 0.000 0.000 scb
+(plus) {/Helvetica cf} 2 16 0 1.00 -96 64 pinlabel
+sce
+1 1.00 -96 -16 -64 0 -96 16 -64 32 -96 48 -96 64 6 polygon
+1 1.00 -96 -16 -64 -32 -96 -48 -96 -64 4 polygon
+1.000 0.000 0.000 scb
+(minus) {/Helvetica cf} 2 16 0 1.00 -96 -64 pinlabel
+sce
+(rm 0.5) {/Helvetica cf} 2 16 0 1.00 -48 0 label
+0.180 0.545 0.341 scb
+(spice:R%i %pplus %pminus 0.5) {/Times-Roman cf} 2 4 0 1.00 -244 -139 infolabel
+(sim:n %pplus %pminus) {/Times-Roman cf} 2 4 0 1.00 -244 -187 infolabel
+endgate
+} def
+
+/rm1 {
+begingate
+1.000 0.000 0.000 scb
+(plus) {/Helvetica cf} 2 16 0 1.00 -96 64 pinlabel
+sce
+1 1.00 -96 -16 -64 0 -96 16 -64 32 -96 48 -96 64 6 polygon
+1 1.00 -96 -16 -64 -32 -96 -48 -96 -64 4 polygon
+1.000 0.000 0.000 scb
+(minus) {/Helvetica cf} 2 16 0 1.00 -96 -64 pinlabel
+sce
+(rm 1) {/Helvetica cf} 2 16 0 1.00 -48 0 label
+0.180 0.545 0.341 scb
+(spice:R%i %pplus %pminus 1) {/Times-Roman cf} 2 4 0 1.00 -244 -139 infolabel
+(sim:n %pplus %pminus) {/Times-Roman cf} 2 4 0 1.00 -244 -187 infolabel
+endgate
+} def
+
+/rm2 {
+begingate
+1.000 0.000 0.000 scb
+(plus) {/Helvetica cf} 2 16 0 1.00 -96 64 pinlabel
+sce
+1 1.00 -96 -16 -64 0 -96 16 -64 32 -96 48 -96 64 6 polygon
+1 1.00 -96 -16 -64 -32 -96 -48 -96 -64 4 polygon
+1.000 0.000 0.000 scb
+(minus) {/Helvetica cf} 2 16 0 1.00 -96 -64 pinlabel
+sce
+(rm 2) {/Helvetica cf} 2 16 0 1.00 -48 0 label
+0.180 0.545 0.341 scb
+(spice:R%i %pplus %pminus 2) {/Times-Roman cf} 2 4 0 1.00 -244 -139 infolabel
+(sim:n %pplus %pminus) {/Times-Roman cf} 2 4 0 1.00 -244 -187 infolabel
+endgate
+} def
+
+/rm5 {
+begingate
+1.000 0.000 0.000 scb
+(plus) {/Helvetica cf} 2 16 0 1.00 -96 64 pinlabel
+sce
+1 1.00 -96 -16 -64 0 -96 16 -64 32 -96 48 -96 64 6 polygon
+1 1.00 -96 -16 -64 -32 -96 -48 -96 -64 4 polygon
+1.000 0.000 0.000 scb
+(minus) {/Helvetica cf} 2 16 0 1.00 -96 -64 pinlabel
+sce
+(rm 5) {/Helvetica cf} 2 16 0 1.00 -48 0 label
+0.180 0.545 0.341 scb
+(spice:R%i %pplus %pminus 5) {/Times-Roman cf} 2 4 0 1.00 -244 -139 infolabel
+(sim:n %pplus %pminus) {/Times-Roman cf} 2 4 0 1.00 -244 -187 infolabel
+endgate
+} def
+
+/rn50 {
+begingate
+0 1.00 -64 48 -64 -48 -32 -48 -32 48 4 polygon
+1 1.00 -48 -48 -48 -64 2 polygon
+1 1.00 -48 48 -48 64 2 polygon
+1.000 0.000 0.000 scb
+(plus) {/Helvetica cf} 2 16 0 1.00 -48 64 pinlabel
+(minus) {/Helvetica cf} 2 16 0 1.00 -48 -64 pinlabel
+sce
+(rn 50) {/Helvetica cf} 2 16 0 1.00 -16 0 label
+0.180 0.545 0.341 scb
+(spice:R%i %pplus %pminus 50) {/Times-Roman cf} 2 4 0 1.00 -244 -139 infolabel
+(sim:n %pplus %pminus) {/Times-Roman cf} 2 4 0 1.00 -244 -187 infolabel
+endgate
+} def
+
+/rn100 {
+begingate
+0 1.00 -64 48 -64 -48 -32 -48 -32 48 4 polygon
+1 1.00 -48 -48 -48 -64 2 polygon
+1 1.00 -48 48 -48 64 2 polygon
+1.000 0.000 0.000 scb
+(plus) {/Helvetica cf} 2 16 0 1.00 -48 64 pinlabel
+(minus) {/Helvetica cf} 2 16 0 1.00 -48 -64 pinlabel
+sce
+(rn 100) {/Helvetica cf} 2 16 0 1.00 -16 0 label
+0.180 0.545 0.341 scb
+(spice:R%i %pplus %pminus 100) {/Times-Roman cf} 2 4 0 1.00 -244 -139 infolabel
+(sim:n %pplus %pminus) {/Times-Roman cf} 2 4 0 1.00 -244 -187 infolabel
+endgate
+} def
+
+/rn200 {
+begingate
+0 1.00 -64 48 -64 -48 -32 -48 -32 48 4 polygon
+1 1.00 -48 -48 -48 -64 2 polygon
+1 1.00 -48 48 -48 64 2 polygon
+1.000 0.000 0.000 scb
+(plus) {/Helvetica cf} 2 16 0 1.00 -48 64 pinlabel
+(minus) {/Helvetica cf} 2 16 0 1.00 -48 -64 pinlabel
+sce
+(rn 200) {/Helvetica cf} 2 16 0 1.00 -16 0 label
+0.180 0.545 0.341 scb
+(spice:R%i %pplus %pminus 200) {/Times-Roman cf} 2 4 0 1.00 -244 -139 infolabel
+(sim:n %pplus %pminus) {/Times-Roman cf} 2 4 0 1.00 -244 -187 infolabel
+endgate
+} def
+
+/rn500 {
+begingate
+0 1.00 -64 48 -64 -48 -32 -48 -32 48 4 polygon
+1 1.00 -48 -48 -48 -64 2 polygon
+1 1.00 -48 48 -48 64 2 polygon
+1.000 0.000 0.000 scb
+(plus) {/Helvetica cf} 2 16 0 1.00 -48 64 pinlabel
+(minus) {/Helvetica cf} 2 16 0 1.00 -48 -64 pinlabel
+sce
+(rn 500) {/Helvetica cf} 2 16 0 1.00 -16 0 label
+0.180 0.545 0.341 scb
+(spice:R%i %pplus %pminus 500) {/Times-Roman cf} 2 4 0 1.00 -244 -139 infolabel
+(sim:n %pplus %pminus) {/Times-Roman cf} 2 4 0 1.00 -244 -187 infolabel
+endgate
+} def
+
+/rn1000 {
+begingate
+0 1.00 -64 48 -64 -48 -32 -48 -32 48 4 polygon
+1 1.00 -48 -48 -48 -64 2 polygon
+1 1.00 -48 48 -48 64 2 polygon
+1.000 0.000 0.000 scb
+(plus) {/Helvetica cf} 2 16 0 1.00 -48 64 pinlabel
+(minus) {/Helvetica cf} 2 16 0 1.00 -48 -64 pinlabel
+sce
+(rn 1k) {/Helvetica cf} 2 16 0 1.00 -16 0 label
+0.180 0.545 0.341 scb
+(spice:R%i %pplus %pminus 1k) {/Times-Roman cf} 2 4 0 1.00 -244 -139 infolabel
+(sim:n %pplus %pminus) {/Times-Roman cf} 2 4 0 1.00 -244 -187 infolabel
+endgate
+} def
+
+/rb500 {
+begingate
+0 1.00 -64 48 -64 -48 -32 -48 -32 48 4 polygon
+1 1.00 -64 48 -32 -48 2 polygon
+1 1.00 -48 -48 -48 -64 2 polygon
+1 1.00 -48 48 -48 64 2 polygon
+1.000 0.000 0.000 scb
+(plus) {/Helvetica cf} 2 16 0 1.00 -48 64 pinlabel
+(minus) {/Helvetica cf} 2 16 0 1.00 -48 -64 pinlabel
+sce
+(rb 500) {/Helvetica cf} 2 16 0 1.00 -16 0 label
+0.180 0.545 0.341 scb
+(spice:R%i %pplus %pminus 500) {/Times-Roman cf} 2 4 0 1.00 -244 -139 infolabel
+(sim:n %pplus %pminus) {/Times-Roman cf} 2 4 0 1.00 -244 -187 infolabel
+endgate
+} def
+
+/rb1k {
+begingate
+0 1.00 -64 48 -64 -48 -32 -48 -32 48 4 polygon
+1 1.00 -64 48 -32 -48 2 polygon
+1 1.00 -48 -48 -48 -64 2 polygon
+1 1.00 -48 48 -48 64 2 polygon
+1.000 0.000 0.000 scb
+(plus) {/Helvetica cf} 2 16 0 1.00 -48 64 pinlabel
+(minus) {/Helvetica cf} 2 16 0 1.00 -48 -64 pinlabel
+sce
+(rb 1k) {/Helvetica cf} 2 16 0 1.00 -16 0 label
+0.180 0.545 0.341 scb
+(spice:R%i %pplus %pminus 1k) {/Times-Roman cf} 2 4 0 1.00 -244 -139 infolabel
+(sim:n %pplus %pminus) {/Times-Roman cf} 2 4 0 1.00 -244 -187 infolabel
+endgate
+} def
+
+/rb2k {
+begingate
+0 1.00 -64 48 -64 -48 -32 -48 -32 48 4 polygon
+1 1.00 -64 48 -32 -48 2 polygon
+1 1.00 -48 -48 -48 -64 2 polygon
+1 1.00 -48 48 -48 64 2 polygon
+1.000 0.000 0.000 scb
+(plus) {/Helvetica cf} 2 16 0 1.00 -48 64 pinlabel
+(minus) {/Helvetica cf} 2 16 0 1.00 -48 -64 pinlabel
+sce
+(rb 2k) {/Helvetica cf} 2 16 0 1.00 -16 0 label
+0.180 0.545 0.341 scb
+(spice:R%i %pplus %pminus 2k) {/Times-Roman cf} 2 4 0 1.00 -244 -139 infolabel
+(sim:n %pplus %pminus) {/Times-Roman cf} 2 4 0 1.00 -244 -187 infolabel
+endgate
+} def
+
+/rb5k {
+begingate
+0 1.00 -64 48 -64 -48 -32 -48 -32 48 4 polygon
+1 1.00 -64 48 -32 -48 2 polygon
+1 1.00 -48 -48 -48 -64 2 polygon
+1 1.00 -48 48 -48 64 2 polygon
+1.000 0.000 0.000 scb
+(plus) {/Helvetica cf} 2 16 0 1.00 -48 64 pinlabel
+(minus) {/Helvetica cf} 2 16 0 1.00 -48 -64 pinlabel
+sce
+(rb 5k) {/Helvetica cf} 2 16 0 1.00 -16 0 label
+0.180 0.545 0.341 scb
+(spice:R%i %pplus %pminus 5k) {/Times-Roman cf} 2 4 0 1.00 -244 -139 infolabel
+(sim:n %pplus %pminus) {/Times-Roman cf} 2 4 0 1.00 -244 -187 infolabel
+endgate
+} def
+
+/rb10k {
+begingate
+0 1.00 -64 48 -64 -48 -32 -48 -32 48 4 polygon
+1 1.00 -64 48 -32 -48 2 polygon
+1 1.00 -48 -48 -48 -64 2 polygon
+1 1.00 -48 48 -48 64 2 polygon
+1.000 0.000 0.000 scb
+(plus) {/Helvetica cf} 2 16 0 1.00 -48 64 pinlabel
+(minus) {/Helvetica cf} 2 16 0 1.00 -48 -64 pinlabel
+sce
+(rb 10k) {/Helvetica cf} 2 16 0 1.00 -16 0 label
+0.180 0.545 0.341 scb
+(spice:R%i %pplus %pminus 10k) {/Times-Roman cf} 2 4 0 1.00 -244 -139 infolabel
+(sim:n %pplus %pminus) {/Times-Roman cf} 2 4 0 1.00 -244 -187 infolabel
+endgate
+} def
+
+/rph5k {
+begingate
+0 1.00 -64 48 -64 -48 -32 -48 -32 48 4 polygon
+1 1.00 -64 48 -32 16 2 polygon
+1 1.00 -64 -48 -32 -16 2 polygon
+1 1.00 -48 -48 -48 -64 2 polygon
+1 1.00 -48 48 -48 64 2 polygon
+1.000 0.000 0.000 scb
+(plus) {/Helvetica cf} 2 16 0 1.00 -48 64 pinlabel
+(minus) {/Helvetica cf} 2 16 0 1.00 -48 -64 pinlabel
+sce
+(rph 5k) {/Helvetica cf} 2 16 0 1.00 -16 0 label
+0.180 0.545 0.341 scb
+(spice:R%i %pplus %pminus 5k) {/Times-Roman cf} 2 4 0 1.00 -244 -139 infolabel
+(sim:n %pplus %pminus) {/Times-Roman cf} 2 4 0 1.00 -244 -187 infolabel
+endgate
+} def
+
+/rph10k {
+begingate
+0 1.00 -64 48 -64 -48 -32 -48 -32 48 4 polygon
+1 1.00 -64 48 -32 16 2 polygon
+1 1.00 -64 -48 -32 -16 2 polygon
+1 1.00 -48 -48 -48 -64 2 polygon
+1 1.00 -48 48 -48 64 2 polygon
+1.000 0.000 0.000 scb
+(plus) {/Helvetica cf} 2 16 0 1.00 -48 64 pinlabel
+(minus) {/Helvetica cf} 2 16 0 1.00 -48 -64 pinlabel
+sce
+(rph 10k) {/Helvetica cf} 2 16 0 1.00 -16 0 label
+0.180 0.545 0.341 scb
+(spice:R%i %pplus %pminus 10k) {/Times-Roman cf} 2 4 0 1.00 -244 -139 infolabel
+(sim:n %pplus %pminus) {/Times-Roman cf} 2 4 0 1.00 -244 -187 infolabel
+endgate
+} def
+
+/rph20k {
+begingate
+0 1.00 -64 48 -64 -48 -32 -48 -32 48 4 polygon
+1 1.00 -64 48 -32 16 2 polygon
+1 1.00 -64 -48 -32 -16 2 polygon
+1 1.00 -48 -48 -48 -64 2 polygon
+1 1.00 -48 48 -48 64 2 polygon
+1.000 0.000 0.000 scb
+(plus) {/Helvetica cf} 2 16 0 1.00 -48 64 pinlabel
+(minus) {/Helvetica cf} 2 16 0 1.00 -48 -64 pinlabel
+sce
+(rph 20k) {/Helvetica cf} 2 16 0 1.00 -16 0 label
+0.180 0.545 0.341 scb
+(spice:R%i %pplus %pminus 20k) {/Times-Roman cf} 2 4 0 1.00 -244 -139 infolabel
+(sim:n %pplus %pminus) {/Times-Roman cf} 2 4 0 1.00 -244 -187 infolabel
+endgate
+} def
+
+/rph50k {
+begingate
+0 1.00 -64 48 -64 -48 -32 -48 -32 48 4 polygon
+1 1.00 -64 48 -32 16 2 polygon
+1 1.00 -64 -48 -32 -16 2 polygon
+1 1.00 -48 -48 -48 -64 2 polygon
+1 1.00 -48 48 -48 64 2 polygon
+1.000 0.000 0.000 scb
+(plus) {/Helvetica cf} 2 16 0 1.00 -48 64 pinlabel
+(minus) {/Helvetica cf} 2 16 0 1.00 -48 -64 pinlabel
+sce
+(rph 50k) {/Helvetica cf} 2 16 0 1.00 -16 0 label
+0.180 0.545 0.341 scb
+(spice:R%i %pplus %pminus 50k) {/Times-Roman cf} 2 4 0 1.00 -244 -139 infolabel
+(sim:n %pplus %pminus) {/Times-Roman cf} 2 4 0 1.00 -244 -187 infolabel
+endgate
+} def
+
+/rph100k {
+begingate
+0 1.00 -64 48 -64 -48 -32 -48 -32 48 4 polygon
+1 1.00 -64 48 -32 16 2 polygon
+1 1.00 -64 -48 -32 -16 2 polygon
+1 1.00 -48 -48 -48 -64 2 polygon
+1 1.00 -48 48 -48 64 2 polygon
+1.000 0.000 0.000 scb
+(plus) {/Helvetica cf} 2 16 0 1.00 -48 64 pinlabel
+(minus) {/Helvetica cf} 2 16 0 1.00 -48 -64 pinlabel
+sce
+(rph 100k) {/Helvetica cf} 2 16 0 1.00 -16 0 label
+0.180 0.545 0.341 scb
+(spice:R%i %pplus %pminus 100k) {/Times-Roman cf} 2 4 0 1.00 -244 -139 
+infolabel
+(sim:n %pplus %pminus) {/Times-Roman cf} 2 4 0 1.00 -244 -187 infolabel
+endgate
+} def
+
+/rph200k {
+begingate
+0 1.00 -64 48 -64 -48 -32 -48 -32 48 4 polygon
+1 1.00 -64 48 -32 16 2 polygon
+1 1.00 -64 -48 -32 -16 2 polygon
+1 1.00 -48 -48 -48 -64 2 polygon
+1 1.00 -48 48 -48 64 2 polygon
+1.000 0.000 0.000 scb
+(plus) {/Helvetica cf} 2 16 0 1.00 -48 64 pinlabel
+(minus) {/Helvetica cf} 2 16 0 1.00 -48 -64 pinlabel
+sce
+(rph 200k) {/Helvetica cf} 2 16 0 1.00 -16 0 label
+0.180 0.545 0.341 scb
+(spice:R%i %pplus %pminus 200k) {/Times-Roman cf} 2 4 0 1.00 -244 -139 
+infolabel
+(sim:n %pplus %pminus) {/Times-Roman cf} 2 4 0 1.00 -244 -187 infolabel
+endgate
+} def
+
+/rph500k {
+begingate
+0 1.00 -64 48 -64 -48 -32 -48 -32 48 4 polygon
+1 1.00 -64 48 -32 16 2 polygon
+1 1.00 -64 -48 -32 -16 2 polygon
+1 1.00 -48 -48 -48 -64 2 polygon
+1 1.00 -48 48 -48 64 2 polygon
+1.000 0.000 0.000 scb
+(plus) {/Helvetica cf} 2 16 0 1.00 -48 64 pinlabel
+(minus) {/Helvetica cf} 2 16 0 1.00 -48 -64 pinlabel
+sce
+(rph 500k) {/Helvetica cf} 2 16 0 1.00 -16 0 label
+0.180 0.545 0.341 scb
+(spice:R%i %pplus %pminus 500k) {/Times-Roman cf} 2 4 0 1.00 -244 -139 
+infolabel
+(sim:n %pplus %pminus) {/Times-Roman cf} 2 4 0 1.00 -244 -187 infolabel
+endgate
+} def
+
+/rph1000k {
+begingate
+0 1.00 -64 48 -64 -48 -32 -48 -32 48 4 polygon
+1 1.00 -64 48 -32 16 2 polygon
+1 1.00 -64 -48 -32 -16 2 polygon
+1 1.00 -48 -48 -48 -64 2 polygon
+1 1.00 -48 48 -48 64 2 polygon
+1.000 0.000 0.000 scb
+(plus) {/Helvetica cf} 2 16 0 1.00 -48 64 pinlabel
+(minus) {/Helvetica cf} 2 16 0 1.00 -48 -64 pinlabel
+sce
+(rph 1000k) {/Helvetica cf} 2 16 0 1.00 -16 0 label
+0.180 0.545 0.341 scb
+(spice:R%i %pplus %pminus 1000k) {/Times-Roman cf} 2 4 0 1.00 -244 -139 
+infolabel
+(sim:n %pplus %pminus) {/Times-Roman cf} 2 4 0 1.00 -244 -187 infolabel
+endgate
+} def
+
+/rph2000k {
+begingate
+0 1.00 -64 48 -64 -48 -32 -48 -32 48 4 polygon
+1 1.00 -64 48 -32 16 2 polygon
+1 1.00 -64 -48 -32 -16 2 polygon
+1 1.00 -48 -48 -48 -64 2 polygon
+1 1.00 -48 48 -48 64 2 polygon
+1.000 0.000 0.000 scb
+(plus) {/Helvetica cf} 2 16 0 1.00 -48 64 pinlabel
+(minus) {/Helvetica cf} 2 16 0 1.00 -48 -64 pinlabel
+sce
+(rph 2000k) {/Helvetica cf} 2 16 0 1.00 -16 0 label
+0.180 0.545 0.341 scb
+(spice:R%i %pplus %pminus 2000k) {/Times-Roman cf} 2 4 0 1.00 -244 -139 
+infolabel
+(sim:n %pplus %pminus) {/Times-Roman cf} 2 4 0 1.00 -244 -187 infolabel
+endgate
+} def
+
+/rph5000k {
+begingate
+0 1.00 -64 48 -64 -48 -32 -48 -32 48 4 polygon
+1 1.00 -64 48 -32 16 2 polygon
+1 1.00 -64 -48 -32 -16 2 polygon
+1 1.00 -48 -48 -48 -64 2 polygon
+1 1.00 -48 48 -48 64 2 polygon
+1.000 0.000 0.000 scb
+(plus) {/Helvetica cf} 2 16 0 1.00 -48 64 pinlabel
+(minus) {/Helvetica cf} 2 16 0 1.00 -48 -64 pinlabel
+sce
+(rph 5000k) {/Helvetica cf} 2 16 0 1.00 -16 0 label
+0.180 0.545 0.341 scb
+(spice:R%i %pplus %pminus 5000k) {/Times-Roman cf} 2 4 0 1.00 -244 -139 
+infolabel
+(sim:n %pplus %pminus) {/Times-Roman cf} 2 4 0 1.00 -244 -187 infolabel
+endgate
+} def
+
+/gnd {
+% trivial
+begingate
+1 1.00 0 0 0 -32 2 polygon
+1 1.00 -32 -32 32 -32 2 polygon
+1 1.00 -18 -46 18 -46 2 polygon
+1 1.00 -4 -60 4 -60 2 polygon
+0.933 0.604 0.000 scb
+(0) {/Times-Roman cf} 2 1 0 1.00 0 0 pinglobal
+endgate
+} def
+
+/_gnd {
+begingate
+1.00 0 0 32 gnd
+endgate
+} def
+
+/vdc0 {
+begingate
+(vdc 0) {/Helvetica cf} 2 16 0 1.00 16 32 label
+1 1.00 -64 0 64 0.00 360.00 xcarc
+1.000 0.000 0.000 scb
+(minus) {/Helvetica cf} 2 16 0 1.00 -64 -128 pinlabel
+(plus) {/Helvetica cf} 2 16 0 1.00 -64 128 pinlabel
+sce
+(+) {/Helvetica cf} 2 16 0 1.00 -48 80 label
+1 1.00 -64 128 -64 -128 2 polygon
+(-) {/Helvetica cf} 2 16 0 1.00 -48 -96 label
+0.180 0.545 0.341 scb
+(spice:V%i %pplus %pminus dc 0) {/Times-Roman cf} 2 4 0 1.00 -244 -139 
+infolabel
+(sim:n %pplus %pminus) {/Times-Roman cf} 2 4 0 1.00 -244 -187 infolabel
+endgate
+} def
+
+/vac1 {
+begingate
+(vac 1 0dBV) {/Helvetica cf} 2 16 0 1.00 16 32 label
+1 1.00 -64 0 64 0.00 360.00 xcarc
+1.000 0.000 0.000 scb
+(minus) {/Helvetica cf} 2 16 0 1.00 -64 -128 pinlabel
+(plus) {/Helvetica cf} 2 16 0 1.00 -64 128 pinlabel
+sce
+(+) {/Helvetica cf} 2 16 0 1.00 -48 80 label
+1 1.00 -64 128 -64 -128 2 polygon
+(-) {/Helvetica cf} 2 16 0 1.00 -48 -96 label
+0.180 0.545 0.341 scb
+(spice:V%i %pplus %pminus ac 1) {/Times-Roman cf} 2 4 0 1.00 -244 -139 
+infolabel
+(sim:n %pplus %pminus) {/Times-Roman cf} 2 4 0 1.00 -244 -187 infolabel
+endgate
+} def
+
+/c1p {
+begingate
+1 1.00 -96 -16 0 -16 2 polygon
+1 1.00 -48 -16 -48 -64 2 polygon
+1 1.00 -96 16 0 16 2 polygon
+1 1.00 -48 16 -48 64 2 polygon
+1.000 0.000 0.000 scb
+(top) {/Helvetica cf} 2 16 0 1.00 -48 64 pinlabel
+(bottom) {/Helvetica cf} 2 16 0 1.00 -48 -64 pinlabel
+sce
+(c 1p) {/Helvetica cf} 2 16 0 1.00 16 0 label
+0.180 0.545 0.341 scb
+(spice:C%i %ptop %pbottom 1p) {/Times-Roman cf} 2 4 0 1.00 -244 -139 infolabel
+(sim:n %ptop %pbottom) {/Times-Roman cf} 2 4 0 1.00 -244 -187 infolabel
+endgate
+} def
+
+/c2p {
+begingate
+1 1.00 -96 -16 0 -16 2 polygon
+1 1.00 -48 -16 -48 -64 2 polygon
+1 1.00 -96 16 0 16 2 polygon
+1 1.00 -48 16 -48 64 2 polygon
+1.000 0.000 0.000 scb
+(top) {/Helvetica cf} 2 16 0 1.00 -48 64 pinlabel
+(bottom) {/Helvetica cf} 2 16 0 1.00 -48 -64 pinlabel
+sce
+(c 2p) {/Helvetica cf} 2 16 0 1.00 16 0 label
+0.180 0.545 0.341 scb
+(spice:C%i %ptop %pbottom 2p) {/Times-Roman cf} 2 4 0 1.00 -244 -139 infolabel
+(sim:n %ptop %pbottom) {/Times-Roman cf} 2 4 0 1.00 -244 -187 infolabel
+endgate
+} def
+
+/c5p {
+begingate
+1 1.00 -96 -16 0 -16 2 polygon
+1 1.00 -48 -16 -48 -64 2 polygon
+1 1.00 -96 16 0 16 2 polygon
+1 1.00 -48 16 -48 64 2 polygon
+1.000 0.000 0.000 scb
+(top) {/Helvetica cf} 2 16 0 1.00 -48 64 pinlabel
+(bottom) {/Helvetica cf} 2 16 0 1.00 -48 -64 pinlabel
+sce
+(c 5p) {/Helvetica cf} 2 16 0 1.00 16 0 label
+0.180 0.545 0.341 scb
+(spice:C%i %ptop %pbottom 5p) {/Times-Roman cf} 2 4 0 1.00 -244 -139 infolabel
+(sim:n %ptop %pbottom) {/Times-Roman cf} 2 4 0 1.00 -244 -187 infolabel
+endgate
+} def
+
+/c10p {
+begingate
+1 1.00 -96 -16 0 -16 2 polygon
+1 1.00 -48 -16 -48 -64 2 polygon
+1 1.00 -96 16 0 16 2 polygon
+1 1.00 -48 16 -48 64 2 polygon
+1.000 0.000 0.000 scb
+(top) {/Helvetica cf} 2 16 0 1.00 -48 64 pinlabel
+(bottom) {/Helvetica cf} 2 16 0 1.00 -48 -64 pinlabel
+sce
+(c 10p) {/Helvetica cf} 2 16 0 1.00 16 0 label
+0.180 0.545 0.341 scb
+(spice:C%i %ptop %pbottom 10p) {/Times-Roman cf} 2 4 0 1.00 -244 -139 infolabel
+(sim:n %ptop %pbottom) {/Times-Roman cf} 2 4 0 1.00 -244 -187 infolabel
+endgate
+} def
+
+/c20p {
+begingate
+1 1.00 -96 -16 0 -16 2 polygon
+1 1.00 -48 -16 -48 -64 2 polygon
+1 1.00 -96 16 0 16 2 polygon
+1 1.00 -48 16 -48 64 2 polygon
+1.000 0.000 0.000 scb
+(top) {/Helvetica cf} 2 16 0 1.00 -48 64 pinlabel
+(bottom) {/Helvetica cf} 2 16 0 1.00 -48 -64 pinlabel
+sce
+(c 20p) {/Helvetica cf} 2 16 0 1.00 16 0 label
+0.180 0.545 0.341 scb
+(spice:C%i %ptop %pbottom 20p) {/Times-Roman cf} 2 4 0 1.00 -244 -139 infolabel
+(sim:n %ptop %pbottom) {/Times-Roman cf} 2 4 0 1.00 -244 -187 infolabel
+endgate
+} def
+
+/c50p {
+begingate
+1 1.00 -96 -16 0 -16 2 polygon
+1 1.00 -48 -16 -48 -64 2 polygon
+1 1.00 -96 16 0 16 2 polygon
+1 1.00 -48 16 -48 64 2 polygon
+1.000 0.000 0.000 scb
+(top) {/Helvetica cf} 2 16 0 1.00 -48 64 pinlabel
+(bottom) {/Helvetica cf} 2 16 0 1.00 -48 -64 pinlabel
+sce
+(c 50p) {/Helvetica cf} 2 16 0 1.00 16 0 label
+0.180 0.545 0.341 scb
+(spice:C%i %ptop %pbottom 50p) {/Times-Roman cf} 2 4 0 1.00 -244 -139 infolabel
+(sim:n %ptop %pbottom) {/Times-Roman cf} 2 4 0 1.00 -244 -187 infolabel
+endgate
+} def
+
+/npn1e {
+begingate
+(npn1e) {/Helvetica cf} 2 16 0 1.00 48 48 label
+1 1.00 -48 16 48 16 48 -80 3 polygon
+1 1.00 -16 48 -80 -16 2 polygon
+1.000 0.000 0.000 scb
+(C) {/Helvetica cf} 2 16 0 1.00 -16 48 pinlabel
+sce
+1 1.00 16 -16 80 -16 2 polygon
+1 1.00 48 -16 16 -48 80 -48 48 -16 4 polygon
+1.000 0.000 0.000 scb
+(S) {/Helvetica cf} 2 16 0 1.00 48 -80 pinlabel
+(E) {/Helvetica cf} 2 16 0 1.00 -16 -80 pinlabel
+sce
+1 1.00 -80 -16 -16 -80 2 polygon
+1 1.00 -32 -64 -48 -32 2 polygon
+1 1.00 -32 -64 -64 -48 2 polygon
+1 1.00 -80 48 -80 -80 2 polygon
+1 1.00 -80 -16 -144 -16 2 polygon
+1.000 0.000 0.000 scb
+(B) {/Helvetica cf} 2 16 0 1.00 -144 -16 pinlabel
+0.180 0.545 0.341 scb
+(spice:Q%i %pC %pB %pE %pS npn1) {/Times-Roman cf} 2 4 0 1.00 -244 -139 
+infolabel
+(sim:b %pC %pB %pE %pS) {/Times-Roman cf} 2 4 0 1.00 -244 -187 infolabel
+endgate
+} def
+
+/npn2e {
+begingate
+(npn2e) {/Helvetica cf} 2 16 0 1.00 48 48 label
+1 1.00 -48 16 48 16 48 -80 3 polygon
+1 1.00 -16 48 -80 -16 2 polygon
+1.000 0.000 0.000 scb
+(C) {/Helvetica cf} 2 16 0 1.00 -16 48 pinlabel
+sce
+1 1.00 16 -16 80 -16 2 polygon
+1 1.00 48 -16 16 -48 80 -48 48 -16 4 polygon
+1.000 0.000 0.000 scb
+(S) {/Helvetica cf} 2 16 0 1.00 48 -80 pinlabel
+(E) {/Helvetica cf} 2 16 0 1.00 -16 -80 pinlabel
+sce
+1 1.00 -80 -16 -16 -80 2 polygon
+1 1.00 -32 -64 -48 -32 2 polygon
+1 1.00 -32 -64 -64 -48 2 polygon
+1 1.00 -80 48 -80 -80 2 polygon
+1 1.00 -80 -16 -144 -16 2 polygon
+1.000 0.000 0.000 scb
+(B) {/Helvetica cf} 2 16 0 1.00 -144 -16 pinlabel
+0.180 0.545 0.341 scb
+(spice:Q%i %pC %pB %pE %pS npn2) {/Times-Roman cf} 2 4 0 1.00 -244 -139 
+infolabel
+(sim:b %pC %pB %pE %pS) {/Times-Roman cf} 2 4 0 1.00 -244 -187 infolabel
+endgate
+} def
+
+/npn3e {
+begingate
+(npn3e) {/Helvetica cf} 2 16 0 1.00 48 48 label
+1 1.00 -48 16 48 16 48 -80 3 polygon
+1 1.00 -16 48 -80 -16 2 polygon
+1.000 0.000 0.000 scb
+(C) {/Helvetica cf} 2 16 0 1.00 -16 48 pinlabel
+sce
+1 1.00 16 -16 80 -16 2 polygon
+1 1.00 48 -16 16 -48 80 -48 48 -16 4 polygon
+1.000 0.000 0.000 scb
+(S) {/Helvetica cf} 2 16 0 1.00 48 -80 pinlabel
+(E) {/Helvetica cf} 2 16 0 1.00 -16 -80 pinlabel
+sce
+1 1.00 -80 -16 -16 -80 2 polygon
+1 1.00 -32 -64 -48 -32 2 polygon
+1 1.00 -32 -64 -64 -48 2 polygon
+1 1.00 -80 48 -80 -80 2 polygon
+1 1.00 -80 -16 -144 -16 2 polygon
+1.000 0.000 0.000 scb
+(B) {/Helvetica cf} 2 16 0 1.00 -144 -16 pinlabel
+0.180 0.545 0.341 scb
+(spice:Q%i %pC %pB %pE %pS npn3) {/Times-Roman cf} 2 4 0 1.00 -244 -139 
+infolabel
+(sim:b %pC %pB %pE %pS) {/Times-Roman cf} 2 4 0 1.00 -244 -187 infolabel
+endgate
+} def
+
+/npn4e {
+begingate
+(npn4e) {/Helvetica cf} 2 16 0 1.00 48 48 label
+1 1.00 -48 16 48 16 48 -80 3 polygon
+1 1.00 -16 48 -80 -16 2 polygon
+1.000 0.000 0.000 scb
+(C) {/Helvetica cf} 2 16 0 1.00 -16 48 pinlabel
+sce
+1 1.00 16 -16 80 -16 2 polygon
+1 1.00 48 -16 16 -48 80 -48 48 -16 4 polygon
+1.000 0.000 0.000 scb
+(S) {/Helvetica cf} 2 16 0 1.00 48 -80 pinlabel
+(E) {/Helvetica cf} 2 16 0 1.00 -16 -80 pinlabel
+sce
+1 1.00 -80 -16 -16 -80 2 polygon
+1 1.00 -32 -64 -48 -32 2 polygon
+1 1.00 -32 -64 -64 -48 2 polygon
+1 1.00 -80 48 -80 -80 2 polygon
+1 1.00 -80 -16 -144 -16 2 polygon
+1.000 0.000 0.000 scb
+(B) {/Helvetica cf} 2 16 0 1.00 -144 -16 pinlabel
+0.180 0.545 0.341 scb
+(spice:Q%i %pC %pB %pE %pS npn4) {/Times-Roman cf} 2 4 0 1.00 -244 -139 
+infolabel
+(sim:b %pC %pB %pE %pS) {/Times-Roman cf} 2 4 0 1.00 -244 -187 infolabel
+endgate
+} def
+
+/npn5e {
+begingate
+(npn5e) {/Helvetica cf} 2 16 0 1.00 48 48 label
+1 1.00 -48 16 48 16 48 -80 3 polygon
+1 1.00 -16 48 -80 -16 2 polygon
+1.000 0.000 0.000 scb
+(C) {/Helvetica cf} 2 16 0 1.00 -16 48 pinlabel
+sce
+1 1.00 16 -16 80 -16 2 polygon
+1 1.00 48 -16 16 -48 80 -48 48 -16 4 polygon
+1.000 0.000 0.000 scb
+(S) {/Helvetica cf} 2 16 0 1.00 48 -80 pinlabel
+(E) {/Helvetica cf} 2 16 0 1.00 -16 -80 pinlabel
+sce
+1 1.00 -80 -16 -16 -80 2 polygon
+1 1.00 -32 -64 -48 -32 2 polygon
+1 1.00 -32 -64 -64 -48 2 polygon
+1 1.00 -80 48 -80 -80 2 polygon
+1 1.00 -80 -16 -144 -16 2 polygon
+1.000 0.000 0.000 scb
+(B) {/Helvetica cf} 2 16 0 1.00 -144 -16 pinlabel
+0.180 0.545 0.341 scb
+(spice:Q%i %pC %pB %pE %pS npn5) {/Times-Roman cf} 2 4 0 1.00 -244 -139 
+infolabel
+(sim:b %pC %pB %pE %pS) {/Times-Roman cf} 2 4 0 1.00 -244 -187 infolabel
+endgate
+} def
+
+/npn10e {
+begingate
+(npn10e) {/Helvetica cf} 2 16 0 1.00 48 48 label
+1 1.00 -48 16 48 16 48 -80 3 polygon
+1 1.00 -16 48 -80 -16 2 polygon
+1.000 0.000 0.000 scb
+(C) {/Helvetica cf} 2 16 0 1.00 -16 48 pinlabel
+sce
+1 1.00 16 -16 80 -16 2 polygon
+1 1.00 48 -16 16 -48 80 -48 48 -16 4 polygon
+1.000 0.000 0.000 scb
+(S) {/Helvetica cf} 2 16 0 1.00 48 -80 pinlabel
+(E) {/Helvetica cf} 2 16 0 1.00 -16 -80 pinlabel
+sce
+1 1.00 -80 -16 -16 -80 2 polygon
+1 1.00 -32 -64 -48 -32 2 polygon
+1 1.00 -32 -64 -64 -48 2 polygon
+1 1.00 -80 48 -80 -80 2 polygon
+1 1.00 -80 -16 -144 -16 2 polygon
+1.000 0.000 0.000 scb
+(B) {/Helvetica cf} 2 16 0 1.00 -144 -16 pinlabel
+0.180 0.545 0.341 scb
+(spice:Q%i %pC %pB %pE %pS npn10) {/Times-Roman cf} 2 4 0 1.00 -244 -139 
+infolabel
+(sim:b %pC %pB %pE %pS) {/Times-Roman cf} 2 4 0 1.00 -244 -187 infolabel
+endgate
+} def
+
+/pnpl1e {
+begingate
+1.000 0.000 0.000 scb
+(C) {/Helvetica cf} 2 16 0 1.00 16 -64 pinlabel
+sce
+1 1.00 -48 0 16 -64 2 polygon
+1 1.00 -48 64 -48 -64 2 polygon
+1 1.00 -48 -32 -80 -64 2 polygon
+1 1.00 16 64 -48 0 2 polygon
+1 1.00 -32 16 0 32 2 polygon
+(pnpl1e) {/Helvetica cf} 2 16 0 1.00 16 0 label
+1.000 0.000 0.000 scb
+(E) {/Helvetica cf} 2 16 0 1.00 16 64 pinlabel
+sce
+1 1.00 -32 16 -16 48 2 polygon
+1 1.00 -48 0 -112 0 2 polygon
+1.000 0.000 0.000 scb
+(B) {/Helvetica cf} 2 16 0 1.00 -112 0 pinlabel
+(S) {/Helvetica cf} 2 16 0 1.00 -80 -64 pinlabel
+0.180 0.545 0.341 scb
+(spice:Q%i %pC %pB %pE %pS pnpl1) {/Times-Roman cf} 2 4 0 1.00 -244 -139 
+infolabel
+(sim:b %pC %pB %pE %pS) {/Times-Roman cf} 2 4 0 1.00 -244 -187 infolabel
+endgate
+} def
+
+/pnpl2e {
+begingate
+1.000 0.000 0.000 scb
+(C) {/Helvetica cf} 2 16 0 1.00 16 -64 pinlabel
+sce
+1 1.00 -48 0 16 -64 2 polygon
+1 1.00 -48 64 -48 -64 2 polygon
+1 1.00 -48 -32 -80 -64 2 polygon
+1 1.00 16 64 -48 0 2 polygon
+1 1.00 -32 16 0 32 2 polygon
+(pnpl2e) {/Helvetica cf} 2 16 0 1.00 16 0 label
+1.000 0.000 0.000 scb
+(E) {/Helvetica cf} 2 16 0 1.00 16 64 pinlabel
+sce
+1 1.00 -32 16 -16 48 2 polygon
+1 1.00 -48 0 -112 0 2 polygon
+1.000 0.000 0.000 scb
+(B) {/Helvetica cf} 2 16 0 1.00 -112 0 pinlabel
+(S) {/Helvetica cf} 2 16 0 1.00 -80 -64 pinlabel
+0.180 0.545 0.341 scb
+(spice:Q%i %pC %pB %pE %pS pnpl2) {/Times-Roman cf} 2 4 0 1.00 -244 -139 
+infolabel
+(sim:b %pC %pB %pE %pS) {/Times-Roman cf} 2 4 0 1.00 -244 -187 infolabel
+endgate
+} def
+
+/pnpl4e {
+begingate
+1.000 0.000 0.000 scb
+(C) {/Helvetica cf} 2 16 0 1.00 16 -64 pinlabel
+sce
+1 1.00 -48 0 16 -64 2 polygon
+1 1.00 -48 64 -48 -64 2 polygon
+1 1.00 -48 -32 -80 -64 2 polygon
+1 1.00 16 64 -48 0 2 polygon
+1 1.00 -32 16 0 32 2 polygon
+(pnpl4e) {/Helvetica cf} 2 16 0 1.00 16 0 label
+1.000 0.000 0.000 scb
+(E) {/Helvetica cf} 2 16 0 1.00 16 64 pinlabel
+sce
+1 1.00 -32 16 -16 48 2 polygon
+1 1.00 -48 0 -112 0 2 polygon
+1.000 0.000 0.000 scb
+(B) {/Helvetica cf} 2 16 0 1.00 -112 0 pinlabel
+(S) {/Helvetica cf} 2 16 0 1.00 -80 -64 pinlabel
+0.180 0.545 0.341 scb
+(spice:Q%i %pC %pB %pE %pS pnpl4) {/Times-Roman cf} 2 4 0 1.00 -244 -139 
+infolabel
+(sim:b %pC %pB %pE %pS) {/Times-Roman cf} 2 4 0 1.00 -244 -187 infolabel
+endgate
+} def
+
+/pnpl9e {
+begingate
+1.000 0.000 0.000 scb
+(C) {/Helvetica cf} 2 16 0 1.00 16 -64 pinlabel
+sce
+1 1.00 -48 0 16 -64 2 polygon
+1 1.00 -48 64 -48 -64 2 polygon
+1 1.00 -48 -32 -80 -64 2 polygon
+1 1.00 16 64 -48 0 2 polygon
+1 1.00 -32 16 0 32 2 polygon
+(pnpl9e) {/Helvetica cf} 2 16 0 1.00 16 0 label
+1.000 0.000 0.000 scb
+(E) {/Helvetica cf} 2 16 0 1.00 16 64 pinlabel
+sce
+1 1.00 -32 16 -16 48 2 polygon
+1 1.00 -48 0 -112 0 2 polygon
+1.000 0.000 0.000 scb
+(B) {/Helvetica cf} 2 16 0 1.00 -112 0 pinlabel
+(S) {/Helvetica cf} 2 16 0 1.00 -80 -64 pinlabel
+0.180 0.545 0.341 scb
+(spice:Q%i %pC %pB %pE %pS pnpl9) {/Times-Roman cf} 2 4 0 1.00 -244 -139 
+infolabel
+(sim:b %pC %pB %pE %pS) {/Times-Roman cf} 2 4 0 1.00 -244 -187 infolabel
+endgate
+} def
+
+/pnpiso1e {
+begingate
+1.000 0.000 0.000 scb
+(C) {/Helvetica cf} 2 16 0 1.00 16 -64 pinlabel
+sce
+1 1.00 -48 0 16 -64 2 polygon
+1 1.00 -48 64 -48 -64 2 polygon
+1 1.00 -48 -32 -80 -64 2 polygon
+1 1.00 16 64 -48 0 2 polygon
+1 1.00 -32 16 0 32 2 polygon
+(pnpiso1e) {/Helvetica cf} 2 16 0 1.00 16 0 label
+1.000 0.000 0.000 scb
+(E) {/Helvetica cf} 2 16 0 1.00 16 64 pinlabel
+sce
+1 1.00 -32 16 -16 48 2 polygon
+1 1.00 -48 0 -112 0 2 polygon
+1.000 0.000 0.000 scb
+(B) {/Helvetica cf} 2 16 0 1.00 -112 0 pinlabel
+(S) {/Helvetica cf} 2 16 0 1.00 -80 -64 pinlabel
+0.180 0.545 0.341 scb
+(spice:Q%i %pC %pB %pE %pS pnpiso1) {/Times-Roman cf} 2 4 0 1.00 -244 -139 
+infolabel
+(sim:b %pC %pB %pE %pS) {/Times-Roman cf} 2 4 0 1.00 -244 -187 infolabel
+endgate
+} def
+
+/pnpiso2e {
+begingate
+1.000 0.000 0.000 scb
+(C) {/Helvetica cf} 2 16 0 1.00 16 -64 pinlabel
+sce
+1 1.00 -48 0 16 -64 2 polygon
+1 1.00 -48 64 -48 -64 2 polygon
+1 1.00 -48 -32 -80 -64 2 polygon
+1 1.00 16 64 -48 0 2 polygon
+1 1.00 -32 16 0 32 2 polygon
+(pnpiso2e) {/Helvetica cf} 2 16 0 1.00 16 0 label
+1.000 0.000 0.000 scb
+(E) {/Helvetica cf} 2 16 0 1.00 16 64 pinlabel
+sce
+1 1.00 -32 16 -16 48 2 polygon
+1 1.00 -48 0 -112 0 2 polygon
+1.000 0.000 0.000 scb
+(B) {/Helvetica cf} 2 16 0 1.00 -112 0 pinlabel
+(S) {/Helvetica cf} 2 16 0 1.00 -80 -64 pinlabel
+0.180 0.545 0.341 scb
+(spice:Q%i %pC %pB %pE %pS pnpiso2) {/Times-Roman cf} 2 4 0 1.00 -244 -139 
+infolabel
+(sim:b %pC %pB %pE %pS) {/Times-Roman cf} 2 4 0 1.00 -244 -187 infolabel
+endgate
+} def
+
+/pnpiso4e {
+begingate
+1.000 0.000 0.000 scb
+(C) {/Helvetica cf} 2 16 0 1.00 16 -64 pinlabel
+sce
+1 1.00 -48 0 16 -64 2 polygon
+1 1.00 -48 64 -48 -64 2 polygon
+1 1.00 -48 -32 -80 -64 2 polygon
+1 1.00 16 64 -48 0 2 polygon
+1 1.00 -32 16 0 32 2 polygon
+(pnpiso4e) {/Helvetica cf} 2 16 0 1.00 16 0 label
+1.000 0.000 0.000 scb
+(E) {/Helvetica cf} 2 16 0 1.00 16 64 pinlabel
+sce
+1 1.00 -32 16 -16 48 2 polygon
+1 1.00 -48 0 -112 0 2 polygon
+1.000 0.000 0.000 scb
+(B) {/Helvetica cf} 2 16 0 1.00 -112 0 pinlabel
+(S) {/Helvetica cf} 2 16 0 1.00 -80 -64 pinlabel
+0.180 0.545 0.341 scb
+(spice:Q%i %pC %pB %pE %pS pnpiso4) {/Times-Roman cf} 2 4 0 1.00 -244 -139 
+infolabel
+(sim:b %pC %pB %pE %pS) {/Times-Roman cf} 2 4 0 1.00 -244 -187 infolabel
+endgate
+} def
+
+/pnpiso9e {
+begingate
+1.000 0.000 0.000 scb
+(C) {/Helvetica cf} 2 16 0 1.00 16 -64 pinlabel
+sce
+1 1.00 -48 0 16 -64 2 polygon
+1 1.00 -48 64 -48 -64 2 polygon
+1 1.00 -48 -32 -80 -64 2 polygon
+1 1.00 16 64 -48 0 2 polygon
+1 1.00 -32 16 0 32 2 polygon
+(pnpiso9e) {/Helvetica cf} 2 16 0 1.00 16 0 label
+1.000 0.000 0.000 scb
+(E) {/Helvetica cf} 2 16 0 1.00 16 64 pinlabel
+sce
+1 1.00 -32 16 -16 48 2 polygon
+1 1.00 -48 0 -112 0 2 polygon
+1.000 0.000 0.000 scb
+(B) {/Helvetica cf} 2 16 0 1.00 -112 0 pinlabel
+(S) {/Helvetica cf} 2 16 0 1.00 -80 -64 pinlabel
+0.180 0.545 0.341 scb
+(spice:Q%i %pC %pB %pE %pS pnpiso9) {/Times-Roman cf} 2 4 0 1.00 -244 -139 
+infolabel
+(sim:b %pC %pB %pE %pS) {/Times-Roman cf} 2 4 0 1.00 -244 -187 infolabel
+endgate
+} def
+
+/pnps1e {
+begingate
+(pnps1e) {/Helvetica cf} 2 16 0 1.00 0 0 label
+1 1.00 0 64 -64 0 0 -64 3 polygon
+1 1.00 -64 64 -64 -64 2 polygon
+1.000 0.000 0.000 scb
+(C) {/Helvetica cf} 2 16 0 1.00 0 -64 pinlabel
+(E) {/Helvetica cf} 2 16 0 1.00 0 64 pinlabel
+sce
+1 1.00 -48 16 -32 48 2 polygon
+1 1.00 -48 16 -16 32 2 polygon
+1.000 0.000 0.000 scb
+(B) {/Helvetica cf} 2 16 0 1.00 -128 0 pinlabel
+sce
+1 1.00 -64 0 -128 0 2 polygon
+0.180 0.545 0.341 scb
+(spice:Q%i %pC %pB %pE pnps1) {/Times-Roman cf} 2 4 0 1.00 -244 -139 infolabel
+(sim:b %pC %pB %pE) {/Times-Roman cf} 2 4 0 1.00 -244 -187 infolabel
+endgate
+} def
+
+/pnps2e {
+begingate
+(pnps2e) {/Helvetica cf} 2 16 0 1.00 0 0 label
+1 1.00 0 64 -64 0 0 -64 3 polygon
+1 1.00 -64 64 -64 -64 2 polygon
+1.000 0.000 0.000 scb
+(C) {/Helvetica cf} 2 16 0 1.00 0 -64 pinlabel
+(E) {/Helvetica cf} 2 16 0 1.00 0 64 pinlabel
+sce
+1 1.00 -48 16 -32 48 2 polygon
+1 1.00 -48 16 -16 32 2 polygon
+1.000 0.000 0.000 scb
+(B) {/Helvetica cf} 2 16 0 1.00 -128 0 pinlabel
+sce
+1 1.00 -64 0 -128 0 2 polygon
+0.180 0.545 0.341 scb
+(spice:Q%i %pC %pB %pE pnps2) {/Times-Roman cf} 2 4 0 1.00 -244 -139 infolabel
+(sim:b %pC %pB %pE) {/Times-Roman cf} 2 4 0 1.00 -244 -187 infolabel
+endgate
+} def
+
+/pnps4e {
+begingate
+(pnps4e) {/Helvetica cf} 2 16 0 1.00 0 0 label
+1 1.00 0 64 -64 0 0 -64 3 polygon
+1 1.00 -64 64 -64 -64 2 polygon
+1.000 0.000 0.000 scb
+(C) {/Helvetica cf} 2 16 0 1.00 0 -64 pinlabel
+(E) {/Helvetica cf} 2 16 0 1.00 0 64 pinlabel
+sce
+1 1.00 -48 16 -32 48 2 polygon
+1 1.00 -48 16 -16 32 2 polygon
+1.000 0.000 0.000 scb
+(B) {/Helvetica cf} 2 16 0 1.00 -128 0 pinlabel
+sce
+1 1.00 -64 0 -128 0 2 polygon
+0.180 0.545 0.341 scb
+(spice:Q%i %pC %pB %pE pnps4) {/Times-Roman cf} 2 4 0 1.00 -244 -139 infolabel
+(sim:b %pC %pB %pE) {/Times-Roman cf} 2 4 0 1.00 -244 -187 infolabel
+endgate
+} def
+
+/pnps9e {
+begingate
+(pnps9e) {/Helvetica cf} 2 16 0 1.00 0 0 label
+1 1.00 0 64 -64 0 0 -64 3 polygon
+1 1.00 -64 64 -64 -64 2 polygon
+1.000 0.000 0.000 scb
+(C) {/Helvetica cf} 2 16 0 1.00 0 -64 pinlabel
+(E) {/Helvetica cf} 2 16 0 1.00 0 64 pinlabel
+sce
+1 1.00 -48 16 -32 48 2 polygon
+1 1.00 -48 16 -16 32 2 polygon
+1.000 0.000 0.000 scb
+(B) {/Helvetica cf} 2 16 0 1.00 -128 0 pinlabel
+sce
+1 1.00 -64 0 -128 0 2 polygon
+0.180 0.545 0.341 scb
+(spice:Q%i %pC %pB %pE pnps9) {/Times-Roman cf} 2 4 0 1.00 -244 -139 infolabel
+(sim:b %pC %pB %pE) {/Times-Roman cf} 2 4 0 1.00 -244 -187 infolabel
+endgate
+} def
+
+/nmos_2_2 {
+begingate
+1 1.00 112 80 64 80 64 -48 112 -48 4 polygon
+1 1.00 96 32 64 16 96 0 3 polygon
+1 1.00 48 80 48 -48 2 polygon
+1 1.00 112 16 64 16 2 polygon
+1 1.00 48 16 16 16 2 polygon
+1.000 0.000 0.000 scb
+(D) {/Helvetica cf} 2 16 0 1.00 112 80 pinlabel
+(S) {/Helvetica cf} 2 16 0 1.00 112 -48 pinlabel
+(B) {/Helvetica cf} 2 16 0 1.00 112 16 pinlabel
+sce
+(nmos 2/2) {/Helvetica cf} 2 16 0 1.00 -112 -80 label
+1.000 0.000 0.000 scb
+(G) {/Helvetica cf} 2 16 0 1.00 -16 16 pinlabel
+0.180 0.545 0.341 scb
+(spice:M%i %pD %pG %pS %pB nlv L=2u W=2u ad=2p as=2p) {/Times-Roman cf} 2 4 0 1.00 -244 
+-139 infolabel
+(sim:b %pD %pG %pS %pB) {/Times-Roman cf} 2 4 0 1.00 -244 -187 infolabel
+sce
+1 1.00 16 16 -16 16 2 polygon
+endgate
+} def
+
+/pmos_2_2 {
+begingate
+1.000 0.000 0.000 scb
+(S) {/Helvetica cf} 2 16 0 1.00 96 32 pinlabel
+sce
+(pmos 2/2) {/Helvetica cf} 2 16 0 1.00 -96 64 label
+1 1.00 32 32 32 -96 2 polygon
+1 1.00 96 32 48 32 48 -96 96 -96 4 polygon
+1 1.00 48 32 48 -96 2 polygon
+1 1.00 64 -16 96 -32 64 -48 3 polygon
+1 1.00 48 -32 96 -32 2 polygon
+1.000 0.000 0.000 scb
+(D) {/Helvetica cf} 2 16 0 1.00 96 -96 pinlabel
+(B) {/Helvetica cf} 2 16 0 1.00 96 -32 pinlabel
+sce
+1 1.00 16 -32 16 0.00 360.00 xcarc
+1.000 0.000 0.000 scb
+(G) {/Helvetica cf} 2 16 0 1.00 -32 -32 pinlabel
+sce
+1 1.00 0 -32 -32 -32 2 polygon
+0.180 0.545 0.341 scb
+(spice:M%i %pD %pG %pS %pB plv L=2u W=2u ad=2p as=2p) {/Times-Roman cf} 2 4 0 1.00 -244 
+-139 infolabel
+(sim:b %pD %pG %pS %pB) {/Times-Roman cf} 2 4 0 1.00 -244 -187 infolabel
+endgate
+} def
+
+
+% EndLib

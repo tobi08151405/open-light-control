@@ -1,0 +1,166 @@
+%! PostScript set of library objects for XCircuit
+%  Version: 2.5
+%  Library name is: hexparts.lps
+%  Author: Mark N. Martin <mmartin@martins-pc.jhuapl.edu>
+%
+
+% XCircuitLib library objects
+
+/hexinv {
+% -48 -40 112 80 bbox
+(?)  (1)  (1)  (2)  4 beginparm
+0 1.00 -32 -40 -32 40 40 0 3 polygon
+1 1.00 48 0 8 0.00 360.00 xcarc
+1 1.00 -32 0 -48 0 2 polygon
+1 1.00 56 0 64 0 2 polygon
+1.000 0.000 0.000 scb
+mark v4 {/Times-Roman cf} ctmk 4 0 1.00 64 0 pinlabel
+mark v3 {/Times-Roman cf} ctmk 7 0 1.00 -48 0 pinlabel
+sce
+mark v2 (-) v1 (pcb:U) {/Helvetica cf} ctmk 20 0 1.00 -80 -96 infolabel
+mark v2 (7404-) {/Helvetica cf} ctmk 21 0 0.35 0 0 label
+endgate
+} def
+
+[(?) (6) (13) (12) ] /hexinv libinst
+[(?) (5) (11) (10) ] /hexinv libinst
+[(?) (4) (9) (8) ] /hexinv libinst
+[(?) (3) (5) (6) ] /hexinv libinst
+[(?) (2) (3) (4) ] /hexinv libinst
+
+/hexinvoc {
+% -48 -40 112 80 bbox
+(?)  (1)  (1)  (2)  4 beginparm
+0 1.00 -32 -40 -32 40 40 0 3 polygon
+1 1.00 48 0 8 0.00 360.00 xcarc
+1 1.00 -32 0 -48 0 2 polygon
+1 1.00 56 0 64 0 2 polygon
+241 1.00 40 0 24 -8 24 8 40 0 4 polygon
+1.000 0.000 0.000 scb
+mark v4 {/Times-Roman cf} ctmk 4 0 1.00 64 0 pinlabel
+mark v3 {/Times-Roman cf} ctmk 7 0 1.00 -48 0 pinlabel
+sce
+mark v2 (-) v1 (pcb:U) {/Helvetica cf} ctmk 20 0 1.00 -80 -96 infolabel
+mark v2 (7405-) {/Helvetica cf} ctmk 21 0 0.35 0 0 label
+endgate
+} def
+
+[(?) (6) (13) (12) ] /hexinvoc libinst
+[(?) (5) (11) (10) ] /hexinvoc libinst
+[(?) (4) (9) (8) ] /hexinvoc libinst
+[(?) (3) (5) (6) ] /hexinvoc libinst
+[(?) (2) (3) (4) ] /hexinvoc libinst
+
+/hexinvoc(30V) {
+% -48 -40 112 80 bbox
+(?)  (1)  (1)  (2)  4 beginparm
+0 1.00 -32 -40 -32 40 40 0 3 polygon
+1 1.00 48 0 8 0.00 360.00 xcarc
+1 1.00 -32 0 -48 0 2 polygon
+1 1.00 56 0 64 0 2 polygon
+241 1.00 40 0 24 -8 24 8 40 0 4 polygon
+1.000 0.000 0.000 scb
+mark v4 {/Times-Roman cf} ctmk 4 0 1.00 64 0 pinlabel
+mark v3 {/Times-Roman cf} ctmk 7 0 1.00 -48 0 pinlabel
+sce
+mark v2 (-) v1 (pcb:U) {/Helvetica cf} ctmk 20 0 1.00 -80 -96 infolabel
+mark v2 (7406-) {/Helvetica cf} ctmk 21 0 0.35 0 0 label
+endgate
+} def
+
+[(?) (6) (13) (12) ] /hexinvoc(30V) libinst
+[(?) (5) (11) (10) ] /hexinvoc(30V) libinst
+[(?) (4) (9) (8) ] /hexinvoc(30V) libinst
+[(?) (3) (5) (6) ] /hexinvoc(30V) libinst
+[(?) (2) (3) (4) ] /hexinvoc(30V) libinst
+
+/hexbufoc(30V) {
+% -48 -40 112 80 bbox
+(?)  (1)  (1)  (2)  4 beginparm
+0 1.00 -32 -40 -32 40 40 0 3 polygon
+1 1.00 -32 0 -48 0 2 polygon
+1 1.00 40 0 64 0 2 polygon
+241 1.00 40 0 24 -8 24 8 40 0 4 polygon
+1.000 0.000 0.000 scb
+mark v4 {/Times-Roman cf} ctmk 4 0 1.00 64 0 pinlabel
+mark v3 {/Times-Roman cf} ctmk 7 0 1.00 -48 0 pinlabel
+sce
+mark v2 (-) v1 (pcb:U) {/Helvetica cf} ctmk 20 0 1.00 -80 -96 infolabel
+mark v2 (7407-) {/Helvetica cf} ctmk 21 0 0.35 0 0 label
+endgate
+} def
+
+[(?) (6) (13) (12) ] /hexbufoc(30V) libinst
+[(?) (5) (11) (10) ] /hexbufoc(30V) libinst
+[(?) (4) (9) (8) ] /hexbufoc(30V) libinst
+[(?) (3) (5) (6) ] /hexbufoc(30V) libinst
+[(?) (2) (3) (4) ] /hexbufoc(30V) libinst
+
+/hexinvst {
+% -48 -40 112 80 bbox
+(?)  (1)  (1)  (2)  4 beginparm
+0 1.00 -32 -40 -32 40 40 0 3 polygon
+1 1.00 48 0 8 0.00 360.00 xcarc
+1 1.00 -32 0 -48 0 2 polygon
+1 1.00 56 0 64 0 2 polygon
+1.000 0.000 0.000 scb
+mark v4 {/Times-Roman cf} ctmk 4 0 1.00 64 0 pinlabel
+mark v3 {/Times-Roman cf} ctmk 7 0 1.00 -48 0 pinlabel
+sce
+mark v2 (-) v1 (pcb:U) {/Helvetica cf} ctmk 20 0 1.00 -80 -96 infolabel
+mark v2 (7414-) {/Helvetica cf} ctmk 21 0 0.35 0 0 label
+endgate
+} def
+
+[(?) (6) (13) (12) ] /hexinvst libinst
+[(?) (5) (11) (10) ] /hexinvst libinst
+[(?) (4) (9) (8) ] /hexinvst libinst
+[(?) (3) (5) (6) ] /hexinvst libinst
+[(?) (2) (3) (4) ] /hexinvst libinst
+
+/hexinvoc(15V) {
+% -48 -40 112 80 bbox
+(?)  (1)  (1)  (2)  4 beginparm
+0 1.00 -32 -40 -32 40 40 0 3 polygon
+1 1.00 48 0 8 0.00 360.00 xcarc
+1 1.00 -32 0 -48 0 2 polygon
+1 1.00 56 0 64 0 2 polygon
+241 1.00 40 0 24 -8 24 8 40 0 4 polygon
+1.000 0.000 0.000 scb
+mark v4 {/Times-Roman cf} ctmk 4 0 1.00 64 0 pinlabel
+mark v3 {/Times-Roman cf} ctmk 7 0 1.00 -48 0 pinlabel
+sce
+mark v2 (-) v1 (pcb:U) {/Helvetica cf} ctmk 20 0 1.00 -80 -96 infolabel
+mark v2 (7416-) {/Helvetica cf} ctmk 21 0 0.35 0 0 label
+endgate
+} def
+
+[(?) (6) (13) (12) ] /hexinvoc(15V) libinst
+[(?) (5) (11) (10) ] /hexinvoc(15V) libinst
+[(?) (4) (9) (8) ] /hexinvoc(15V) libinst
+[(?) (3) (5) (6) ] /hexinvoc(15V) libinst
+[(?) (2) (3) (4) ] /hexinvoc(15V) libinst
+
+/hexbufoc(15V) {
+% -48 -40 112 80 bbox
+(?)  (1)  (1)  (2)  4 beginparm
+0 1.00 -32 -40 -32 40 40 0 3 polygon
+1 1.00 -32 0 -48 0 2 polygon
+1 1.00 40 0 64 0 2 polygon
+241 1.00 40 0 24 -8 24 8 40 0 4 polygon
+1.000 0.000 0.000 scb
+mark v4 {/Times-Roman cf} ctmk 4 0 1.00 64 0 pinlabel
+mark v3 {/Times-Roman cf} ctmk 7 0 1.00 -48 0 pinlabel
+sce
+mark v2 (-) v1 (pcb:U) {/Helvetica cf} ctmk 20 0 1.00 -80 -96 infolabel
+mark v2 (7417-) {/Helvetica cf} ctmk 21 0 0.35 0 0 label
+endgate
+} def
+
+[(?) (6) (13) (12) ] /hexbufoc(15V) libinst
+[(?) (5) (11) (10) ] /hexbufoc(15V) libinst
+[(?) (4) (9) (8) ] /hexbufoc(15V) libinst
+[(?) (3) (5) (6) ] /hexbufoc(15V) libinst
+[(?) (2) (3) (4) ] /hexbufoc(15V) libinst
+
+% EndLib

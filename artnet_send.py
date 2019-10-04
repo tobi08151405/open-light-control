@@ -1,0 +1,30 @@
+import socket
+import os
+
+sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
+sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, True)
+sock.settimeout(5)
+
+>>> h=hex(255)
+>>> h[0:2]+'00', h[0:2]+h[2:]
+('0x00', '0xff')
+>>> h=hex(512)
+>>> h[0:2]+'0'+h[2], h[0:2]+h[3:]
+('0x02', '0x00')
+>>> h=hex(4100)
+>>> h[0:2]+h[2:4], h[0:2]+h[4:]
+('0x10', '0x04')
+
+universe = 0
+chanels = 0x02, 0x00
+art_header = bytearray([0x41, 0x72, 0x74, 0x2d, 0x4e, 0x65, 0x74, 0x00, 0x00, 0x50, 0x00, 0x0e, 0x00, 0x00, universe, chanels, data])
+art_header = bytearray([0x41, 0x72, 0x74, 0x2d, 0x4e, 0x65, 0x74, 0x00, 0x00, 0x50, 0x00, 0x0e, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, ])
+
+universe
+struct.pack(">h", 0)
+
+chanels
+struct.pack(">h", 512)
+
+data
+struct.pack("B", 255)
