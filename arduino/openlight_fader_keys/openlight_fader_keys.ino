@@ -24,10 +24,14 @@ void setup() {
 }
 
 void readFader() {
-  for (int fadIndex=0; fadIndex < fadCount; fadIndex**) {
+  for (int fadIndex=0; fadIndex < fadCount; fadIndex++) {
     byte curFad = faders[fadIndex];
-    
+    faderState[fadIndex] = analogRead(curFad);
+    if (faderState[fadIndex] != last_faderState[fadIndex]) {
+      Serial.print(curFad); Serial.print(":"); Serial.println(faderState[fadIndex]);
+    }
   }
+  memcpy(last_faderState, faderState, sizeof fadCount);
 }
 
 void readMatrix() {
@@ -55,5 +59,6 @@ void readMatrix() {
 }
  
 void loop() {
+  readFader();
   readMatrix();
 }

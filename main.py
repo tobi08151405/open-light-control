@@ -63,7 +63,6 @@ class ArtnetThread(QThread):
         self.send_artnet(uni)
 
 class SerialThread(QThread):
-    
     keystroke = pyqtSignal(str, bool)
     fadermove = pyqtSignal(str, int)
     
@@ -91,9 +90,8 @@ class SerialThread(QThread):
                     self.keystroke.emit(serial_get[2:-6], bool(int(serial_get[-6])))
             except:
                 pass
-        
+
 class MainWindow(QMainWindow):
-    
     channelset = pyqtSignal(int, int, int)
     
     def __init__(self, *args, **kwargs):
