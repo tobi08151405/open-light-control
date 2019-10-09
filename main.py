@@ -124,12 +124,16 @@ class MainWindow(QMainWindow):
             exec("self.fader"+str(fader)+".setAlignment(Qt.AlignCenter)")
             exec("self.layout.addWidget(self.fader"+str(fader)+","+str(rows+1)+","+str(fader)+")")
         
-        showact = QAction('Show', self)
-        showact.triggered.connect(self.sort)
+        sortact = QAction('Sort', self)
+        sortact.triggered.connect(self.sort)
+        
+        quitact = QAction('Quit', self)
+        quitact.triggered.connect(self.close)
         
         self.menubar = self.menuBar()
         self.fileMenu = self.menubar.addMenu('File')
-        self.fileMenu.addAction(showact)
+        self.fileMenu.addAction(sortact)
+        self.fileMenu.addAction(quitact)
         
         self.widget = QWidget()
         self.widget.setLayout(self.layout)

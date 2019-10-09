@@ -7,6 +7,12 @@ const int colCount = sizeof(cols)/sizeof(cols[0]);
 byte keys[colCount][rowCount];
 byte last_keys[colCount][rowCount];
 
+byte faders[] = {A0, A1, A2};
+byte fadCount = sizeof(faders)/sizeof(faders[0]);
+
+byte faderState[fadCount];
+byte last_faderState[fadCount];
+
 void setup() {
   Serial.begin(115200);
   for(int x=0; x<rowCount; x++) {
@@ -14,6 +20,13 @@ void setup() {
   }
   for (int x=0; x<colCount; x++) {
     pinMode(cols[x], INPUT_PULLUP);
+  }
+}
+
+void readFader() {
+  for (int fadIndex=0; fadIndex < fadCount; fadIndex**) {
+    byte curFad = faders[fadIndex];
+    
   }
 }
 
