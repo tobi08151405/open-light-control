@@ -3,7 +3,7 @@
 from subprocess import getoutput as go
 
 files = go("ls")
-files_used=[]
+files_used = []
 
 for i in files.split('\n'):
     if ".ps" in i:
@@ -13,7 +13,7 @@ for i in files_used:
     go("ps2pdf "+i)
 
 files = go("ls")
-files_used=[]
+files_used = []
 
 for i in files.split('\n'):
     if (".pdf" in i) and not ("ges" in i):

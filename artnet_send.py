@@ -5,13 +5,13 @@ sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
 sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, True)
 sock.settimeout(5)
 
->>> h=hex(255)
+>>> h = hex(255)
 >>> h[0:2]+'00', h[0:2]+h[2:]
 ('0x00', '0xff')
->>> h=hex(512)
+>>> h = hex(512)
 >>> h[0:2]+'0'+h[2], h[0:2]+h[3:]
 ('0x02', '0x00')
->>> h=hex(4100)
+>>> h = hex(4100)
 >>> h[0:2]+h[2:4], h[0:2]+h[4:]
 ('0x10', '0x04')
 

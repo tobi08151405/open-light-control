@@ -6,8 +6,6 @@ import struct
 import sys
 import serial
 import socket
-import os
-from time import time
 
 serial_enable = False
 
