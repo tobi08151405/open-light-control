@@ -15,6 +15,12 @@ byte last_faderState[fadCount];
 
 void setup() {
   Serial.begin(115200);
+  Serial1.begin(115200);
+  while (!Serial1) {
+    ;
+  }
+  message=Serial1.readStringUntil('\n');
+  int encCount = message;
   for(int x=0; x<rowCount; x++) {
     pinMode(rows[x], INPUT);
   }
@@ -57,8 +63,19 @@ void readMatrix() {
   }
   memcpy(last_keys, keys, sizeof keys);
 }
- 
+
+void readEncoders() {
+  Serial1.println("get")
+  for (int encIndex=0; encIndex<encCount; encIndex++) {
+    message = Serial.readStringUntil('\n');
+    if (message != "0") {
+      Serial.print("E"); Serial.print(encIndex); Serial.print(":"); Serial.prinln(message);
+    }
+  }
+}
+
 void loop() {
   readFader();
   readMatrix();
+  readEncoders();
 }
