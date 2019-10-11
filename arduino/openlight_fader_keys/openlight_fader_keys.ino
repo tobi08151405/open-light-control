@@ -28,7 +28,7 @@ void readFader() {
     byte curFad = faders[fadIndex];
     faderState[fadIndex] = analogRead(curFad);
     if (faderState[fadIndex] != last_faderState[fadIndex]) {
-      Serial.print(curFad); Serial.print(":"); Serial.println(faderState[fadIndex]);
+      Serial.print("A"); Serial.print(fadIndex); Serial.print(":"); Serial.println(faderState[fadIndex]);
     }
   }
   memcpy(last_faderState, faderState, sizeof fadCount);
