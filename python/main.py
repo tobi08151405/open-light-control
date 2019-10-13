@@ -2,100 +2,20 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 
-import struct
 import sys
-import serial
-import socket
 
-serial_enable = False
-
-rows = 4
-cols = 3
-faders = 3
-encoders = 1
-universe_num = 4
-uni_map = dict(zip(range(universe_num), range(universe_num)))
-uni_map_ = {v: k for k, v in uni_map.items()}
+from GlobalVar import *
+from SerialThread import SerialThread
+from AbstractThread import AbstractThread
 
 def change_uni(from_, to_):
+    global uni_map
+    global uni_map_
     uni_map[uni_map_[int(from_)]] = int(to_)
     uni_map_ = {v: k for k, v in uni_map.items()}
 
-class ArtnetThread(QThread):    
-    uni_list = []
-    for i in range(universe_num):
-        uni_list.append([])
-    
-    for uni in uni_list:
-        for i in range(512):
-            uni.append(0)
-    
-    artnet_prefix = bytearray([0x41, 0x72, 0x74, 0x2d, 0x4e, 0x65, 0x74, 0x00, 0x00, 0x50, 0x00, 0x0e, 0x00, 0x00])
-    
-    def __init__(self):
-        QThread.__init__(self)
-        
-        self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
-        self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, True)
-        self.sock.settimeout(5)
-        self.artnet_timer = QTimer(self)
-        self.artnet_timer.timeout.connect(self.send_artnet_all)
-        self.artnet_timer.start(4000)
-    
-    def run(self):
-        input("")
-    
-    def send_artnet_all(self):
-        for uni in range(universe_num):
-            self.send_artnet(uni)
-    
-    def send_artnet(self, uni):
-        packet = self.artnet_prefix.copy()
-        packet+=struct.pack(">h", uni_map[uni])+struct.pack(">h", 512)
-        for chan in self.uni_list[uni]:
-            packet+=struct.pack("B", chan)
-        self.sock.sendto(packet, ('255.255.255.255', 6454))
-        
-    @pyqtSlot(int, int, int)
-    def set_channel(universe, channel, value):
-        self.uni_list[universe][channel] = int(value)
-        self.send_artnet(uni)
-
-class SerialThread(QThread):
-    keystroke = pyqtSignal(str, bool)
-    fadermove = pyqtSignal(str, int)
-    encodermove = pyqtSignal(str, int)
-    
-    def __init__(self):
-        QThread.__init__(self)
-        while 1:
-            try:
-                self.ser = serial.Serial("/dev/faderkeys", 115200)
-                break
-            except serial.serialutil.SerialException:
-                pass
-        self.ser.reset_input_buffer()
-    
-    def __del__(self):
-        self.wait()
-    
-    def run(self):
-        while 1:
-            try:
-                serial_get = str(self.ser.readline())
-                if "A" in serial_get:
-                    spacer = serial_get.index(":")
-                    self.fadermove.emit(serial_get[3:spacer], int(serial_get[spacer+1:-5]))
-                elif "E" in serial_get:
-                    spacer = serial_get.index(":")
-                    self.encodermove.emit(serial_get[3:spacer], int(serial_get[spacer+1:-5]))
-                else:
-                    self.keystroke.emit(serial_get[2:-6], bool(int(serial_get[-6])))
-            except:
-                pass
-
 class MainWindow(QMainWindow):
-    channelset = pyqtSignal(int, int, int)
+    lampset = pyqtSignal(int, str, object)
     
     def __init__(self, *args, **kwargs):
         super(MainWindow, self).__init__(*args, **kwargs)
@@ -108,9 +28,9 @@ class MainWindow(QMainWindow):
             serial_thread.encodermove.connect(self.map_encoders)
             serial_thread.start()
         
-        artnet_thread = ArtnetThread()
-        self.channelset.connect(artnet_thread.set_channel)
-        artnet_thread.start()
+        abstract_thread = AbstractThread()
+        self.lampset.connect(abstract_thread.set_lamp)
+        abstract_thread.start()
         
         sortact = QAction('Sort', self)
         sortact.triggered.connect(self.sort)
