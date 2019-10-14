@@ -30,4 +30,4 @@ class AbstractThread(QThread):
             univer, addr = nr_to_addr[lamp]
             self.channelset.emit(univer, addr+local_channel, set_value)
         except NameError:
-            print("Something went wrong with in the abstraction layer")
+            print("Something went wrong within the abstraction layer")
