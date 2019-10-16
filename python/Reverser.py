@@ -48,7 +48,7 @@ def mode_to_func(json_dic, mode):
                     except:
                         pass
                 
-    if all(any(channel in i for i in mode['channels']) for channel in ['Red', 'Green', 'Blue']):
+    if all(any(channel in i for i in mode['channels']) for channel in ['Red', 'Green', 'Blue']) or all(any(channel in i for i in mode['channels']) for channel in ['Cyan', 'Magenta', 'Yellow']):
         color += 'RGB'
         if 'Amber' in mode['channels']:
             color += 'A'
@@ -84,9 +84,15 @@ def typ_to_modes(json_dic):
 
 def create_typ_to_func(json_names):
     for json_name in json_names:
-        with open(json_name) as json_file:
-            json_dic = json.load(json_file)
-        typ_to_modes(json_dic)
+        try:
+            with open(json_name) as json_file:
+                json_dic = json.load(json_file)
+                typ_to_modes(json_dic)
+        except FileNotFoundError:
+            print("file {0:s} not found!".format(json_name))
 
-create_typ_to_func(["../dev/ofl-json/mac-250-krypton.json","../dev/ofl-json/generic/drgb-fader.json"])
-print(typ_to_func)
+create_typ_to_func(["./dev/ofl-json/mac-250-krypton.json","../dev/ofl-json/generic/drgb-fader.json","../dev/ofl-json/generic/cmy-fader.json","../dev/ofl-json/generic/drgb-fader.json"])
+
+with open("typ_to_func.json", 'w') as json_out:
+    json.dump(typ_to_func, json_out)
+
