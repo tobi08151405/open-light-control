@@ -19,8 +19,14 @@ class AbstractThread(QThread):
         loop = QEventLoop()
         loop.exec_()
     
-    def get_func_from_type(lamp_type, setting, value):
-        return 0, 0
+    def get_func_from_type(self, lamp_type, setting, value):
+        channel_plus = typ_to_addr[lamp_type][setting]['Channel']
+        if typ_to_addr[lamp_type][setting]['Mode'] == 'normal':
+            if any(setting in i for i in ['Red', 'Green', 'Blue', 'Cyan', 'Magenta', 'Yellow']):
+                return_value = int(value)
+            else:
+                return_value = (value / 100) * 255
+        return channel_plus, return_value
     
     @pyqtSlot(int, str, object)
     def set_lamp(self, lamp, setting, value):

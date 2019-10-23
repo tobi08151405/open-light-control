@@ -72,7 +72,7 @@ def mode_to_func(json_dic, mode):
     if not gobo:
         gobo = False
     
-    typ_to_func[typ_mode_name] = {"Dimmer": dimmer, "Color": color, "Gobo": gobo, "Pan": pan, "Tilt": tilt}
+    typ_to_func[typ_mode_name] = {"ChannelSpan": len(mode['channels']), "Dimmer": dimmer, "Color": color, "Gobo": gobo, "Pan": pan, "Tilt": tilt}
     if color_slots:
         typ_to_func[typ_mode_name]["ColorWheel"] = color_slots
     if gobo_slots:
@@ -125,8 +125,8 @@ def create_typ_to_addr(json_names):
             print("file {0:s} not found!".format(json_name))
 
 #create_typ_to_func(["../dev/ofl-json/mac-250-krypton.json","../dev/ofl-json/generic/drgb-fader.json","../dev/ofl-json/generic/cmy-fader.json","../dev/ofl-json/generic/drgb-fader.json"])
-create_typ_to_func(["../dev/ofl-json/tao-led.json","../dev/ofl-json/generic/desk-channel.json"])
-create_typ_to_addr(["../dev/ofl-json/tao-led.json","../dev/ofl-json/generic/desk-channel.json"])
+create_typ_to_func(["../dev/ofl-json/tao-led.json","../dev/ofl-json/generic/desk-channel.json","../dev/ofl-json/michi.json"])
+create_typ_to_addr(["../dev/ofl-json/tao-led.json","../dev/ofl-json/generic/desk-channel.json","../dev/ofl-json/michi.json"])
 
 with open("typ_to_func.json", 'w') as json_out:
     json.dump(typ_to_func, json_out)

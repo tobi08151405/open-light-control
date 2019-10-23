@@ -1,7 +1,7 @@
 {
   "$schema": "https://raw.githubusercontent.com/OpenLightingProject/open-fixture-library/master/schemas/fixture.json",
-  "name": "TaO LED",
-  "shortName": "TaoLED",
+  "name": "Michi LED",
+  "shortName": "MLED",
   "categories": ["Color Changer"],
   "meta": {
     "authors": ["Teichi"],
@@ -14,22 +14,16 @@
         "type": "Intensity"
       }
     },
-    "Red": {
+    "CTB": {
       "capability": {
         "type": "ColorIntensity",
-        "color": "Red"
+        "color": "CTB"
       }
     },
-    "Green": {
+    "White": {
       "capability": {
         "type": "ColorIntensity",
-        "color": "Green"
-      }
-    },
-    "Blue": {
-      "capability": {
-        "type": "ColorIntensity",
-        "color": "Blue"
+        "color": "White"
       }
     },
     "Strobe": {
@@ -47,10 +41,9 @@
       "shortName": "8bit",
       "channels": [
         "Dimmer",
-        "Red",
-        "Green",
-        "Blue",
-        "Strobe"
+        "Strobe",
+        "CTB",
+        "White"
       ]
     }
   ]

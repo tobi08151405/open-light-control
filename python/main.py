@@ -3,10 +3,15 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 
 import sys
+import json
+import time
 
 from GlobalVar import *
 from SerialThread import SerialThread
 from AbstractThread import AbstractThread
+import Create_lamps
+
+Create_lamps.create()
 
 def change_uni(from_, to_):
     global uni_map
@@ -45,11 +50,27 @@ class MainWindow(QMainWindow):
         
         self.mdi = QMdiArea()
         
-        self.create_encoders()
-        self.create_faders()
-        self.create_keys()
+        #self.create_encoders()
+        #self.create_faders()
+        #self.create_keys()
+        self.create_test()
         
         self.setCentralWidget(self.mdi)
+    
+    def create_test(self):
+        self.test_layout = QGridLayout()
+        self.test0=QPushButton()
+        self.test0.clicked.connect(self.test_artnet2)
+        self.test1=QPushButton()
+        self.test1.clicked.connect(self.test_artnet1)
+        self.test_layout.addWidget(self.test0,0,0)
+        self.test_layout.addWidget(self.test1,0,1)
+        self.test_widget = QWidget()
+        self.test_widget.setLayout(self.test_layout)
+        self.test_sub = QMdiSubWindow()
+        self.test_sub.setWidget(self.test_widget)
+        self.mdi.addSubWindow(self.test_sub)
+        self.test_sub.show()
     
     def create_keys(self):
         self.keys_layout = QGridLayout()
@@ -97,6 +118,17 @@ class MainWindow(QMainWindow):
     def sort(self):
         self.mdi.tileSubWindows()
     
+    def test_artnet(self):
+        self.lampset.emit(110, "Dimmer", 100)
+        self.lampset.emit(110, "Red", 255)
+    
+    def test_artnet1(self):
+        self.lampset.emit(7, "Intensity", 100)
+    
+    def test_artnet2(self):
+        self.lampset.emit(100, "Dimmer", 100)
+        self.lampset.emit(100, "CTB", 100)
+    
     @pyqtSlot(str, bool)
     def map_keys(self, key, pressed):
         try:
@@ -128,5 +160,5 @@ app = QApplication(sys.argv)
 
 window = MainWindow()
 window.show()
-
+#print(typ_to_func,typ_to_addr)
 sys.exit(app.exec_())
