@@ -78,7 +78,7 @@ def mode_to_func(json_dic, mode):
     if gobo_slots:
         typ_to_func[typ_mode_name]["GoboWheel"] = gobo_slots
 
-def typ_to_modes(json_dic):
+def typ_to_modes_func(json_dic):
     for mode in json_dic['modes']:
         mode_to_func(json_dic, mode)
 
@@ -87,12 +87,49 @@ def create_typ_to_func(json_names):
         try:
             with open(json_name) as json_file:
                 json_dic = json.load(json_file)
-                typ_to_modes(json_dic)
+                typ_to_modes_func(json_dic)
         except FileNotFoundError:
             print("file {0:s} not found!".format(json_name))
 
-create_typ_to_func(["./dev/ofl-json/mac-250-krypton.json","../dev/ofl-json/generic/drgb-fader.json","../dev/ofl-json/generic/cmy-fader.json","../dev/ofl-json/generic/drgb-fader.json"])
+def mode_to_addr(json_dic, mode):
+    name = json_dic['name']
+    typ_mode_name = "{0:s} {1:s}".format(name, mode['name'])
+    typ_to_addr[typ_mode_name] = {}
+    for channel_name in mode['channels']:
+        try:
+            channel = json_dic['availableChannels'][channel_name]
+            channel_num = mode['channels'].index(channel_name)
+            channel_mode = ''
+            if 'capability' in channel:
+                channel_mode = "normal"
+            elif 'capabilities' in channel:
+                channel_mode = "split"
+                split_list = []
+            typ_to_addr[typ_mode_name][channel_name] = {"Channel": channel_num, "Mode": channel_mode}
+            if channel_mode == "split":
+                typ_to_addr[typ_mode_name][channel_name]['Split'] = {split_list}
+        except KeyError:
+            pass
+
+def typ_to_modes_addr(json_dic):
+    for mode in json_dic['modes']:
+        mode_to_addr(json_dic, mode)
+
+def create_typ_to_addr(json_names):
+    for json_name in json_names:
+        try:
+            with open(json_name) as json_file:
+                json_dic = json.load(json_file)
+                typ_to_modes_addr(json_dic)
+        except FileNotFoundError:
+            print("file {0:s} not found!".format(json_name))
+
+#create_typ_to_func(["../dev/ofl-json/mac-250-krypton.json","../dev/ofl-json/generic/drgb-fader.json","../dev/ofl-json/generic/cmy-fader.json","../dev/ofl-json/generic/drgb-fader.json"])
+create_typ_to_func(["../dev/ofl-json/tao-led.json","../dev/ofl-json/generic/desk-channel.json"])
+create_typ_to_addr(["../dev/ofl-json/tao-led.json","../dev/ofl-json/generic/desk-channel.json"])
 
 with open("typ_to_func.json", 'w') as json_out:
     json.dump(typ_to_func, json_out)
 
+with open("typ_to_addr.json", 'w') as json_out:
+    json.dump(typ_to_addr, json_out)

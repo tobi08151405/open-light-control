@@ -12,5 +12,6 @@ uni_map_ = {v: k for k, v in uni_map.items()}
 
 typ_to_func = {}
 typ_to_addr = {}
-nr_to_typ = {6: 'Mac 250 Krypton'}
-nr_to_addr = {6: [2, 40]}
+#nr_to_typ = {6: 'Mac 250 Krypton'}
+nr_to_typ = {}
+nr_to_addr = {}
