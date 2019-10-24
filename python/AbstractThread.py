@@ -10,11 +10,11 @@ class AbstractThread(QThread):
     
     def __init__(self):
         QThread.__init__(self)
+        self.dmx_thread = DmxThread()
         
     def run(self):
-        dmx_thread = DmxThread()
-        self.channelset.connect(dmx_thread.set_channel)
-        dmx_thread.start()
+        self.channelset.connect(self.dmx_thread.set_channel)
+        self.dmx_thread.start()
         
         loop = QEventLoop()
         loop.exec_()
@@ -33,6 +33,8 @@ class AbstractThread(QThread):
         try:
             lamp_type = nr_to_typ[lamp]
             local_channel, set_value = self.get_func_from_type(lamp_type, setting, value)
+            #if setting == 'Intensity' or setting == 'Dimmer':
+                #set_value = set_value
             univer, addr = nr_to_addr[lamp]
             self.channelset.emit(univer, addr+local_channel, set_value)
         except NameError:

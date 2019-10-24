@@ -8,6 +8,7 @@ import socket
 from GlobalVar import universe_num, uni_map
 
 class DmxThread(QThread):
+    master_val = 1
     
     def __init__(self):
         QThread.__init__(self)
@@ -42,7 +43,7 @@ class DmxThread(QThread):
         packet = self.artnet_prefix.copy()
         packet+=struct.pack("<h", uni_map[uni])+struct.pack(">h", 512)
         for chan in self.uni_list[uni]:
-            packet+=struct.pack("B", chan)
+            packet+=struct.pack("B", int(chan*self.master_val))
         self.sock.sendto(packet, ('255.255.255.255', 6454))
     
     @pyqtSlot()
@@ -56,3 +57,8 @@ class DmxThread(QThread):
     def set_channel(self, universe, channel, value):
         self.uni_list[universe][channel] = int(value)
         self.send_artnet(universe)
+        
+    @pyqtSlot(int)
+    def set_master(self, ma):
+        self.master_val = ma/100
+        self.send_artnet_all()
