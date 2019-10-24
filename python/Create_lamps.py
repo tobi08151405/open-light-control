@@ -22,9 +22,9 @@ def create():
         nr_to_typ[led_start+num+1] = led_name
         nr_to_addr[led_start+num+1] = [0, led_start+num*led_span]
     
-    with open("typ_to_addr.json") as file1:
-        for k, v in json.load(file1).items():
-            typ_to_addr[k] = v
-    with open("typ_to_func.json") as file2:
-        for k, v in json.load(file2).items():
-            typ_to_func[k] = v
+    #with open("typ_to_addr.json") as file1:
+        #for k, v in json.load(file1).items():
+            #typ_to_addr[k] = v
+    #with open("typ_to_func.json") as file2:
+        #for k, v in json.load(file2).items():
+            #typ_to_func[k] = v

@@ -1,6 +1,6 @@
 import json
 
-import pdb
+#import pdb
 
 from GlobalVar import typ_to_func, typ_to_addr
 
@@ -128,8 +128,8 @@ def create_typ_to_addr(json_names):
 create_typ_to_func(["../dev/ofl-json/tao-led.json","../dev/ofl-json/generic/desk-channel.json","../dev/ofl-json/michi.json"])
 create_typ_to_addr(["../dev/ofl-json/tao-led.json","../dev/ofl-json/generic/desk-channel.json","../dev/ofl-json/michi.json"])
 
-with open("typ_to_func.json", 'w') as json_out:
-    json.dump(typ_to_func, json_out)
+#with open("typ_to_func.json", 'w') as json_out:
+    #json.dump(typ_to_func, json_out)
 
-with open("typ_to_addr.json", 'w') as json_out:
-    json.dump(typ_to_addr, json_out)
+#with open("typ_to_addr.json", 'w') as json_out:
+    #json.dump(typ_to_addr, json_out)

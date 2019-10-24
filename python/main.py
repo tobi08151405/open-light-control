@@ -10,8 +10,11 @@ from GlobalVar import *
 from SerialThread import SerialThread
 from AbstractThread import AbstractThread
 import Create_lamps
+import Reverser
 
 Create_lamps.create()
+Reverser.create_typ_to_func(["../dev/ofl-json/tao-led.json","../dev/ofl-json/generic/desk-channel.json","../dev/ofl-json/michi.json"])
+Reverser.create_typ_to_addr(["../dev/ofl-json/tao-led.json","../dev/ofl-json/generic/desk-channel.json","../dev/ofl-json/michi.json"])
 
 def change_uni(from_, to_):
     global uni_map
