@@ -6,6 +6,8 @@ import sys
 import json
 import time
 
+import pdb
+
 from GlobalVar import *
 from SerialThread import SerialThread
 from AbstractThread import AbstractThread
@@ -56,6 +58,7 @@ class MainWindow(QMainWindow):
         self.fileMenu.addAction(quitact)
         
         self.mdi = QMdiArea()
+        self.mdi.setFont(QFont('Sans Serif', 12))
         
         self.create_encoders()
         self.create_faders()
@@ -67,57 +70,59 @@ class MainWindow(QMainWindow):
         self.create_test()
         
         self.setCentralWidget(self.mdi)
-        
+        #pdb.set_trace()
+    
+    def create_sub_area(self, name, title, wid_list, width=None):
+        exec("self.{0:s}_layout = QGridLayout()".format(name))
+        for wid in wid_list:
+            exec("self.{0:s}_layout.addWidget(wid[0],wid[1],wid[2])".format(name))
+        if width:
+            exec("self.col_count=self.{0:s}_layout.columnCount()".format(name))
+            for col in range(self.col_count):
+                exec("self.{0:s}_layout.setColumnMinimumWidth(col,{1:d})".format(name,width))
+        exec("self.{0:s}_widget = QWidget()\nself.{0:s}_widget.setLayout(self.{0:s}_layout)\nself.{0:s}_scroll=QScrollArea()\nself.{0:s}_scroll.setWidget(self.{0:s}_widget)\nself.{0:s}_sub = QMdiSubWindow()\nself.{0:s}_sub.setWidget(self.{0:s}_scroll)\nself.{0:s}_sub.setWindowTitle('{1:s}')\nself.mdi.addSubWindow(self.{0:s}_sub)\nself.{0:s}_sub.show()".format(name, title))
+    
     def create_gezeit(self):
-        self.gez_layout = QGridLayout()
+        gez_list = []
         
         self.pub_slid = QSlider()
         self.pub_slid.setMinimum(0)
         self.pub_slid.setMaximum(100)
         self.pub_slid.valueChanged.connect(self.pub_slid_fader)
-        self.gez_layout.addWidget(QLabel("Pub"),0,0)
-        self.gez_layout.addWidget(self.pub_slid,1,0)
+        gez_list.append([QLabel("Pub"),0,0])
+        gez_list.append([self.pub_slid,1,0])
         
         self.schlaf_slid = QSlider()
         self.schlaf_slid.setMinimum(0)
         self.schlaf_slid.setMaximum(100)
         self.schlaf_slid.valueChanged.connect(self.schlaf_slid_fader)
-        self.gez_layout.addWidget(QLabel("Schlafz"),0,1)
-        self.gez_layout.addWidget(self.schlaf_slid,1,1)
+        gez_list.append([QLabel("Schlafz"),0,1])
+        gez_list.append([self.schlaf_slid,1,1])
         
         self.berg1 = QSlider()
         self.berg1.setMinimum(0)
         self.berg1.setMaximum(100)
         self.berg1.valueChanged.connect(self.berg1_fader)
-        self.gez_layout.addWidget(QLabel("Berg 1"),0,2)
-        self.gez_layout.addWidget(self.berg1,1,2)
+        gez_list.append([QLabel("Berg 1"),0,2])
+        gez_list.append([self.berg1,1,2])
         
         self.bergg = QSlider()
         self.bergg.setMinimum(0)
         self.bergg.setMaximum(100)
         self.bergg.valueChanged.connect(self.bergg_fader)
-        self.gez_layout.addWidget(QLabel("Berg G"),0,3)
-        self.gez_layout.addWidget(self.bergg,1,3)
+        gez_list.append([QLabel("Berg G"),0,3])
+        gez_list.append([self.bergg,1,3])
         
-        self.gez_widget = QWidget()
-        self.gez_widget.setLayout(self.gez_layout)
-        self.gez_sub = QMdiSubWindow()
-        self.gez_sub.setWidget(self.gez_widget)
-        self.gez_sub.setWindowTitle("GeHzeiten")
-        self.mdi.addSubWindow(self.gez_sub)
-        self.gez_sub.show()
+        self.create_sub_area("gez", "GeHzeiten", gez_list, width=70)
     
     def create_error_log(self):
         self.error_text = QTextEdit()
         self.error_text.setReadOnly(1)
-        self.error_sub = QMdiSubWindow()
-        self.error_sub.setWidget(self.error_text)
-        self.error_sub.setWindowTitle("Error Log")
-        self.mdi.addSubWindow(self.error_sub)
-        self.error_sub.show()
+        self.create_sub_area("error", "Error Log", [[self.error_text, 0, 0]])
     
     def create_master_fader(self):
-        self.master_sli_layout = QGridLayout()
+        master_list = []
+        
         self.mslider=QSlider()
         self.mslider.setMinimum(0)
         self.mslider.setMaximum(100)
@@ -126,32 +131,30 @@ class MainWindow(QMainWindow):
         self.mslider.valueChanged.connect(self.master_sli_fader)
         self.mslider_max_button.clicked.connect(self.set_master_max)
         self.mslider_min_button.clicked.connect(self.set_master_min)
-        self.master_sli_layout.addWidget(self.mslider, 0, 0, 2, 2)
-        self.master_sli_layout.addWidget(self.mslider_max_button, 0, 3)
-        self.master_sli_layout.addWidget(self.mslider_min_button, 1, 3)
-        self.master_sli_widget = QWidget()
-        self.master_sli_widget.setLayout(self.master_sli_layout)
-        self.master_sli_sub = QMdiSubWindow()
-        self.master_sli_sub.setWidget(self.master_sli_widget)
-        self.master_sli_sub.setWindowTitle("Master")
-        self.mdi.addSubWindow(self.master_sli_sub)
-        self.master_sli_sub.show()
+        width_edit=QLineEdit()
+        width_edit.setPlaceholderText(str(self.mslider.size().width()))
+        height_edit=QLineEdit()
+        height_edit.setPlaceholderText(str(self.mslider.size().height()))
+        width_edit.returnPressed.connect(lambda: self.mslider.resize(QSize(int(width_edit.text()),self.mslider.size().height())))
+        height_edit.returnPressed.connect(lambda: self.mslider.resize(QSize(self.mslider.size().width(),int(height_edit.text()))))
+        master_list.append([self.mslider, 0, 0])
+        master_list.append([self.mslider_max_button, 0, 1])
+        master_list.append([self.mslider_min_button, 1, 1])
+        master_list.append([width_edit, 0, 2])
+        master_list.append([height_edit, 1, 2])
+        
+        self.create_sub_area("mslider", "Master", master_list)
     
     def create_color(self):
-        self.color_layout = QGridLayout()
         self.color_dia0 = QColorDialog()
         self.color_dia0.setOption(2)
         self.color_dia0.currentColorChanged.connect(self.test_colors)
-        self.color_layout.addWidget(self.color_dia0)
-        self.color_widget = QWidget()
-        self.color_widget.setLayout(self.color_layout)
-        self.color_sub = QMdiSubWindow()
-        self.color_sub.setWidget(self.color_widget)
-        self.mdi.addSubWindow(self.color_sub)
-        self.color_sub.show()
+        
+        self.create_sub_area("color", "Color Changer", [[self.color_dia0, 0, 0]])
     
     def create_test(self):
-        self.test_layout = QGridLayout()
+        test_list = []
+        
         self.test0=QPushButton()
         self.test0.clicked.connect(self.test_artnet2)
         self.test1=QPushButton()
@@ -160,58 +163,39 @@ class MainWindow(QMainWindow):
         self.test2.setMinimum(0)
         self.test2.setMaximum(100)
         self.test2.valueChanged.connect(self.test_slider)
-        self.test_layout.addWidget(self.test0,0,0)
-        self.test_layout.addWidget(self.test1,0,1)
-        self.test_layout.addWidget(self.test2,0,2)
-        self.test_widget = QWidget()
-        self.test_widget.setLayout(self.test_layout)
-        self.test_sub = QMdiSubWindow()
-        self.test_sub.setWidget(self.test_widget)
-        self.mdi.addSubWindow(self.test_sub)
-        self.test_sub.show()
+        test_list.append([self.test0,0,0])
+        test_list.append([self.test1,0,1])
+        test_list.append([self.test2,0,2])
+        
+        self.create_sub_area("test", "Test Area", test_list)
     
     def create_keys(self):
-        self.keys_layout = QGridLayout()
+        keys_list=[]
         for row in range(rows):
             for col in range(cols):
                 num = (row * cols) + col
                 exec("self.key{0:d}=QPushButton()".format(num))
                 exec("self.key{0:d}.setCheckable(True)".format(num))
-                exec("self.keys_layout.addWidget(self.key{0:d},{1:d},{2:d})".format(num,row,col))
-        self.keys_widget = QWidget()
-        self.keys_widget.setLayout(self.keys_layout)
-        self.keys_sub = QMdiSubWindow()
-        self.keys_sub.setWidget(self.keys_widget)
-        self.mdi.addSubWindow(self.keys_sub)
-        self.keys_sub.show()
+                exec("keys_list.append([self.key{0:d},{1:d},{2:d}])".format(num,row,col))
+        self.create_sub_area("keys", "Buttons", keys_list)
     
     def create_faders(self):
-        self.faders_layout = QGridLayout()
+        faders_list=[]
         for fader in range(faders):
             exec("self.fader{0:d}=QLabel()".format(fader))
             exec("self.fader{0:d}.setAlignment(Qt.AlignCenter)".format(fader))
             exec("self.fader{0:d}.setText('0')".format(fader))
-            exec("self.faders_layout.addWidget(self.fader{0:d},0,{0:d})".format(fader))
-        self.faders_widget = QWidget()
-        self.faders_widget.setLayout(self.faders_layout)
-        self.faders_sub = QMdiSubWindow()
-        self.faders_sub.setWidget(self.faders_widget)
-        self.mdi.addSubWindow(self.faders_sub)
-        self.faders_sub.show()
+            exec("faders_list.append([self.fader{0:d},0,{0:d}])".format(fader))
+        self.create_sub_area("faders", "Faders", faders_list, width=30)
         
     def create_encoders(self):
-        self.encoders_layout = QGridLayout()
+        encoder_list=[]
         for encoder in range(encoders):
             exec("self.encoder{0:d}=QLabel()".format(encoder))
             exec("self.encoder{0:d}.setAlignment(Qt.AlignCenter)".format(encoder))
             exec("self.encoder{0:d}.setText('0')".format(encoder))
-            exec("self.encoders_layout.addWidget(self.encoder{0:d},0,{0:d})".format(encoder))
-        self.encoders_widget = QWidget()
-        self.encoders_widget.setLayout(self.encoders_layout)
-        self.encoders_sub = QMdiSubWindow()
-        self.encoders_sub.setWidget(self.encoders_widget)
-        self.mdi.addSubWindow(self.encoders_sub)
-        self.encoders_sub.show()
+            exec("encoder_list.append([self.encoder{0:d},0,{0:d}])".format(encoder))
+        self.create_sub_area("encoders", "Encoders", encoder_list, width=30)
     
     def sort(self):
         self.mdi.tileSubWindows()
