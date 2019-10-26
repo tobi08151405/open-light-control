@@ -8,6 +8,7 @@ class SerialThread(QThread):
     keystroke = pyqtSignal(str, bool)
     fadermove = pyqtSignal(str, int)
     encodermove = pyqtSignal(str, int)
+    send_error = pyqtSignal(str)
     
     def __init__(self):
         QThread.__init__(self)
@@ -16,7 +17,7 @@ class SerialThread(QThread):
                 self.ser = serial.Serial("/dev/faderkeys", 115200)
                 break
             except serial.serialutil.SerialException:
-                pass
+                self.send_error("SerialThread: Serial exception")
         self.ser.reset_input_buffer()
     
     def run(self):
@@ -32,4 +33,4 @@ class SerialThread(QThread):
                 else:
                     self.keystroke.emit(serial_get[2:-6], bool(int(serial_get[-6])))
             except:
-                pass
+                self.send_error("SerialThread: parsing failed")

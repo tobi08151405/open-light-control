@@ -9,6 +9,7 @@ from GlobalVar import universe_num, uni_map
 
 class DmxThread(QThread):
     master_val = 1
+    send_error = pyqtSignal(str)
     
     def __init__(self):
         QThread.__init__(self)
@@ -44,7 +45,10 @@ class DmxThread(QThread):
         packet+=struct.pack("<h", uni_map[uni])+struct.pack(">h", 512)
         for chan in self.uni_list[uni]:
             packet+=struct.pack("B", int(chan*self.master_val))
-        self.sock.sendto(packet, ('255.255.255.255', 6454))
+        try:
+            self.sock.sendto(packet, ('255.255.255.255', 6454))
+        except OSError:
+            self.send_error.emit("DmxThread: Network not reachable")
     
     @pyqtSlot()
     def add_universe(self):

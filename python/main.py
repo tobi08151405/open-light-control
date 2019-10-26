@@ -35,11 +35,13 @@ class MainWindow(QMainWindow):
             serial_thread.keystroke.connect(self.map_keys)
             serial_thread.fadermove.connect(self.map_faders)
             serial_thread.encodermove.connect(self.map_encoders)
+            serial_thread.send_error.connect(self.update_error_log)
             serial_thread.start()
         
         abstract_thread = AbstractThread()
         self.lampset.connect(abstract_thread.set_lamp)
         self.master_change.connect(abstract_thread.dmx_thread.set_master)
+        abstract_thread.send_error.connect(self.update_error_log)
         abstract_thread.start()
         
         sortact = QAction('Sort', self)
@@ -55,13 +57,14 @@ class MainWindow(QMainWindow):
         
         self.mdi = QMdiArea()
         
-        #self.create_encoders()
-        #self.create_faders()
-        #self.create_keys()
+        self.create_encoders()
+        self.create_faders()
+        self.create_keys()
         self.create_gezeit()
         self.create_master_fader()
-        #self.create_color()
-        #self.create_test()
+        self.create_error_log()
+        self.create_color()
+        self.create_test()
         
         self.setCentralWidget(self.mdi)
         
@@ -100,21 +103,37 @@ class MainWindow(QMainWindow):
         self.gez_widget.setLayout(self.gez_layout)
         self.gez_sub = QMdiSubWindow()
         self.gez_sub.setWidget(self.gez_widget)
+        self.gez_sub.setWindowTitle("GeHzeiten")
         self.mdi.addSubWindow(self.gez_sub)
         self.gez_sub.show()
+    
+    def create_error_log(self):
+        self.error_text = QTextEdit()
+        self.error_text.setReadOnly(1)
+        self.error_sub = QMdiSubWindow()
+        self.error_sub.setWidget(self.error_text)
+        self.error_sub.setWindowTitle("Error Log")
+        self.mdi.addSubWindow(self.error_sub)
+        self.error_sub.show()
     
     def create_master_fader(self):
         self.master_sli_layout = QGridLayout()
         self.mslider=QSlider()
         self.mslider.setMinimum(0)
         self.mslider.setMaximum(100)
+        self.mslider_max_button=QPushButton("Max")
+        self.mslider_min_button=QPushButton("Min")
         self.mslider.valueChanged.connect(self.master_sli_fader)
-        self.master_sli_layout.addWidget(QLabel("Master"))
-        self.master_sli_layout.addWidget(self.mslider)
+        self.mslider_max_button.clicked.connect(self.set_master_max)
+        self.mslider_min_button.clicked.connect(self.set_master_min)
+        self.master_sli_layout.addWidget(self.mslider, 0, 0, 2, 2)
+        self.master_sli_layout.addWidget(self.mslider_max_button, 0, 3)
+        self.master_sli_layout.addWidget(self.mslider_min_button, 1, 3)
         self.master_sli_widget = QWidget()
         self.master_sli_widget.setLayout(self.master_sli_layout)
         self.master_sli_sub = QMdiSubWindow()
         self.master_sli_sub.setWidget(self.master_sli_widget)
+        self.master_sli_sub.setWindowTitle("Master")
         self.mdi.addSubWindow(self.master_sli_sub)
         self.master_sli_sub.show()
     
@@ -211,6 +230,16 @@ class MainWindow(QMainWindow):
         
     def test_artnet3(self):
         self.lampset.emit(100, 'Dimmer', 0)
+    
+    def set_master_max(self):
+        self.mslider.setValue(self.mslider.maximum())
+    
+    def set_master_min(self):
+        self.mslider.setValue(self.mslider.minimum())
+    
+    @pyqtSlot(str)
+    def update_error_log(self, er):
+        self.error_text.append(er)# + "\n")
     
     @pyqtSlot(int)
     def master_sli_fader(self, i):
