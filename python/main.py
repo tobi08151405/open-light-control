@@ -69,7 +69,8 @@ class MainWindow(QMainWindow):
         #self.create_faders()
         #self.create_keys()
         #self.create_gezeit()
-        self.create_best()
+        #self.create_best()
+        self.create_awards()
         self.create_master_fader()
         self.create_error_log()
         #self.create_color()
@@ -112,6 +113,8 @@ class MainWindow(QMainWindow):
         self.chase_stop.clicked.connect(lambda: self.chase_timer.stop())
         chase_list.append([self.chase_stop, 1, 1])
         
+        self.create_fader("led_ma", "LED Master", chase_list, 0, 2)
+        
         self.create_sub_area("chase_test", "LED Chase", chase_list, width=70)
     
     def create_gezeit(self):
@@ -120,7 +123,7 @@ class MainWindow(QMainWindow):
         self.pub_slid = QSlider()
         self.pub_slid.setMinimum(0)
         self.pub_slid.setMaximum(100)
-        self.pub_slid.valueChanged.connect(self.pub_slid_fader)
+        self.pub_slid.valueChanged.connect(self.gez_pub_slid_fader)
         gez_list.append([QLabel("Pub"),0,0])
         gez_list.append([self.pub_slid,1,0])
         
@@ -194,7 +197,7 @@ class MainWindow(QMainWindow):
         self.test2=QSlider()
         self.test2.setMinimum(0)
         self.test2.setMaximum(100)
-        self.test2.valueChanged.connect(self.test_slider)
+        self.test2.valueChanged.connect(self.led_ma_slid_fader)
         test_list.append([self.test0,0,0])
         test_list.append([self.test1,0,1])
         test_list.append([self.test2,0,2])
@@ -236,73 +239,103 @@ class MainWindow(QMainWindow):
         self.create_fader("lied", "Lied", best_list, 0, 1)
         self.create_fader("tanz", "Tanz", best_list, 0, 2)
         self.create_fader("andi", "Andi", best_list, 0, 3)
-        self.create_fader("rap", "Rap", best_list, 0, 4)
+        self.create_fader("rap", "Rap (Chaser)", best_list, 0, 4)
         self.create_fader("elli", "Elli", best_list, 0, 5)
         self.create_fader("mod", "Moderation", best_list, 0, 6)
         self.create_fader("pub", "Pub", best_list, 0, 7)
         
-        self.create_sub_area("best", "Best of", best_list, width=80)
+        self.create_sub_area("best", "Best of", best_list, width=85)
     
+    def create_awards(self):
+        award_list = []
+        
+        self.create_fader("grund", "Grund", award_list, 0, 0)
+        self.create_fader("spots", "Spots", award_list, 0, 1)
+        self.create_fader("pub", "Pub", award_list, 0, 2)
+        
+        self.create_sub_area("awards", "Awards", award_list, width=70)
+        
+    @pyqtSlot(int)
+    def grund_slid_fader(self, i):
+        self.lampset.emit(21, "Intensity", i)
+        self.lampset.emit(17, "Intensity", i)
+        self.lampset.emit(26, "Intensity", i)
+        self.lampset.emit(29, "Intensity", i)
+    
+    @pyqtSlot(int)
+    def spots_slid_fader(self, i):
+        self.lampset.emit(25, "Intensity", i)
+        self.lampset.emit(30, "Intensity", i)
+        self.lampset.emit(11, "Intensity", i*0.4)
+        
+    @pyqtSlot(int)
     def christ_slid_fader(self, i):
-        self.lampset(30, "Intensity", i)
-        self.lampset(45, "Intensity", i*0.5)
-        self.lampset(46, "Intensity", i*0.5)
-        
+        self.lampset.emit(30, "Intensity", i)
+        self.lampset.emit(45, "Intensity", i*0.5)
+        self.lampset.emit(46, "Intensity", i*0.5)
+    
+    @pyqtSlot(int)
     def lied_slid_fader(self, i):
-        self.lampset(25, "Intensity", i)
-        self.lampset(30, "Intensity", i)
+        self.lampset.emit(25, "Intensity", i)
+        self.lampset.emit(30, "Intensity", i)
         for led in range(110,116):
-            self.lampset(led, "Dimmer", i*0.3)
-            self.lampset(led, "Red", 255)
-            self.lampset(led, "Green", 255)
-            self.lampset(led, "Blue", 0)
+            self.lampset.emit(led, "Dimmer", i*0.3)
+            self.lampset.emit(led, "Red", 255)
+            self.lampset.emit(led, "Green", 255)
+            self.lampset.emit(led, "Blue", 0)
     
+    @pyqtSlot(int)
     def tanz_slid_fader(self, i):
-        self.lampset(20, "Intensity", i)
-        self.lampset(17, "Intensity", i)
-        self.lampset(26, "Intensity", i)
-        self.lampset(29, "Intensity", i)
+        self.lampset.emit(20, "Intensity", i)
+        self.lampset.emit(17, "Intensity", i)
+        self.lampset.emit(26, "Intensity", i)
+        self.lampset.emit(29, "Intensity", i)
         for led in range(110,116):
-            self.lampset(led, "Dimmer", i*0.6)
-            self.lampset(led, "Red", 255)
-            self.lampset(led, "Green", 0)
-            self.lampset(led, "Blue", 255)
+            self.lampset.emit(led, "Dimmer", i*0.6)
+            self.lampset.emit(led, "Red", 255)
+            self.lampset.emit(led, "Green", 0)
+            self.lampset.emit(led, "Blue", 255)
     
+    @pyqtSlot(int)
     def andi_slid_fader(self, i):
-        self.lampset(20, "Intensity", i*0.45)
-        self.lampset(17, "Intensity", i*0.45)
-        
+        self.lampset.emit(20, "Intensity", i*0.45)
+        self.lampset.emit(17, "Intensity", i*0.45)
+    
+    @pyqtSlot(int)
     def rap_slid_fader(self, i):
         for led in range(110,116):
-            self.lampset(led, "Dimmer", i)
-            self.lampset(led, "Red", 255)
-            self.lampset(led, "Green", 255)
-            self.lampset(led, "Blue", 255)
+            self.lampset.emit(led, "Dimmer", i)
+            self.lampset.emit(led, "Red", 255)
+            self.lampset.emit(led, "Green", 255)
+            self.lampset.emit(led, "Blue", 255)
     
+    @pyqtSlot(int)
     def elli_slid_fader(self, i):
-        self.lampset(17, "Intensity", i*0.8)
-        self.lampset(30, "Intensity", i*0.6)
+        self.lampset.emit(17, "Intensity", i*0.8)
+        self.lampset.emit(30, "Intensity", i*0.6)
         for led in range(110,116):
-            self.lampset(led, "Dimmer", i*0.25)
-            self.lampset(led, "Red", 255)
-            self.lampset(led, "Green", 0)
-            self.lampset(led, "Blue", 0)
-            
+            self.lampset.emit(led, "Dimmer", i*0.25)
+            self.lampset.emit(led, "Red", 255)
+            self.lampset.emit(led, "Green", 0)
+            self.lampset.emit(led, "Blue", 0)
+    
+    @pyqtSlot(int)
     def mod_slid_fader(self, i):
-        self.lampset(21, "Intensity", i)
-        self.lampset(17, "Intensity", i)
-        self.lampset(26, "Intensity", i*0.6)
-        self.lampset(29, "Intensity", i*0.6)
+        self.lampset.emit(21, "Intensity", i)
+        self.lampset.emit(17, "Intensity", i)
+        self.lampset.emit(26, "Intensity", i*0.6)
+        self.lampset.emit(29, "Intensity", i*0.6)
         for led in range(110,116):
-            self.lampset(led, "Dimmer", i*0.3)
-            self.lampset(led, "Red", 255)
-            self.lampset(led, "Green", 255)
-            self.lampset(led, "Blue", 0)
-            
+            self.lampset.emit(led, "Dimmer", i*0.3)
+            self.lampset.emit(led, "Red", 255)
+            self.lampset.emit(led, "Green", 255)
+            self.lampset.emit(led, "Blue", 0)
+    
+    @pyqtSlot(int)
     def pub_slid_fader(self, i):
-        self.lampset(10, "Intensity", i)
-        self.lampset(19, "Intensity", i)
-        self.lampset(7, "Intensity", i)
+        self.lampset.emit(10, "Intensity", i)
+        self.lampset.emit(19, "Intensity", i)
+        self.lampset.emit(7, "Intensity", i)
     
     def sort(self):
         self.mdi.tileSubWindows()
@@ -315,7 +348,7 @@ class MainWindow(QMainWindow):
         self.add_fac = float(self.chase_abs_edit.text())
         
     def chase_send(self):
-        for i in range(110,116):
+        for i in [110, 111, 113, 115, 114, 112]:
             color_tup = colorsys.hsv_to_rgb(abs(math.sin(self.freq*time.time()+(self.add_fac*(i-110)))),1,1)
             self.lampset.emit(i,"Red",color_tup[0]*255)
             self.lampset.emit(i,"Blue",color_tup[1]*255)
@@ -366,7 +399,7 @@ class MainWindow(QMainWindow):
         self.lampset.emit(36, 'Intensity', i)
         
     @pyqtSlot(int)
-    def pub_slid_fader(self, i):
+    def gez_pub_slid_fader(self, i):
         self.lampset.emit(7, 'Intensity', i)
         self.lampset.emit(17, 'Intensity', i)
         self.lampset.emit(21, 'Intensity', i)
@@ -374,7 +407,7 @@ class MainWindow(QMainWindow):
         
     
     @pyqtSlot(int)
-    def test_slider(self, sli):
+    def led_ma_slid_fader(self, sli):
         for i in range(110,116):
             self.lampset.emit(i, 'Dimmer', sli)
             
