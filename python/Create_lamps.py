@@ -19,8 +19,8 @@ def create():
     nr_to_addr[100] = [0, 99]
     
     for num in range(led_num):
-        nr_to_typ[led_start+num+1] = led_name
-        nr_to_addr[led_start+num+1] = [0, led_start+num*led_span]
+        nr_to_typ[led_start+num] = led_name
+        nr_to_addr[led_start+num] = [0, led_start+num*led_span-1]
     
     #with open("typ_to_addr.json") as file1:
         #for k, v in json.load(file1).items():
