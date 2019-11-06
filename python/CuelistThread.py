@@ -2,24 +2,47 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 
-from GlobVar import *
+from GlobalVar import *
 
 class CuelistThread(QThread):
+    lampset = pyqtSignal(int, str, object)
+    send_error = pyqtSignal(str)
+    
     cur_pos = 0
+    used_lamps = [1,243567]
     cuelist = {
-        0: [[35, 'Intensity', 100], [40, 'Intensity', 100]],
-        1: []
+        0: ["Test Cue 0", [1, 'Dimmer', 100], [2, 'Dimmer', 50]],
+        1: ["Cue 1", [2, 'Dimmer', 100], [1, 'Dimmer', 50]],
         }
     
     def __init__(self):
         QThread.__init__(self)
+        print("Started")
         
     def run(self):
+        for lamp in self.used_lamps:
+            try:
+                nr_in_use[lamp] += 1
+            except KeyError:
+                self.send_error.emit("CuelistThread: failed to find lamp nr {0:d}".format(lamp))
+        
         loop = QEventLoop()
         loop.exec_()
+        
+    def __del__(self):
+        print("Exiting")
     
-    @pyqtSlot()
-    def _go(self):
-        pass
+    def _go(self, cue=-1):
+        if cue == -1:
+            cue = self.cur_pos + 1
+        for lamp in self.cuelist[cue][1:]:
+            self.lampset.emit(lamp[0], lamp[1], lamp[2])
     
-    #def 
+    def _release(self):
+        for lamp_num in self.used_lamps:
+            try:
+                nr_in_use[lamp_num] -= 1
+                if nr_in_use[lamp_num] == 1:
+                    self.lampset.emit(lamp_num, "Dimmer", 0)
+            except KeyError:
+                self.send_error.emit("CuelistThread: failed to find lamp nr {0:d}".format(lamp_num))

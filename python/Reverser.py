@@ -105,6 +105,8 @@ def mode_to_addr(json_dic, mode):
             elif 'capabilities' in channel:
                 channel_mode = "split"
                 split_list = []
+            if channel_name == "Intensity":
+                channel_name = "Dimmer"
             typ_to_addr[typ_mode_name][channel_name] = {"Channel": channel_num, "Mode": channel_mode}
             if channel_mode == "split":
                 typ_to_addr[typ_mode_name][channel_name]['Split'] = {split_list}

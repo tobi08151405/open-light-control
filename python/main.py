@@ -13,6 +13,7 @@ import pdb
 from GlobalVar import *
 from SerialThread import SerialThread
 from AbstractThread import AbstractThread
+from CuelistThread import CuelistThread
 import Create_lamps
 import Reverser
 
@@ -56,6 +57,13 @@ class MainWindow(QMainWindow):
         
         quitact = QAction('Quit', self)
         quitact.triggered.connect(self.close)
+        
+        self.cuelist_thread = CuelistThread()
+        self.cuelist_thread.lampset.connect(self.forward_cuelist_lampset)
+        self.cuelist_thread.send_error.connect(self.update_error_log)
+        #self.cuelist_thread._go()
+        #self.cuelist_thread.start()
+        #self.cuelist_thread.quit()
         
         self.menubar = self.menuBar()
         self.fileMenu = self.menubar.addMenu('File')
@@ -257,27 +265,27 @@ class MainWindow(QMainWindow):
         
     @pyqtSlot(int)
     def grund_slid_fader(self, i):
-        self.lampset.emit(21, "Intensity", i)
-        self.lampset.emit(17, "Intensity", i)
-        self.lampset.emit(26, "Intensity", i)
-        self.lampset.emit(29, "Intensity", i)
+        self.lampset.emit(21, "Dimmer", i)
+        self.lampset.emit(17, "Dimmer", i)
+        self.lampset.emit(26, "Dimmer", i)
+        self.lampset.emit(29, "Dimmer", i)
     
     @pyqtSlot(int)
     def spots_slid_fader(self, i):
-        self.lampset.emit(25, "Intensity", i)
-        self.lampset.emit(30, "Intensity", i)
-        self.lampset.emit(11, "Intensity", i*0.4)
+        self.lampset.emit(25, "Dimmer", i)
+        self.lampset.emit(30, "Dimmer", i)
+        self.lampset.emit(11, "Dimmer", i*0.4)
         
     @pyqtSlot(int)
     def christ_slid_fader(self, i):
-        self.lampset.emit(30, "Intensity", i)
-        self.lampset.emit(45, "Intensity", i*0.5)
-        self.lampset.emit(46, "Intensity", i*0.5)
+        self.lampset.emit(30, "Dimmer", i)
+        self.lampset.emit(45, "Dimmer", i*0.5)
+        self.lampset.emit(46, "Dimmer", i*0.5)
     
     @pyqtSlot(int)
     def lied_slid_fader(self, i):
-        self.lampset.emit(25, "Intensity", i)
-        self.lampset.emit(30, "Intensity", i)
+        self.lampset.emit(25, "Dimmer", i)
+        self.lampset.emit(30, "Dimmer", i)
         for led in range(110,116):
             self.lampset.emit(led, "Dimmer", i*0.3)
             self.lampset.emit(led, "Red", 255)
@@ -286,10 +294,10 @@ class MainWindow(QMainWindow):
     
     @pyqtSlot(int)
     def tanz_slid_fader(self, i):
-        self.lampset.emit(20, "Intensity", i)
-        self.lampset.emit(17, "Intensity", i)
-        self.lampset.emit(26, "Intensity", i)
-        self.lampset.emit(29, "Intensity", i)
+        self.lampset.emit(20, "Dimmer", i)
+        self.lampset.emit(17, "Dimmer", i)
+        self.lampset.emit(26, "Dimmer", i)
+        self.lampset.emit(29, "Dimmer", i)
         for led in range(110,116):
             self.lampset.emit(led, "Dimmer", i*0.6)
             self.lampset.emit(led, "Red", 255)
@@ -298,8 +306,8 @@ class MainWindow(QMainWindow):
     
     @pyqtSlot(int)
     def andi_slid_fader(self, i):
-        self.lampset.emit(20, "Intensity", i*0.45)
-        self.lampset.emit(17, "Intensity", i*0.45)
+        self.lampset.emit(20, "Dimmer", i*0.45)
+        self.lampset.emit(17, "Dimmer", i*0.45)
     
     @pyqtSlot(int)
     def rap_slid_fader(self, i):
@@ -311,8 +319,8 @@ class MainWindow(QMainWindow):
     
     @pyqtSlot(int)
     def elli_slid_fader(self, i):
-        self.lampset.emit(17, "Intensity", i*0.8)
-        self.lampset.emit(30, "Intensity", i*0.6)
+        self.lampset.emit(17, "Dimmer", i*0.8)
+        self.lampset.emit(30, "Dimmer", i*0.6)
         for led in range(110,116):
             self.lampset.emit(led, "Dimmer", i*0.25)
             self.lampset.emit(led, "Red", 255)
@@ -321,10 +329,10 @@ class MainWindow(QMainWindow):
     
     @pyqtSlot(int)
     def mod_slid_fader(self, i):
-        self.lampset.emit(21, "Intensity", i)
-        self.lampset.emit(17, "Intensity", i)
-        self.lampset.emit(26, "Intensity", i*0.6)
-        self.lampset.emit(29, "Intensity", i*0.6)
+        self.lampset.emit(21, "Dimmer", i)
+        self.lampset.emit(17, "Dimmer", i)
+        self.lampset.emit(26, "Dimmer", i*0.6)
+        self.lampset.emit(29, "Dimmer", i*0.6)
         for led in range(110,116):
             self.lampset.emit(led, "Dimmer", i*0.3)
             self.lampset.emit(led, "Red", 255)
@@ -333,9 +341,9 @@ class MainWindow(QMainWindow):
     
     @pyqtSlot(int)
     def pub_slid_fader(self, i):
-        self.lampset.emit(10, "Intensity", i)
-        self.lampset.emit(19, "Intensity", i)
-        self.lampset.emit(7, "Intensity", i)
+        self.lampset.emit(10, "Dimmer", i)
+        self.lampset.emit(19, "Dimmer", i)
+        self.lampset.emit(7, "Dimmer", i)
     
     def sort(self):
         self.mdi.tileSubWindows()
@@ -359,7 +367,7 @@ class MainWindow(QMainWindow):
         self.lampset.emit(110, "Red", 255)
     
     def test_artnet1(self):
-        self.lampset.emit(7, "Intensity", 100)
+        self.lampset.emit(7, "Dimmer", 100)
     
     def test_artnet2(self):
         self.lampset.emit(100, "Dimmer", 100)
@@ -385,25 +393,25 @@ class MainWindow(QMainWindow):
         
     @pyqtSlot(int)
     def schlaf_slid_fader(self, i):
-        self.lampset.emit(35, 'Intensity', i)
-        self.lampset.emit(40, 'Intensity', i)
+        self.lampset.emit(35, 'Dimmer', i)
+        self.lampset.emit(40, 'Dimmer', i)
     
     @pyqtSlot(int)
     def berg1_fader(self, i):
-        self.lampset.emit(32, 'Intensity', i)
+        self.lampset.emit(32, 'Dimmer', i)
         
     @pyqtSlot(int)
     def bergg_fader(self, i):
-        self.lampset.emit(14, 'Intensity', i)
-        self.lampset.emit(19, 'Intensity', i)
-        self.lampset.emit(36, 'Intensity', i)
+        self.lampset.emit(14, 'Dimmer', i)
+        self.lampset.emit(19, 'Dimmer', i)
+        self.lampset.emit(36, 'Dimmer', i)
         
     @pyqtSlot(int)
     def gez_pub_slid_fader(self, i):
-        self.lampset.emit(7, 'Intensity', i)
-        self.lampset.emit(17, 'Intensity', i)
-        self.lampset.emit(21, 'Intensity', i)
-        self.lampset.emit(26, 'Intensity', i)
+        self.lampset.emit(7, 'Dimmer', i)
+        self.lampset.emit(17, 'Dimmer', i)
+        self.lampset.emit(21, 'Dimmer', i)
+        self.lampset.emit(26, 'Dimmer', i)
         
     
     @pyqtSlot(int)
@@ -444,10 +452,15 @@ class MainWindow(QMainWindow):
             exec("self.encoder{0:s}.setText('{1:d}')".format(encoder, cur-value))
         except NameError:
             print("encoder {0:s} not found!".format(encoder))
+            
+    @pyqtSlot(int, str, object)
+    def forward_cuelist_lampset(self, num, action, value):
+        self.lampset.emit(num, action, value)
 
-app = QApplication(sys.argv)
-
-window = MainWindow()
-window.show()
-#print(nr_to_addr,nr_to_typ,typ_to_func,typ_to_addr)
-sys.exit(app.exec_())
+if __name__ == '__main__':
+    app = QApplication(sys.argv)
+    
+    window = MainWindow()
+    window.show()
+    #print(nr_to_addr,nr_to_typ,typ_to_func,typ_to_addr)
+    sys.exit(app.exec_())
