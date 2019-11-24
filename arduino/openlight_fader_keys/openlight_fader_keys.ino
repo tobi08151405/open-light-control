@@ -5,7 +5,7 @@ byte cols[] = {39,41,43};
 const int colCount = sizeof(cols)/sizeof(cols[0]);
 
 byte keys[colCount][rowCount];
-const byte last_keys[colCount][rowCount];
+byte last_keys[colCount][rowCount];
 
 byte faders[] = {A0, A1, A2};
 const byte fadCount = sizeof(faders)/sizeof(faders[0]);
@@ -78,7 +78,7 @@ void readEncoders() {
 }
 
 void loop() {
-  readFader();
+  //readFader();
   readMatrix();
   //readEncoders();
 }

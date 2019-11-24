@@ -37,9 +37,9 @@ ask_print(None)
 ask_print("\nPlease connect the arduino resposible for controling the faders and keys.\n")
 sleep(2)
 first_line = get_all()+'faderkeys"\n'
-ask_print("\nPlease connect the secound arduino.\n")
-sleep(2)
-secound_line = get_all()+'leds"\n'
+#ask_print("\nPlease connect the secound arduino.\n")
+#sleep(2)
+#secound_line = get_all()+'leds"\n'
 
 try:
     output = open("/etc/udev/rules.d/99-usb-serial-openlight.rules", 'w')
@@ -49,7 +49,7 @@ except PermissionError:
     sudo = False
 
 output.write(first_line)
-output.write(secound_line)
+#output.write(secound_line)
 output.close()
 
 if sudo:
