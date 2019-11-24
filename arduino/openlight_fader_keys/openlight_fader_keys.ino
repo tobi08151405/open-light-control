@@ -5,22 +5,25 @@ byte cols[] = {39,41,43};
 const int colCount = sizeof(cols)/sizeof(cols[0]);
 
 byte keys[colCount][rowCount];
-byte last_keys[colCount][rowCount];
+const byte last_keys[colCount][rowCount];
 
 byte faders[] = {A0, A1, A2};
-byte fadCount = sizeof(faders)/sizeof(faders[0]);
+const byte fadCount = sizeof(faders)/sizeof(faders[0]);
 
 byte faderState[fadCount];
 byte last_faderState[fadCount];
 
+int encCount;
+String message;
+
 void setup() {
   Serial.begin(115200);
-  Serial1.begin(115200);
-  while (!Serial1) {
-    ;
-  }
-  message=Serial1.readStringUntil('\n');
-  int encCount = message;
+//  Serial1.begin(115200);
+//  while (!Serial1) {
+//    ;
+//  }
+//  message=Serial1.readStringUntil('\n');
+//  encCount = message.toInt();
   for(int x=0; x<rowCount; x++) {
     pinMode(rows[x], INPUT);
   }
@@ -65,11 +68,11 @@ void readMatrix() {
 }
 
 void readEncoders() {
-  Serial1.println("get")
+  Serial1.println("get");
   for (int encIndex=0; encIndex<encCount; encIndex++) {
     message = Serial.readStringUntil('\n');
     if (message != "0") {
-      Serial.print("E"); Serial.print(encIndex); Serial.print(":"); Serial.prinln(message);
+      Serial.print("E"); Serial.print(encIndex); Serial.print(":"); Serial.println(message);
     }
   }
 }
@@ -77,5 +80,5 @@ void readEncoders() {
 void loop() {
   readFader();
   readMatrix();
-  readEncoders();
+  //readEncoders();
 }
