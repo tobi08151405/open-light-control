@@ -1,7 +1,7 @@
-byte rows[] = {4,5};
+byte rows[] = {45,47,49,51};
 const int rowCount = sizeof(rows)/sizeof(rows[0]);
 
-byte cols[] = {2,3};
+byte cols[] = {39,41,43};
 const int colCount = sizeof(cols)/sizeof(cols[0]);
 
 byte keys[colCount][rowCount];
