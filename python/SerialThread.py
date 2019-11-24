@@ -33,4 +33,4 @@ class SerialThread(QThread):
                 else:
                     self.keystroke.emit(serial_get[2:-6], bool(int(serial_get[-6])))
             except:
-                self.send_error("SerialThread: parsing failed")
+                self.send_error.emit("SerialThread: parsing failed")
