@@ -36,7 +36,7 @@ class MainWindow(QMainWindow):
     
     def __init__(self, *args, **kwargs):
         super(MainWindow, self).__init__(*args, **kwargs)
-        self.setWindowTitle("Serial Test")
+        self.setWindowTitle("Open-light-control")
         
         if serial_enable:
             serial_thread = SerialThread()
@@ -99,7 +99,8 @@ class MainWindow(QMainWindow):
             exec("self.col_count=self.{0:s}_layout.columnCount()".format(name))
             for col in range(self.col_count):
                 exec("self.{0:s}_layout.setColumnMinimumWidth(col,{1:d})".format(name,width))
-        exec("self.{0:s}_widget = QWidget()\nself.{0:s}_widget.setLayout(self.{0:s}_layout)\nself.{0:s}_scroll=QScrollArea()\nself.{0:s}_scroll.setWidget(self.{0:s}_widget)\nself.{0:s}_sub = QMdiSubWindow()\nself.{0:s}_sub.setWidget(self.{0:s}_scroll)\nself.{0:s}_sub.setWindowTitle('{1:s}')\nself.mdi.addSubWindow(self.{0:s}_sub)\nself.{0:s}_sub.show()".format(name, title))
+        exec("self.{0:s}_widget = QWidget()\nself.{0:s}_widget.setLayout(self.{0:s}_layout)\nself.{0:s}_sub = QMdiSubWindow()\nself.{0:s}_sub.setWidget(self.{0:s}_widget)\nself.{0:s}_sub.setWindowTitle('{1:s}')\nself.mdi.addSubWindow(self.{0:s}_sub)\nself.{0:s}_sub.show()".format(name, title))
+        #self.{0:s}_scroll=QScrollArea()\nself.{0:s}_scroll.setWidget(self.{0:s}_widget)\n
     
     def create_fader(self, name, label, liste, start, start1):
         exec("self.{0:s}_slid = QSlider()\nself.{0:s}_slid.setMinimum(0)\nself.{0:s}_slid.setMaximum(100)\nself.{0:s}_slid.valueChanged.connect(self.{0:s}_slid_fader)\nliste.append([QLabel('{1:s}'),start,start1])\nliste.append([self.{0:s}_slid,start+1,start1])".format(name, label))
@@ -220,7 +221,7 @@ class MainWindow(QMainWindow):
                 exec("self.key{0:d}=QPushButton()".format(num))
                 exec("self.key{0:d}.setCheckable(True)".format(num))
                 exec("keys_list.append([self.key{0:d},{1:d},{2:d}])".format(num,row,col))
-        self.create_sub_area("keys", "Buttons", keys_list)
+        self.create_sub_area("keys", "Buttons", keys_list, width=85)
     
     def create_faders(self):
         faders_list=[]
@@ -229,7 +230,7 @@ class MainWindow(QMainWindow):
             exec("self.fader{0:d}.setAlignment(Qt.AlignCenter)".format(fader))
             exec("self.fader{0:d}.setText('0')".format(fader))
             exec("faders_list.append([self.fader{0:d},0,{0:d}])".format(fader))
-        self.create_sub_area("faders", "Faders", faders_list, width=30)
+        self.create_sub_area("faders", "Faders", faders_list, width=50)
         
     def create_encoders(self):
         encoder_list=[]
