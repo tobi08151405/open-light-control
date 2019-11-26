@@ -10,8 +10,8 @@ byte last_keys[colCount][rowCount];
 byte faders[] = {A0, A1, A2};
 const byte fadCount = sizeof(faders)/sizeof(faders[0]);
 
-byte faderState[fadCount];
-byte last_faderState[fadCount];
+int faderState[fadCount];
+int last_faderState[fadCount];
 
 int encCount;
 String message;
@@ -34,13 +34,17 @@ void setup() {
 
 void readFader() {
   for (int fadIndex=0; fadIndex < fadCount; fadIndex++) {
-    byte curFad = faders[fadIndex];
+    int curFad = faders[fadIndex];
     faderState[fadIndex] = analogRead(curFad);
+    if (faderState[fadIndex] < 2) {
+      faderState[fadIndex] = 0;
+    }
     if (faderState[fadIndex] != last_faderState[fadIndex]) {
       Serial.print("A"); Serial.print(fadIndex); Serial.print(":"); Serial.println(faderState[fadIndex]);
+      //Serial.print(last_faderState[fadIndex]); Serial.print(":"); Serial.print(fadIndex); Serial.print(":"); Serial.println(faderState[fadIndex]);
+      last_faderState[fadIndex] = faderState[fadIndex];
     }
   }
-  memcpy(last_faderState, faderState, sizeof fadCount);
 }
 
 void readMatrix() {
@@ -78,7 +82,7 @@ void readEncoders() {
 }
 
 void loop() {
-  //readFader();
+  readFader();
   readMatrix();
   //readEncoders();
 }
