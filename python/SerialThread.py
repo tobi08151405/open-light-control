@@ -22,9 +22,10 @@ class SerialThread(QThread):
                 self.send_error("SerialThread: Serial exception")
         self.ser.reset_input_buffer()
         self.serial_send_timer = QTimer(self)
+        self.serial_send_timer.timeout.connect(self.send_serial)
+        self.serial_send_timer.start(500)
     
     def run(self):
-        self.serial_send_timer.start(300)
         while 1:
             try:
                 serial_get = str(self.ser.readline())
@@ -41,9 +42,10 @@ class SerialThread(QThread):
     
     @pyqtSlot(int, int)
     def set_fader(self, fader, value):
-        serial_send_buffer += "A{0:d}:{1:d}\n".format(fader,value)
+        self.serial_send_buffer += "A{0:d}:{1:d},".format(fader,value)
     
     def send_serial(self):
         if self.serial_send_buffer != '':
-            self.ser.write(bytearray((serial_send_buffer+";").encode()))
+            self.serial_send_buffer+=";"
+            self.ser.write(bytearray(self.serial_send_buffer.encode()))
             self.serial_send_buffer = ''

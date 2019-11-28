@@ -18,6 +18,9 @@ int last_faderState[fadCount];
 int encCount;
 String message;
 
+char delimiter[] = ",";
+char *ptr;
+
 const int ledPin = 13;
 const int thres = 10;
 
@@ -52,7 +55,7 @@ void readFader() {
     if (faderState[fadIndex] < 4) {
       faderState[fadIndex] = 0;
     }
-    if ((faderState[fadIndex] != last_faderState[fadIndex]) and (((faderState[fadIndex] - thres/4) > last_faderState[fadIndex]) or ((faderState[fadIndex] + thres/4) < last_faderState[fadIndex]))) {
+    if ((faderState[fadIndex] != last_faderState[fadIndex]) and (((faderState[fadIndex] - thres/2) > last_faderState[fadIndex]) or ((faderState[fadIndex] + thres/2) < last_faderState[fadIndex]))) {
       Serial.print("A"); Serial.print(fadIndex); Serial.print(":"); Serial.println(faderState[fadIndex]);
       last_faderState[fadIndex] = faderState[fadIndex];
     }
@@ -77,17 +80,21 @@ void setFader(int num, int val) {
 }
 
 void readSerial() {
-  String input = Serial.readStringUntil(";");
-  char *part;
-  part = strtok(char(input), ",");
-  while (part != NULL) {
-    String part_string;
-    Serial.print("part ");Serial.println(part);
-    if (input != NULL) {
+  String temp = Serial.readStringUntil(";");
+  char string[temp.length()-1];
+  temp.toCharArray(string, temp.length()-1);
+  
+  String part_string;
+  ptr = strtok(string, delimiter);
+  part_string = ptr;
+  
+  if (string != NULL) {
+    while(ptr != NULL) {
       int firstA = part_string.indexOf('A');
       int firstddot = part_string.indexOf(':');
       setFader(part_string.substring(firstA+1, firstddot).toInt(),part_string.substring(firstddot+1).toInt());
-      Serial.print("ergeb ");Serial.print(part_string.substring(firstA+1, firstddot).toInt());Serial.print(":");Serial.println(part_string.substring(firstddot+1).toInt());
+      ptr = strtok(NULL, delimiter);
+      part_string = ptr;
     }
   }
 }
@@ -129,8 +136,8 @@ void readEncoders() {
 }
 
 void loop() {
-  //readFader();
-  //readMatrix();
+  readFader();
+  readMatrix();
   //readEncoders();
   readSerial();
 }
