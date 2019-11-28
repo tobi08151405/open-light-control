@@ -18,9 +18,13 @@ int last_faderState[fadCount];
 int encCount;
 String message;
 
+const int ledPin = 13;
+const int thres = 10;
+
 void setup() {
   Serial.begin(115200);
-  Serial.setTimeout(300);
+  Serial.setTimeout(100);
+  pinMode(ledPin, OUTPUT);
 //  Serial1.begin(115200);
 //  while (!Serial1) {
 //    ;
@@ -33,24 +37,23 @@ void setup() {
   for (int x=0; x<colCount; x++) {
     pinMode(cols[x], INPUT_PULLUP);
   }
-  //for (int x=0; x<fadCount; x++) {
-  //  for (int y=0; y<2; x++) {
-  //    pinMode(fader_motors[x][y], OUTPUT);
-  //    digitalWrite(fader_motors[x][y], LOW);
-  //  }
-  //}
+  for (int x=0; x<fadCount; x++) {
+    for (int y=0; y<2; y++) {
+      pinMode(fader_motors[x][y], OUTPUT);
+      digitalWrite(fader_motors[x][y], LOW);
+    }
+  }
 }
 
 void readFader() {
   for (int fadIndex=0; fadIndex < fadCount; fadIndex++) {
     int curFad = faders[fadIndex];
     faderState[fadIndex] = analogRead(curFad);
-    if (faderState[fadIndex] < 2) {
+    if (faderState[fadIndex] < 4) {
       faderState[fadIndex] = 0;
     }
-    if (faderState[fadIndex] != last_faderState[fadIndex]) {
+    if ((faderState[fadIndex] != last_faderState[fadIndex]) and (((faderState[fadIndex] - thres/4) > last_faderState[fadIndex]) or ((faderState[fadIndex] + thres/4) < last_faderState[fadIndex]))) {
       Serial.print("A"); Serial.print(fadIndex); Serial.print(":"); Serial.println(faderState[fadIndex]);
-      //Serial.print(last_faderState[fadIndex]); Serial.print(":"); Serial.print(fadIndex); Serial.print(":"); Serial.println(faderState[fadIndex]);
       last_faderState[fadIndex] = faderState[fadIndex];
     }
   }
@@ -58,31 +61,34 @@ void readFader() {
 
 void setFader(int num, int val) {
   int curFad = faders[num];
-  int curVal = analogRead(curFad);
-  if (curVal < val) {
-    digitalWrite(fader_motors[num][0], HIGH);
-    while (curVal <= val) {
-      curVal = analogRead(curFad);
+  while (true) {
+    if (analogRead(curFad) > (val + thres/2)) {
+      digitalWrite(fader_motors[num][0], HIGH);
+      digitalWrite(fader_motors[num][1], LOW);
+    } else if (analogRead(curFad) < (val - thres/2)) {
+      digitalWrite(fader_motors[num][0], LOW);
+      digitalWrite(fader_motors[num][1], HIGH);
+    } else {
+      digitalWrite(fader_motors[num][0], LOW);
+      digitalWrite(fader_motors[num][1], LOW);
+      break;
     }
-    digitalWrite(fader_motors[num][0], LOW);
-  }
-  if (curVal > val) {
-    digitalWrite(fader_motors[num][1], HIGH);
-    while (curVal >= val) {
-      curVal = analogRead(curFad);
-    }
-    digitalWrite(fader_motors[num][1], LOW);
   }
 }
 
 void readSerial() {
-  String input = Serial.readStringUntil("\n");
-  if (input != NULL) {
-    int firstA = input.indexOf('A');
-    int firstddot = input.indexOf(':');
-    setFader(input.substring(firstA+1, firstddot).toInt(),input.substring(firstddot+1).toInt());
-    Serial.println(input.substring(firstA+1, firstddot).toInt());
-    Serial.println(input.substring(firstddot+1).toInt());
+  String input = Serial.readStringUntil(";");
+  char *part;
+  part = strtok(char(input), ",");
+  while (part != NULL) {
+    String part_string;
+    Serial.print("part ");Serial.println(part);
+    if (input != NULL) {
+      int firstA = part_string.indexOf('A');
+      int firstddot = part_string.indexOf(':');
+      setFader(part_string.substring(firstA+1, firstddot).toInt(),part_string.substring(firstddot+1).toInt());
+      Serial.print("ergeb ");Serial.print(part_string.substring(firstA+1, firstddot).toInt());Serial.print(":");Serial.println(part_string.substring(firstddot+1).toInt());
+    }
   }
 }
 
@@ -98,9 +104,11 @@ void readMatrix() {
       if (keys[colIndex][rowIndex] != last_keys[colIndex][rowIndex]) {
         if (keys[colIndex][rowIndex] == HIGH) {
           Serial.print((rowIndex * colCount) + colIndex); Serial.println("1");
+          digitalWrite(ledPin, HIGH);
         }
         else {
           Serial.print((rowIndex * colCount) + colIndex); Serial.println("0");
+          digitalWrite(ledPin, LOW);
         }
       }
       pinMode(rowCol, INPUT);
@@ -121,8 +129,8 @@ void readEncoders() {
 }
 
 void loop() {
-  readFader();
-  readMatrix();
+  //readFader();
+  //readMatrix();
   //readEncoders();
-  //readSerial();
+  readSerial();
 }

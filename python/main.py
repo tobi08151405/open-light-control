@@ -11,6 +11,7 @@ import colorsys
 import pdb
 
 from GlobalVar import *
+import GlobalVar
 from SerialThread import SerialThread
 from AbstractThread import AbstractThread
 from CuelistThread import CuelistThread
@@ -30,6 +31,7 @@ def change_uni(from_, to_):
 class MainWindow(QMainWindow):
     lampset = pyqtSignal(int, str, object)
     master_change = pyqtSignal(int)
+    faderset = pyqtSignal(int, int)
     
     freq=1
     add_fac=0.01
@@ -39,12 +41,13 @@ class MainWindow(QMainWindow):
         self.setWindowTitle("Open-light-control")
         
         if serial_enable:
-            serial_thread = SerialThread()
-            serial_thread.keystroke.connect(self.map_keys)
-            serial_thread.fadermove.connect(self.map_faders)
-            serial_thread.encodermove.connect(self.map_encoders)
-            serial_thread.send_error.connect(self.update_error_log)
-            serial_thread.start()
+            self.serial_thread = SerialThread()
+            self.serial_thread.keystroke.connect(self.map_keys)
+            self.serial_thread.fadermove.connect(self.map_faders)
+            self.serial_thread.encodermove.connect(self.map_encoders)
+            self.serial_thread.send_error.connect(self.update_error_log)
+            self.faderset.connect(self.serial_thread.set_fader)
+            self.serial_thread.start()
         
         abstract_thread = AbstractThread()
         self.lampset.connect(abstract_thread.set_lamp)
@@ -76,6 +79,7 @@ class MainWindow(QMainWindow):
         #self.create_encoders()
         self.create_faders()
         self.create_keys()
+        self.create_fader_new()
         #self.create_gezeit()
         #self.create_best()
         #self.create_awards()
@@ -102,8 +106,8 @@ class MainWindow(QMainWindow):
         exec("self.{0:s}_widget = QWidget()\nself.{0:s}_widget.setLayout(self.{0:s}_layout)\nself.{0:s}_sub = QMdiSubWindow()\nself.{0:s}_sub.setWidget(self.{0:s}_widget)\nself.{0:s}_sub.setWindowTitle('{1:s}')\nself.mdi.addSubWindow(self.{0:s}_sub)\nself.{0:s}_sub.show()".format(name, title))
         #self.{0:s}_scroll=QScrollArea()\nself.{0:s}_scroll.setWidget(self.{0:s}_widget)\n
     
-    def create_fader(self, name, label, liste, start, start1):
-        exec("self.{0:s}_slid = QSlider()\nself.{0:s}_slid.setMinimum(0)\nself.{0:s}_slid.setMaximum(100)\nself.{0:s}_slid.valueChanged.connect(self.{0:s}_slid_fader)\nliste.append([QLabel('{1:s}'),start,start1])\nliste.append([self.{0:s}_slid,start+1,start1])".format(name, label))
+    def create_fader(self, name, label, liste, start, start1, fad_max=100):
+        exec("self.{0:s}_slid = QSlider()\nself.{0:s}_slid.setMinimum(0)\nself.{0:s}_slid.setMaximum(fad_max)\nself.{0:s}_slid.valueChanged.connect(self.{0:s}_slid_fader)\nliste.append([QLabel('{1:s}'),start,start1])\nliste.append([self.{0:s}_slid,start+1,start1])".format(name, label))
     
     def create_chase_test(self):
         chase_list=[]
@@ -125,6 +129,18 @@ class MainWindow(QMainWindow):
         self.create_fader("led_ma", "LED Master", chase_list, 0, 2)
         
         self.create_sub_area("chase_test", "LED Chase", chase_list, width=70)
+    
+    def create_fader_new(self):
+        fader_new_list=[]
+        
+        for i in range(faders):
+            self.create_fader("fader_{0:d}_ma".format(i), "Fader {0:d}".format(i), fader_new_list, 0, i, fad_max=1023)
+        
+        self.faders_next=QPushButton("Next")
+        self.faders_next.clicked.connect(lambda: self.faders_next_com())
+        fader_new_list.append([self.faders_next, 1, faders])
+        
+        self.create_sub_area("fader_new", "Fader New", fader_new_list, width=70)
     
     def create_gezeit(self):
         gez_list = []
@@ -263,7 +279,19 @@ class MainWindow(QMainWindow):
         self.create_fader("pub", "Pub", award_list, 0, 2)
         
         self.create_sub_area("awards", "Awards", award_list, width=70)
-        
+    
+    @pyqtSlot(int)
+    def fader_0_ma_slid_fader(self, i):
+        self.lampset.emit(1, "Dimmer", int(100/1023 * i))
+    
+    @pyqtSlot(int)
+    def fader_1_ma_slid_fader(self, i):
+        self.lampset.emit(2, "Dimmer", int(100/1023 * i))
+    
+    @pyqtSlot(int)
+    def fader_2_ma_slid_fader(self, i):
+        self.lampset.emit(3, "Dimmer", int(100/1023 * i))
+    
     @pyqtSlot(int)
     def grund_slid_fader(self, i):
         self.lampset.emit(21, "Dimmer", i)
@@ -383,6 +411,17 @@ class MainWindow(QMainWindow):
     
     def set_master_min(self):
         self.mslider.setValue(self.mslider.minimum())
+    
+    def faders_next_com(self):
+        if GlobalVar.curr_page+1 < len(fader_map):
+            next_page = GlobalVar.curr_page + 1
+        else:
+            next_page = 0
+        for i in range(faders):
+            exec("fader_map[GlobalVar.curr_page][i] = self.fader_{0:d}_ma_slid.value()".format(i))
+            exec("self.fader_{0:d}_ma_slid.setValue(fader_map[next_page][i])".format(i))
+            self.faderset.emit(i, fader_map[next_page][i])
+        GlobalVar.curr_page = next_page
     
     @pyqtSlot(str)
     def update_error_log(self, er):
