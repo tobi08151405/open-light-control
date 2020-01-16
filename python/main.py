@@ -152,8 +152,7 @@ class MainWindow(QMainWindow):
     @pyqtSlot()
     def update_error_log(self):
         self.error_text.setPlainText("\n".join(error_log_global))
-        self.error_text.append("###END###")
-        self.error_text.scrollToAnchor("###END###")
+        self.error_text.verticalScrollBar().setValue(self.error_text.verticalScrollBar().maximum())
     
     ## build / exec func
     def create_error_log(self):
