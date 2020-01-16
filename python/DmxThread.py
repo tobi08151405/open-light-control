@@ -5,11 +5,10 @@ from PyQt5.QtGui import *
 import struct
 import socket
 
-from GlobalVar import universe_num, uni_map
+from GlobalVar import universe_num, uni_map, output_freeze, error_log_global
 
 class DmxThread(QThread):
     master_val = 1
-    send_error = pyqtSignal(str)
     
     def __init__(self):
         QThread.__init__(self)
@@ -26,7 +25,7 @@ class DmxThread(QThread):
         
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
         self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, True)
-        #self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_BINDTODEVICE, b'enp5s0')
+        #self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_BINDTODEVICE, b'eth0')
         self.sock.settimeout(5)
         self.artnet_timer = QTimer(self)
         self.artnet_timer.timeout.connect(self.send_artnet_all)
@@ -41,14 +40,16 @@ class DmxThread(QThread):
             self.send_artnet(uni)
     
     def send_artnet(self, uni):
-        packet = self.artnet_prefix.copy()
-        packet+=struct.pack("<h", uni_map[uni])+struct.pack(">h", 512)
-        for chan in self.uni_list[uni]:
-            packet+=struct.pack("B", int(chan*self.master_val))
-        try:
-            self.sock.sendto(packet, ('255.255.255.255', 6454))
-        except OSError:
-            self.send_error.emit("DmxThread: Network not reachable")
+        if not output_freeze[0]:
+            packet = self.artnet_prefix.copy()
+            packet+=struct.pack("<h", uni_map[uni])+struct.pack(">h", 512)
+            for chan in self.uni_list[uni]:
+                packet+=struct.pack("B", int(chan*self.master_val))
+            try:
+                self.sock.sendto(packet, ('255.255.255.255', 6454))
+            except OSError:
+                print("DmxThread: Network not reachable")
+                error_log_global.append("DmxThread: Network not reachable")
     
     @pyqtSlot()
     def add_universe(self):
@@ -65,4 +66,8 @@ class DmxThread(QThread):
     @pyqtSlot(int)
     def set_master(self, ma):
         self.master_val = ma/100
+        self.send_artnet_all()
+    
+    @pyqtSlot()
+    def send_artnet_all_sock(self):
         self.send_artnet_all()

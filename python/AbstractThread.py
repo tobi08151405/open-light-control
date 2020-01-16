@@ -3,11 +3,11 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 
 from DmxThread import DmxThread
-from GlobalVar import typ_to_addr, nr_to_typ, nr_to_addr
+from GlobalVar import typ_to_addr, nr_to_typ, nr_to_addr, error_log_global
 
 class AbstractThread(QThread):
     channelset = pyqtSignal(int, int, int)
-    send_error = pyqtSignal(str)
+    send_artnet_all = pyqtSignal()
     
     def __init__(self):
         QThread.__init__(self)
@@ -15,8 +15,8 @@ class AbstractThread(QThread):
         
     def run(self):
         self.channelset.connect(self.dmx_thread.set_channel)
-        self.dmx_thread.send_error.connect(self.relay_error)
         self.dmx_thread.start()
+        self.send_artnet_all.connect(self.dmx_thread.send_artnet_all_sock)
         
         loop = QEventLoop()
         loop.exec_()
@@ -40,8 +40,7 @@ class AbstractThread(QThread):
             univer, addr = nr_to_addr[lamp]
             self.channelset.emit(univer, addr+local_channel, set_value)
         except NameError:
-            self.send_error.emit("AbstractThread: Name not found!")
-            
-    @pyqtSlot(str)
-    def relay_error(self, er):
-        self.send_error.emit(er)
+            error_log_global.append("AbstractThread: Name not found!")
+    
+    def send_artnet_all_sock_relay(self):
+        self.send_artnet_all.emit()

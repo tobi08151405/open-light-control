@@ -6,7 +6,6 @@ from GlobalVar import *
 
 class CuelistThread(QThread):
     lampset = pyqtSignal(int, str, object)
-    send_error = pyqtSignal(str)
     
     cur_pos = 0
     used_lamps = [1,243567]
@@ -24,7 +23,7 @@ class CuelistThread(QThread):
             try:
                 nr_in_use[lamp] += 1
             except KeyError:
-                self.send_error.emit("CuelistThread: failed to find lamp nr {0:d}".format(lamp))
+                error_log_global.append("CuelistThread: failed to find lamp nr {0:d}".format(lamp))
         
         loop = QEventLoop()
         loop.exec_()
@@ -45,4 +44,4 @@ class CuelistThread(QThread):
                 if nr_in_use[lamp_num] == 1:
                     self.lampset.emit(lamp_num, "Dimmer", 0)
             except KeyError:
-                self.send_error.emit("CuelistThread: failed to find lamp nr {0:d}".format(lamp_num))
+                error_log_global.append("CuelistThread: failed to find lamp nr {0:d}".format(lamp_num))

@@ -1,5 +1,7 @@
 serial_enable = False
 
+output_freeze = [False]
+
 rows = 4
 cols = 3
 faders = 3
@@ -10,9 +12,11 @@ universe_num = 4
 uni_map = dict(zip(range(universe_num), range(universe_num)))
 uni_map_ = {v: k for k, v in uni_map.items()}
 
+error_log_global = []
+
 typ_to_func = {}
 typ_to_addr = {}
-#nr_to_typ = {6: 'Mac 250 Krypton'}
+
 nr_to_typ = {}
 nr_to_addr = {}
 nr_in_use={}

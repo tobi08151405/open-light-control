@@ -2,6 +2,8 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 
+from GlobalVar import error_log_global
+
 import serial
 
 class SerialThread(QThread):
@@ -19,7 +21,7 @@ class SerialThread(QThread):
                 self.ser = serial.Serial("/dev/faderkeys", 115200)
                 break
             except serial.serialutil.SerialException:
-                self.send_error("SerialThread: Serial exception")
+                error_log_global.append("SerialThread: Serial exception")
         self.ser.reset_input_buffer()
         self.serial_send_timer = QTimer(self)
         self.serial_send_timer.timeout.connect(self.send_serial)
@@ -38,7 +40,7 @@ class SerialThread(QThread):
                 else:
                     self.keystroke.emit(serial_get[2:-6], bool(int(serial_get[-6])))
             except:
-                self.send_error.emit("SerialThread: {0:s} failed".format(serial_get))
+                error_log_global.append("SerialThread: {0:s} failed".format(serial_get))
     
     @pyqtSlot(int, int)
     def set_fader(self, fader, value):
