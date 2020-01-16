@@ -10,7 +10,7 @@ led_name = 'TaO LED 8 bit'
 #led_span = typ_to_func[led_name]['ChannelSpan']
 led_span = 10
 
-def create():
+def _create():
     for num in range(generic_num):
         nr_to_typ[num+1] = generic_name
         nr_to_addr[num+1] = [0, num]
@@ -31,3 +31,12 @@ def create():
     #with open("typ_to_func.json") as file2:
         #for k, v in json.load(file2).items():
             #typ_to_func[k] = v
+
+def create():
+    nr_to_typ[100] = 'Sola Wash normal'
+    nr_to_addr[100] = [0, 370]
+    nr_in_use[100] = 0
+    
+    nr_to_typ[200] = 'RGB Fader 8 bit'
+    nr_to_addr[200] = [0, 412]
+    nr_in_use[200] = 0

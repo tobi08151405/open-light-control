@@ -1,0 +1,161 @@
+{
+  "$schema": "https://raw.githubusercontent.com/OpenLightingProject/open-fixture-library/master/schemas/fixture.json",
+  "name": "Sola Wash",
+  "categories": ["Moving Head", "Color Changer"],
+  "meta": {
+    "authors": ["Teichi"],
+    "createDate": "2019-12-27",
+    "lastModifyDate": "2019-12-27"
+  },
+  "physical": {
+    "dimensions": [393, 538, 315],
+    "weight": 22.4,
+    "power": 326,
+    "DMXconnector": "3-pin and 5-pin",
+    "bulb": {
+      "type": "LED"
+    },
+    "lens": {
+      "degreesMinMax": [20.1, 20.1]
+    }
+  },
+  "availableChannels": {
+    "Pan": {
+      "fineChannelAliases": ["Pan fine"],
+      "dmxValueResolution": "8bit",
+      "defaultValue": 128,
+      "capability": {
+        "type": "Pan",
+        "angleStart": "0deg",
+        "angleEnd": "540deg"
+      }
+    },
+    "Tilt": {
+      "fineChannelAliases": ["Tilt fine"],
+      "dmxValueResolution": "8bit",
+      "defaultValue": 128,
+      "capability": {
+        "type": "Tilt",
+        "angleStart": "0deg",
+        "angleEnd": "257deg"
+      }
+    },
+    "Pan/Tilt Speed": {
+      "capabilities": [
+        {
+          "dmxRange": [0, 2],
+          "type": "PanTiltSpeed",
+          "speed": "fast"
+        },
+        {
+          "dmxRange": [3, 242],
+          "type": "PanTiltSpeed",
+          "speedStart": "fast",
+          "speedEnd": "slow"
+        },
+        {
+          "dmxRange": [243, 245],
+          "type": "PanTiltSpeed",
+          "speed": "fast",
+          "comment": "Override menu setting PTSP=SLOW"
+        },
+        {
+          "dmxRange": [246, 248],
+          "type": "PanTiltSpeed",
+          "speed": "fast",
+          "comment": "Override menu setting PTSP=NORM"
+        },
+        {
+          "dmxRange": [249, 251],
+          "type": "PanTiltSpeed",
+          "speed": "fast",
+          "comment": "Override menu setting PTSP=FAST"
+        },
+        {
+          "dmxRange": [252, 255],
+          "type": "Maintenance",
+          "comment": "Blackout while moving"
+        }
+      ]
+    },
+    "Dimmer": {
+      "capability": {
+        "type": "Intensity"
+      }
+    },
+    "Red": {
+      "capability": {
+        "type": "ColorIntensity",
+        "color": "Red"
+      }
+    },
+    "Green": {
+      "capability": {
+        "type": "ColorIntensity",
+        "color": "Green"
+      }
+    },
+    "Blue": {
+      "capability": {
+        "type": "ColorIntensity",
+        "color": "Blue"
+      }
+    },
+    "White": {
+        "capability": {
+        "type": "ColorIntensity",
+        "color": "White"
+      }
+    },
+    "Indigo": {
+        "capability": {
+        "type": "ColorIntensity",
+        "color": "Indigo"
+      }
+    },
+    "Strobe": {
+      "capability": {
+        "type": "ShutterStrobe",
+        "shutterEffect": "Strobe",
+        "speedStart": "0.1Hz",
+        "speedEnd": "20Hz"
+      }
+    },
+    "None": {
+        "capability": {
+            "type": "Empty"
+        }
+    }
+  },
+  "modes": [
+    {
+      "name": "normal",
+      "shortName": "n",
+      "channels": [
+        "Pan",
+        "None",
+        "Tilt",
+        "None",
+        "None",
+        "Red",
+        "Green",
+        "Blue",
+        "White",
+        "None",
+        "None",
+        "None",
+        "Strobe",
+        "Dimmer",
+        "None",
+        "None",
+        "None",
+        "None",
+        "None",
+        "None",
+        "Indigo"
+      ]
+    }
+  ],
+  "fixtureKey": "sola-wash",
+  "manufacturerKey": "showtec"
+}

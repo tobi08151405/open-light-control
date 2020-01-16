@@ -15,12 +15,15 @@ import GlobalVar
 from SerialThread import SerialThread
 from AbstractThread import AbstractThread
 from CuelistThread import CuelistThread
+from XY_Pad import XY_Pad
 import Create_lamps
 import Reverser
 
 Create_lamps.create()
-Reverser.create_typ_to_func(["../dev/ofl-json/tao-led.json","../dev/ofl-json/generic/desk-channel.json","../dev/ofl-json/michi.json"])
-Reverser.create_typ_to_addr(["../dev/ofl-json/tao-led.json","../dev/ofl-json/generic/desk-channel.json","../dev/ofl-json/michi.json"])
+#Reverser.create_typ_to_func(["../dev/ofl-json/tao-led.json","../dev/ofl-json/generic/desk-channel.json","../dev/ofl-json/michi.json"])
+#Reverser.create_typ_to_addr(["../dev/ofl-json/tao-led.json","../dev/ofl-json/generic/desk-channel.json","../dev/ofl-json/michi.json"])
+Reverser.create_typ_to_func(["../dev/ofl-json/generic/rgb-fader.json","../dev/ofl-json/sola-wash.json"])
+Reverser.create_typ_to_addr(["../dev/ofl-json/generic/rgb-fader.json","../dev/ofl-json/sola-wash.json"])
 
 def change_uni(from_, to_):
     global uni_map
@@ -77,17 +80,20 @@ class MainWindow(QMainWindow):
         self.mdi.setFont(QFont('Sans Serif', 12))
         
         #self.create_encoders()
-        self.create_faders()
-        self.create_keys()
-        self.create_fader_new()
-        #self.create_gezeit()
-        #self.create_best()
-        #self.create_awards()
+        #self.create_faders()
+        #self.create_keys()
+        #self.create_fader_new()
+        ##self.create_gezeit()
+        ##self.create_best()
+        ##self.create_awards()
         self.create_master_fader()
         self.create_error_log()
-        #self.create_color()
-        #self.create_test()
+        self.create_color()
+        ##self.create_test()
         self.create_chase_test()
+        self.create_explo_sola()
+        self.create_explo_led()
+        self.create_xy_pad()
         
         self.chase_timer=QTimer(self)
         self.chase_timer.timeout.connect(self.chase_send)
@@ -108,6 +114,12 @@ class MainWindow(QMainWindow):
     
     def create_fader(self, name, label, liste, start, start1, fad_max=100):
         exec("self.{0:s}_slid = QSlider()\nself.{0:s}_slid.setMinimum(0)\nself.{0:s}_slid.setMaximum(fad_max)\nself.{0:s}_slid.valueChanged.connect(self.{0:s}_slid_fader)\nliste.append([QLabel('{1:s}'),start,start1])\nliste.append([self.{0:s}_slid,start+1,start1])".format(name, label))
+    
+    def create_xy_pad(self):
+        self.xy_pad = XY_Pad()
+        self.xy_pad.position_changed.connect(self.xy_pad_sola_map)
+        
+        self.create_sub_area("xy_pad", "XY Pad", [[self.xy_pad,0,0]])
     
     def create_chase_test(self):
         chase_list=[]
@@ -280,6 +292,33 @@ class MainWindow(QMainWindow):
         
         self.create_sub_area("awards", "Awards", award_list, width=70)
     
+    def create_explo_sola(self):
+        sola_list = []
+        
+        self.create_fader("sola_pan", "Pan", sola_list, 0, 0)
+        self.create_fader("sola_tilt", "Tilt", sola_list, 0, 1)
+        self.create_fader("sola_dimmer", "Dimmer", sola_list, 0, 2)
+        self.create_fader("sola_red", "Red", sola_list, 0, 3)
+        self.create_fader("sola_green", "Green", sola_list, 0, 4)
+        self.create_fader("sola_blue", "Blue", sola_list, 0, 5)
+        self.create_fader("sola_indigo", "Indigo", sola_list, 0, 6)
+        
+        self.create_sub_area("sola_explo", "Sola Explo", sola_list, width=70)
+        
+    def create_explo_led(self):
+        explo_led_list = []
+        
+        self.create_fader("led_red", "Red", explo_led_list, 0, 0)
+        self.create_fader("led_green", "Green", explo_led_list, 0, 1)
+        self.create_fader("led_blue", "Blue", explo_led_list, 0, 2)
+        
+        self.create_sub_area("explo_led", "Explo LED", explo_led_list, width=70)
+    
+    @pyqtSlot(float, float)
+    def xy_pad_sola_map(self, x, y):
+        self.lampset.emit(100, "Pan", x*100)
+        self.lampset.emit(100, "Tilt", y*100)
+    
     @pyqtSlot(int)
     def fader_0_ma_slid_fader(self, i):
         self.lampset.emit(1, "Dimmer", int(100/1023 * i))
@@ -291,6 +330,46 @@ class MainWindow(QMainWindow):
     @pyqtSlot(int)
     def fader_2_ma_slid_fader(self, i):
         self.lampset.emit(3, "Dimmer", int(100/1023 * i))
+    
+    @pyqtSlot(int)
+    def sola_pan_slid_fader(self, i):
+        self.lampset.emit(100, "Pan", i)
+        
+    @pyqtSlot(int)
+    def sola_tilt_slid_fader(self, i):
+        self.lampset.emit(100, "Tilt", i)
+        
+    @pyqtSlot(int)
+    def sola_dimmer_slid_fader(self, i):
+        self.lampset.emit(100, "Dimmer", i)
+    
+    @pyqtSlot(int)
+    def sola_red_slid_fader(self, i):
+        self.lampset.emit(100, "Red", i)
+        
+    @pyqtSlot(int)
+    def sola_green_slid_fader(self, i):
+        self.lampset.emit(100, "Green", i)
+    
+    @pyqtSlot(int)
+    def sola_blue_slid_fader(self, i):
+        self.lampset.emit(100, "Blue", i)
+        
+    @pyqtSlot(int)
+    def sola_indigo_slid_fader(self, i):
+        self.lampset.emit(100, "Indigo", i)
+    
+    @pyqtSlot(int)
+    def led_red_slid_fader(self, i):
+        self.lampset.emit(200, "Red", i)
+    
+    @pyqtSlot(int)
+    def led_green_slid_fader(self, i):
+        self.lampset.emit(200, "Green", i)
+    
+    @pyqtSlot(int)
+    def led_blue_slid_fader(self, i):
+        self.lampset.emit(200, "Blue", i)
     
     @pyqtSlot(int)
     def grund_slid_fader(self, i):
@@ -385,8 +464,10 @@ class MainWindow(QMainWindow):
         self.add_fac = float(self.chase_abs_edit.text())
         
     def chase_send(self):
-        for i in [110, 111, 113, 115, 114, 112]:
-            color_tup = colorsys.hsv_to_rgb(abs(math.sin(self.freq*time.time()+(self.add_fac*(i-110)))),1,1)
+        #for i in [110, 111, 113, 115, 114, 112]:
+        i = 100
+        if True:
+            color_tup = colorsys.hsv_to_rgb(abs(math.sin(self.freq*time.time()+(self.add_fac*0))),1,1)#(i-110)))),1,1)
             self.lampset.emit(i,"Red",color_tup[0]*255)
             self.lampset.emit(i,"Blue",color_tup[1]*255)
             self.lampset.emit(i,"Green",color_tup[2]*255)
@@ -421,7 +502,7 @@ class MainWindow(QMainWindow):
             exec("fader_map[GlobalVar.curr_page][i] = self.fader_{0:d}_ma_slid.value()".format(i))
             exec("self.fader_{0:d}_ma_slid.setValue(fader_map[next_page][i])".format(i))
             self.faderset.emit(i, fader_map[next_page][i])
-        GlobalVar.curr_page = next_page
+            GlobalVar.curr_page = next_page
     
     @pyqtSlot(str)
     def update_error_log(self, er):
@@ -452,7 +533,6 @@ class MainWindow(QMainWindow):
         self.lampset.emit(17, 'Dimmer', i)
         self.lampset.emit(21, 'Dimmer', i)
         self.lampset.emit(26, 'Dimmer', i)
-        
     
     @pyqtSlot(int)
     def led_ma_slid_fader(self, sli):
@@ -461,7 +541,9 @@ class MainWindow(QMainWindow):
             
     @pyqtSlot(QColor)
     def test_colors(self, col):
-        for i in range(110,116):
+        #for i in range(110,116):
+        i=100
+        if True:
             self.lampset.emit(i, 'Red', col.red())
             self.lampset.emit(i, 'Green', col.green())
             self.lampset.emit(i, 'Blue', col.blue())
@@ -492,7 +574,7 @@ class MainWindow(QMainWindow):
             exec("self.encoder{0:s}.setText('{1:d}')".format(encoder, cur-value))
         except NameError:
             print("encoder {0:s} not found!".format(encoder))
-            
+    
     @pyqtSlot(int, str, object)
     def forward_cuelist_lampset(self, num, action, value):
         self.lampset.emit(num, action, value)

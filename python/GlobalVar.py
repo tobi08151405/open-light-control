@@ -1,4 +1,4 @@
-serial_enable = True
+serial_enable = False
 
 rows = 4
 cols = 3
