@@ -34,13 +34,18 @@ class AbstractThread(QThread):
     def set_lamp(self, lamp, setting, value):
         try:
             lamp_type = nr_to_typ[lamp]
-            local_channel, set_value = self.get_func_from_type(lamp_type, setting, value)
+            try:
+                local_channel, set_value = self.get_func_from_type(lamp_type, setting, value)
+            except KeyError:
+                error_log_global.append("AbstractThread: Fixturetype {0:s} not found".format(lamp_type))
             #if setting == 'Intensity' or setting == 'Dimmer':
                 #set_value = set_value
             univer, addr = nr_to_addr[lamp]
             self.channelset.emit(univer, addr+local_channel, set_value)
         except NameError:
             error_log_global.append("AbstractThread: Name not found!")
+        except KeyError:
+            error_log_global.append("AbstractThread: Fixture {0:d} not found!".format(lamp))
     
     def send_artnet_all_sock_relay(self):
         self.send_artnet_all.emit()

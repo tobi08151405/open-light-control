@@ -27,3 +27,20 @@ for i in range(faders):
     fader_map[0].append(0)
     fader_map[1].append(0)
     fader_map[2].append(0)
+
+key_mapping = {
+    #key_num: ["Text", direkt]
+    "0": ["7", True],
+    "1": ["8", True],
+    "2": ["9", True],
+    "3": ["4", True],
+    "4": ["5", True],
+    "5": ["6", True],
+    "6": ["1", True],
+    "7": ["2", True],
+    "8": ["3", True],
+    "9": ["*", True],
+    "10": ["0", True],
+    "11": ["Return", False]
+}
+    

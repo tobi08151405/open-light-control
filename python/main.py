@@ -7,6 +7,7 @@ import json
 import time
 import math
 import colorsys
+from functools import partial
 
 import pdb
 
@@ -20,10 +21,10 @@ import Create_lamps
 import Reverser
 
 Create_lamps.create()
-#Reverser.create_typ_to_func(["../dev/ofl-json/tao-led.json","../dev/ofl-json/generic/desk-channel.json","../dev/ofl-json/michi.json"])
-#Reverser.create_typ_to_addr(["../dev/ofl-json/tao-led.json","../dev/ofl-json/generic/desk-channel.json","../dev/ofl-json/michi.json"])
-Reverser.create_typ_to_func(["../dev/ofl-json/generic/rgb-fader.json","../dev/ofl-json/sola-wash.json"])
-Reverser.create_typ_to_addr(["../dev/ofl-json/generic/rgb-fader.json","../dev/ofl-json/sola-wash.json"])
+Reverser.create_typ_to_func(["../dev/ofl-json/tao-led.json","../dev/ofl-json/generic/desk-channel.json","../dev/ofl-json/michi.json"])
+Reverser.create_typ_to_addr(["../dev/ofl-json/tao-led.json","../dev/ofl-json/generic/desk-channel.json","../dev/ofl-json/michi.json"])
+#Reverser.create_typ_to_func(["../dev/ofl-json/generic/rgb-fader.json","../dev/ofl-json/sola-wash.json"])
+#Reverser.create_typ_to_addr(["../dev/ofl-json/generic/rgb-fader.json","../dev/ofl-json/sola-wash.json"])
 
 def change_uni(from_, to_):
     global uni_map
@@ -65,6 +66,7 @@ class MainWindow(QMainWindow):
         sortact.triggered.connect(self.sort)
         
         quitact = QAction('Quit', self)
+        quitact.setShortcut('Ctrl+Q')
         quitact.triggered.connect(self.close)
         
         mainfadact = QAction('Main Fader', self)
@@ -79,6 +81,7 @@ class MainWindow(QMainWindow):
         self.freezeact = QAction('Freeze Output', self)
         self.freezeact.setCheckable(True)
         self.freezeact.toggled.connect(self.toggle_freeze)
+        self.freezeact.setShortcut('Ctrl+F')
         self.freezeact.toggle()
         
         self.menubar = self.menuBar()
@@ -95,6 +98,12 @@ class MainWindow(QMainWindow):
         
         self.menubar.setCornerWidget(self.status_menubar)
         
+        self.statusbar = self.statusBar()#.showMessage('Ready')
+        self.statuslinebar = QLineEdit()
+        self.statuslinebar.returnPressed.connect(self.exec_program_line)
+        self.statusbar.layout().addWidget(self.statuslinebar, Qt.AlignRight)
+        #self.statusbar.addWidget(self.statuslinebar)
+        #self.statusbar.setLayout(self.statusbar_layout)
         
         self.cuelist_thread = CuelistThread()
         self.cuelist_thread.lampset.connect(self.forward_cuelist_lampset)
@@ -154,6 +163,28 @@ class MainWindow(QMainWindow):
         self.error_text.setPlainText("\n".join(error_log_global))
         self.error_text.verticalScrollBar().setValue(self.error_text.verticalScrollBar().maximum())
     
+    @pyqtSlot(str)
+    def key_pressed(self, key):
+        if key_mapping[key][1]:
+            self.statuslinebar.insert(key_mapping[key][0])
+        else:
+            if key_mapping[key][0] == "Return":
+                self.statuslinebar.returnPressed.emit()
+    
+    def exec_program_line(self):
+        text = self.statuslinebar.text()
+        if "*" in text:
+            dim = text.split("*")[1]
+            if "+" in text:
+                lamp = text.split("*")[0].split("+")
+            else:
+                lamp = [text.split("*")[0]]
+            for i in lamp:
+                self.lampset.emit(int(i),"Dimmer",int(dim))
+        else:
+            error_log_global.append("Programmer Error: unkown command")
+        self.statuslinebar.clear()
+    
     ## build / exec func
     def create_error_log(self):
         self.error_text = QTextEdit()
@@ -204,8 +235,9 @@ class MainWindow(QMainWindow):
         for row in range(rows):
             for col in range(cols):
                 num = (row * cols) + col
-                exec("self.key{0:d}=QPushButton()".format(num))
-                exec("self.key{0:d}.setCheckable(True)".format(num))
+                exec("self.key{0:d}=QPushButton('{1:s}')".format(num,key_mapping[str(num)][0]))
+                #exec("self.key{0:d}.setCheckable(True)".format(num))
+                exec("self.key{0:d}.pressed.connect(partial(self.key_pressed, \"{0:d}\"))".format(num))
                 exec("keys_list.append([self.key{0:d},{1:d},{2:d}])".format(num,row,col))
         self.create_sub_area("keys", "Buttons", keys_list, width=85)
     
