@@ -1,4 +1,4 @@
-serial_enable = False
+serial_enable = True
 
 output_freeze = [False]
 
@@ -43,4 +43,3 @@ key_mapping = {
     "10": ["0", True],
     "11": ["Return", False]
 }
-    
