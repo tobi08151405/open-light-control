@@ -75,8 +75,8 @@ class MainWindow(QMainWindow):
         errorlogact = QAction('Error Log', self)
         errorlogact.triggered.connect(self.create_error_log)
 
-        self.freezelabel = QAction("Output freezed", self)
-        self.freezelabel.setDisabled(True)
+        self.freezelabel = QLabel("Output freezed")
+        # self.freezelabel.setDisabled(True)
 
         self.freezeact = QAction('Freeze Output', self)
         self.freezeact.setCheckable(True)
@@ -93,14 +93,15 @@ class MainWindow(QMainWindow):
         self.toolsMenu.addAction(sortact)
         self.toolsMenu.addAction(self.freezeact)
 
-        self.status_menubar = QMenuBar(self)
-        self.status_menubar.addAction(self.freezelabel)
-
-        self.menubar.setCornerWidget(self.status_menubar)
+        self.menubar.setCornerWidget(self.freezelabel)
 
         self.statusbar = self.statusBar()#.showMessage('Ready')
+        self.statusbarhistory = QLabel()
+        self.statusbarhistory.setMinimumWidth(100)
         self.statuslinebar = QLineEdit()
+        self.statuslinebar.setMinimumWidth(100)
         self.statuslinebar.returnPressed.connect(self.exec_program_line)
+        self.statusbar.layout().addWidget(self.statusbarhistory)
         self.statusbar.layout().addWidget(self.statuslinebar, Qt.AlignRight)
         #self.statusbar.addWidget(self.statuslinebar)
         #self.statusbar.setLayout(self.statusbar_layout)
@@ -132,6 +133,7 @@ class MainWindow(QMainWindow):
 
 
         self.setCentralWidget(self.mdi)
+        pdb.set_trace()
 
     ### Essential Functions
     def closeEvent(self, event):
@@ -174,15 +176,23 @@ class MainWindow(QMainWindow):
     def exec_program_line(self):
         text = self.statuslinebar.text()
         if "*" in text:
-            dim = text.split("*")[1]
+            try:
+                dim = int(text.split("*")[1])
+                if dim > 100:
+                    raise ValueError
+            except ValueError:
+                error_log_global.append("Programmer Error: value out of range")
+                self.statuslinebar.clear()
+                return
             if "+" in text:
                 lamp = text.split("*")[0].split("+")
             else:
                 lamp = [text.split("*")[0]]
             for i in lamp:
-                self.lampset.emit(int(i),"Dimmer",int(dim))
+                self.lampset.emit(int(i),"Dimmer",dim)
         else:
             error_log_global.append("Programmer Error: unkown command")
+        self.statusbarhistory.setText(text)
         self.statuslinebar.clear()
 
     ## build / exec func
@@ -190,6 +200,9 @@ class MainWindow(QMainWindow):
         self.error_text = QTextEdit()
         self.error_text.setReadOnly(1)
         self.create_sub_area("error", "Error Log", [[self.error_text, 0, 0]])
+
+    def create_output(self):
+        print(typ_to_func[nr_to_typ[list(nr_to_typ.keys())[0]]])
 
     def create_master_fader(self):
         master_list = []
@@ -265,11 +278,8 @@ class MainWindow(QMainWindow):
         try:
             if pressed:
                 exec("self.key{0:s}.pressed.emit()".format(key))
-                # exec("self.key{0:s}.setChecked(True)".format(key))
-                # exec("self.key{0:s}.setText('pressed')".format(key))
             else:
                 exec("self.key{0:s}.released.emit()".format(key))
-                # exec("self.key{0:s}.setText('')".format(key))
         except NameError:
             print("button {0:s} not found!".format(key))
 
