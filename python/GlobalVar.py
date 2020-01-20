@@ -1,4 +1,4 @@
-serial_enable = True
+serial_enable = False
 
 output_freeze = [False]
 
@@ -21,6 +21,8 @@ nr_to_typ = {}
 nr_to_addr = {}
 nr_in_use={}
 
+in_use=[]
+
 curr_page=0
 fader_map = [[],[],[]]
 for i in range(faders):
@@ -41,5 +43,26 @@ key_mapping = {
     "8": ["3", True],
     "9": ["*", True],
     "10": ["0", True],
-    "11": ["Return", False]
+    "11": ["Return", False],
+    "12": ["c", True]
 }
+
+slider_stylesheet = """
+.QSlider {
+    min-width: 68px;
+    max-width: 68px;
+}
+
+.QSlider::groove:vertical {
+    border: 1px solid #262626;
+    width: 5px;
+    margin: 0 12px;
+}
+
+.QSlider::handle:vertical {
+    background: #000000;
+    border: 5px solid #000000;
+    height: 23px;
+    width: 100px;
+    margin: -12px -12px;
+}"""

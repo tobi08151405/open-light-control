@@ -15,16 +15,16 @@ def create():
         nr_to_typ[num+1] = generic_name
         nr_to_addr[num+1] = [0, num]
         nr_in_use[num+1]=0
-    
-    nr_to_typ[100] = 'Michi LED 8 bit'
-    nr_to_addr[100] = [0, 99]
-    nr_in_use[100] = 0
-    
+
+    #nr_to_typ[100] = 'Michi LED 8 bit'
+    #nr_to_addr[100] = [0, 99]
+    #nr_in_use[100] = 0
+
     for num in range(led_num):
         nr_to_typ[led_start+num] = led_name
         nr_to_addr[led_start+num] = [0, led_start+num*led_span-1]
         nr_in_use[led_start+num] = 0
-    
+
     #with open("typ_to_addr.json") as file1:
         #for k, v in json.load(file1).items():
             #typ_to_addr[k] = v
@@ -36,7 +36,7 @@ def _create():
     nr_to_typ[100] = 'Sola Wash normal'
     nr_to_addr[100] = [0, 370]
     nr_in_use[100] = 0
-    
+
     nr_to_typ[200] = 'RGB Fader 8 bit'
     nr_to_addr[200] = [0, 412]
     nr_in_use[200] = 0
