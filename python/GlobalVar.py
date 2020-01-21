@@ -1,8 +1,8 @@
-serial_enable = False
+serial_enable = True
 
 output_freeze = [False]
 
-rows = 4
+rows = 6
 cols = 3
 faders = 3
 encoders = 1
@@ -23,28 +23,48 @@ nr_in_use={}
 
 in_use=[]
 
-curr_page=0
-fader_map = [[],[],[]]
-for i in range(faders):
-    fader_map[0].append(0)
-    fader_map[1].append(0)
-    fader_map[2].append(0)
+# curr_page=0
+# fader_map = [[],[],[]]
+# for i in range(faders):
+#     fader_map[0].append(0)
+#     fader_map[1].append(0)
+#     fader_map[2].append(0)
+
+cuelist_dict = {
+    "papa_spot": {
+        "options": {"warp_at_end": True},
+        0: ["Spot On", [11, 'Dimmer', 100]],
+        1: ["Spot Off", [11, 'Dimmer', 0]]
+    }
+}
 
 key_mapping = {
-    #key_num: ["Text", direkt]
-    "0": ["7", True],
-    "1": ["8", True],
-    "2": ["9", True],
-    "3": ["4", True],
-    "4": ["5", True],
-    "5": ["6", True],
-    "6": ["1", True],
-    "7": ["2", True],
-    "8": ["3", True],
-    "9": ["*", True],
-    "10": ["0", True],
-    "11": ["Return", False],
-    "12": ["c", True]
+    #key_num: ["type", "Text", direkt]
+    #type = "pad", "command"
+    "17": ["pad", "7", True],
+    "1": ["pad", "8", True],
+    "2": ["pad", "9", True],
+    "3": ["pad", "4", True],
+    "4": ["pad", "5", True],
+    "5": ["pad", "6", True],
+    "6": ["pad", "1", True],
+    "7": ["pad", "2", True],
+    "8": ["pad", "3", True],
+    "9": ["pad", "*", True],
+    "10": ["pad", "0", True],
+    "11": ["pad", "Return", False],
+    "12": ["pad", "r", True],
+    "13": ["pad", "g", True],
+    "14": ["pad", "b", True],
+    "15": ["pad", "c", True],
+    "16": ["pad", "/", True],
+    "0": ["cuelist", "papa_spot", "go"]
+}
+
+fader_mapping = {
+    "0": "back",
+    "1": "grund",
+    "2": "spot"
 }
 
 slider_stylesheet = """

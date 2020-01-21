@@ -7,6 +7,7 @@ import json
 import time
 import math
 import colorsys
+import types
 from functools import partial
 
 import pdb
@@ -70,18 +71,6 @@ class MainWindow(QMainWindow):
         quitact.setShortcut('Ctrl+Q')
         quitact.triggered.connect(self.close)
 
-        mainfadact = QAction('Main Fader', self)
-        mainfadact.triggered.connect(self.create_master_fader)
-
-        errorlogact = QAction('Error Log', self)
-        errorlogact.triggered.connect(self.create_error_log)
-
-        buttonsact = QAction('Key Pad', self)
-        buttonsact.triggered.connect(self.create_keys)
-
-        pb_stueckact = QAction('PB Stück', self)
-        pb_stueckact.triggered.connect(self.create_pb_stueck)
-
         self.freezelabel = QLabel("Output freezed")
         # self.freezelabel.setDisabled(True)
 
@@ -98,10 +87,6 @@ class MainWindow(QMainWindow):
         self.toolsMenu.addAction(sortact)
         self.toolsMenu.addAction(self.freezeact)
         self.windowMenu = self.menubar.addMenu('Windows')
-        self.windowMenu.addAction(mainfadact)
-        self.windowMenu.addAction(errorlogact)
-        self.windowMenu.addAction(buttonsact)
-        self.windowMenu.addAction(pb_stueckact)
 
         self.menubar.setCornerWidget(self.freezelabel)
 
@@ -116,9 +101,9 @@ class MainWindow(QMainWindow):
         #self.statusbar.addWidget(self.statuslinebar)
         #self.statusbar.setLayout(self.statusbar_layout)
 
-        self.cuelist_thread = CuelistThread()
-        self.cuelist_thread.lampset.connect(self.forward_cuelist_lampset)
-        #self.cuelist_thread._go()
+        # self.cuelist_thread = CuelistThread()
+        # self.cuelist_thread.lampset.connect(lambda x,y,z: self.lampset.emit(x, y, z))
+        #self.cuelist_thread.go()
         #self.cuelist_thread.start()
         #self.cuelist_thread.quit()
 
@@ -127,22 +112,31 @@ class MainWindow(QMainWindow):
 
         self.mdi = QMdiArea()
 
+        for cuelist in cuelist_dict.keys():
+            exec("self.{0:s}_cue_thread = CuelistThread()".format(cuelist))
+            # exec("self.{0:s}_cue_thread = types.MethodType({0:s}_cue_thread, self)".format(cuelist))
+            exec("self.{0:s}_cue_thread.lampset.connect(self.lampset_relay)\nself.{0:s}_cue_thread.set_cuelist('{0:s}')".format(cuelist))
+
         ### Essential subwindows
         self.create_error_log()
         self.create_master_fader()
         self.create_output()
 
         ### Serial Monitors
-        #self.create_encoders()
-        #self.create_faders()
+        self.create_encoders()
+        self.create_faders()
         self.create_keys()
 
         ### Extras
-        #self.create_chase_test()
+        self.create_chase_test()
         self.create_color()
-        #self.create_xy_pad()
+        self.create_xy_pad()
         self.create_pb_stueck()
 
+        ### Show all
+        self.mslider_sub.show()
+        self.output_sub.show()
+        self.stueck_sub.show()
 
         self.setCentralWidget(self.mdi)
         #pdb.set_trace()
@@ -168,26 +162,38 @@ class MainWindow(QMainWindow):
     def sort(self):
         self.mdi.tileSubWindows()
 
-    @pyqtSlot(int, str, object)
-    def forward_cuelist_lampset(self, num, action, value):
-        self.lampset.emit(num, action, value)
-
     @pyqtSlot()
     def update_error_log(self):
         self.error_text.setPlainText("\n".join(error_log_global))
         self.error_text.verticalScrollBar().setValue(self.error_text.verticalScrollBar().maximum())
 
-    @pyqtSlot(str)
-    def key_pressed(self, key):
-        if key_mapping.get(key,["",False])[1]:
-            self.statuslinebar.insert(key_mapping.get(key, [""])[0])
-        else:
-            if key_mapping.get(key,[""])[0] == "Return":
-                self.statuslinebar.returnPressed.emit()
+    # @pyqtSlot(str)
+    def key_pressed(self, key, pressed=True):
+        try:
+            if pressed:
+                if key_mapping[key][0] == "pad":
+                    if key_mapping.get(key,["",False])[2]:
+                        self.statuslinebar.insert(key_mapping.get(key, [""])[1])
+                    else:
+                        if key_mapping.get(key,[""])[1] == "Return":
+                            self.statuslinebar.returnPressed.emit()
+                elif key_mapping[key][0] == "cuelist":
+                    if key_mapping[key][2] == "go":
+                        exec("self.cuelist_go(self.{0:s}_cue_thread)".format(key_mapping[key][1]))
+        except:
+            error_log_global.append("Key press failed: num {0:d}".format(key))
 
     def exec_program_line(self):
         text = self.statuslinebar.text()
         on=True
+        try:
+            if "/" in text:
+                nums=text.split("*")[0].split("c")[0]
+                number=nums.split("/")
+                numbers="+".join([str(x) for x in range(int(number[0]),int(number[1])+1)])
+                text=numbers+text[text.index(nums)+len(nums):]
+        except:
+            error_log_global.append("Programmer Error: unkown command")
         if "*" in text:
             try:
                 dims = text.split("*")[1]
@@ -280,9 +286,9 @@ class MainWindow(QMainWindow):
         self.output_layout.addWidget(QLabel("Num"),0,0)
         self.output_layout.addWidget(QLabel("Dimmer"),0,1)
         self.output_layout.addWidget(QLabel("Color"),0,2)
-        self.output_layout.addWidget(QLabel("Gobo"),0,3)
-        self.output_layout.addWidget(QLabel("Pan"),0,4)
-        self.output_layout.addWidget(QLabel("Tilt"),0,5)
+        # self.output_layout.addWidget(QLabel("Gobo"),0,3)
+        # self.output_layout.addWidget(QLabel("Pan"),0,4)
+        # self.output_layout.addWidget(QLabel("Tilt"),0,5)
         line=1
         for num in list(nr_to_typ.keys()):
             self.output_layout.addWidget(QLabel(str(num)),line,0)
@@ -290,12 +296,12 @@ class MainWindow(QMainWindow):
                 exec("""self.output_{0:d}_Dimmer = QLabel('0')\nself.output_layout.addWidget(self.output_{0:d}_Dimmer,line,1)""".format(num))
             if not typ_to_func[nr_to_typ[num]]['Color'] == False:
                 exec("""self.output_{0:d}_Color = QLabel('(0,0,0)')\nself.output_layout.addWidget(self.output_{0:d}_Color,line,2)""".format(num))
-            if not typ_to_func[nr_to_typ[num]]['Gobo'] == False:
-                exec("""self.output_{0:d}_Gobo = QLabel('Open')\nself.output_layout.addWidget(self.output_{0:d}_Gobo,line,3)""".format(num))
-            if not typ_to_func[nr_to_typ[num]]['Pan'] == False:
-                exec("""self.output_{0:d}_Pan = QLabel('0')\nself.output_layout.addWidget(self.output_{0:d}_Pan,line,4)""".format(num))
-            if not typ_to_func[nr_to_typ[num]]['Tilt'] == False:
-                exec("""self.output_{0:d}_Tilt = QLabel('0')\nself.output_layout.addWidget(self.output_{0:d}_Tilt,line,4)""".format(num))
+            # if not typ_to_func[nr_to_typ[num]]['Gobo'] == False:
+            #     exec("""self.output_{0:d}_Gobo = QLabel('Open')\nself.output_layout.addWidget(self.output_{0:d}_Gobo,line,3)""".format(num))
+            # if not typ_to_func[nr_to_typ[num]]['Pan'] == False:
+            #     exec("""self.output_{0:d}_Pan = QLabel('0')\nself.output_layout.addWidget(self.output_{0:d}_Pan,line,4)""".format(num))
+            # if not typ_to_func[nr_to_typ[num]]['Tilt'] == False:
+            #     exec("""self.output_{0:d}_Tilt = QLabel('0')\nself.output_layout.addWidget(self.output_{0:d}_Tilt,line,4)""".format(num))
             line+=1
 
         col_count=self.output_layout.columnCount()
@@ -312,24 +318,26 @@ class MainWindow(QMainWindow):
         self.output_sub.setWindowTitle('Output')
         self.output_sub.setFont(QFont('Sans Serif', 10))
         self.mdi.addSubWindow(self.output_sub)
-        self.output_sub.show()
 
     @pyqtSlot(int, str, object)
     def set_output(self, num, setting, value):
-        if any(setting == x for x in ["Red", "Green", "Blue"]):
-            exec("self.text=self.output_{0:d}_Color.text()".format(num))
-            text=self.text.replace("(","")
-            text=text.replace(")","")
-            text=text.split(",")
-            if setting == "Red":
-                text[0]=str(round(value,1))
-            elif setting == "Green":
-                text[1]=str(round(value,1))
-            elif setting == "Blue":
-                text[2]=str(round(value,1))
-            exec("self.output_{0:d}_Color.setText('{1:s}')".format(num,"("+",".join(text)+")"))
-        else:
-            exec("self.output_{0:d}_{1:s}.setText('{2:s}')".format(num,setting,str(value)))
+        try:
+            if any(setting == x for x in ["Red", "Green", "Blue"]):
+                exec("self.text=self.output_{0:d}_Color.text()".format(num))
+                text=self.text.replace("(","")
+                text=text.replace(")","")
+                text=text.split(",")
+                if setting == "Red":
+                    text[0]=str(round(value,1))
+                elif setting == "Green":
+                    text[1]=str(round(value,1))
+                elif setting == "Blue":
+                    text[2]=str(round(value,1))
+                exec("self.output_{0:d}_Color.setText('{1:s}')".format(num,"("+",".join(text)+")"))
+            else:
+                exec("self.output_{0:d}_{1:s}.setText('{2:s}')".format(num,setting,str(value)))
+        except:
+            pass
 
     def create_master_fader(self):
         master_list = []
@@ -351,7 +359,7 @@ class MainWindow(QMainWindow):
         height_edit.setPlaceholderText(str(self.mslider.size().height()))
         width_edit.returnPressed.connect(lambda: self.mslider.resize(QSize(int(width_edit.text()),self.mslider.size().height())))
         height_edit.returnPressed.connect(lambda: self.mslider.resize(QSize(self.mslider.size().width(),int(height_edit.text()))))
-        master_list.append([self.mslider, 0, 0])
+        master_list.append([self.mslider, 0, 0, 2, 1])
         master_list.append([self.mslider_max_button, 0, 1])
         master_list.append([self.mslider_min_button, 1, 1])
         master_list.append([self.mslider_resend_button, 0, 3])
@@ -376,8 +384,9 @@ class MainWindow(QMainWindow):
         for row in range(rows):
             for col in range(cols):
                 num = (row * cols) + col
-                exec("self.key{0:d}=QPushButton('{1:s}')".format(num,key_mapping[str(num)][0]))
+                exec("self.key{0:d}=QPushButton('{1:s}')".format(num,key_mapping.get(str(num),["","None"])[1]))
                 #exec("self.key{0:d}.setCheckable(True)".format(num))
+                exec("self.key{0:d}.setSizePolicy(QSizePolicy.MinimumExpanding,QSizePolicy.MinimumExpanding)".format(num))
                 exec("self.key{0:d}.pressed.connect(partial(self.key_pressed, \"{0:d}\"))".format(num))
                 exec("keys_list.append([self.key{0:d},{1:d},{2:d}])".format(num,row,col))
         self.create_sub_area("keys", "Buttons", keys_list, width=85)
@@ -404,19 +413,17 @@ class MainWindow(QMainWindow):
     @pyqtSlot(str, bool)
     def map_keys(self, key, pressed):
         try:
-            if pressed:
-                exec("self.key{0:s}.pressed.emit()".format(key))
-            else:
-                exec("self.key{0:s}.released.emit()".format(key))
+            self.key_pressed(key,pressed)
         except NameError:
             print("button {0:s} not found!".format(key))
 
     @pyqtSlot(str, int)
     def map_faders(self, fader, value):
         try:
-            exec("self.fader{0:s}.setText('{1:d}')".format(fader,value))
-        except NameError:
-            print("fader {0:s} not found!".format(fader))
+            fader_to_set = fader_mapping[fader]+"_slid"
+            exec("self.{0:s}.setValue(({1:d}/1023)*self.{0:s}.maximum())".format(fader_to_set,value))
+        except KeyError:
+            pass
 
     @pyqtSlot(str, int)
     def map_encoders(self, encoder, value):
@@ -542,22 +549,37 @@ class MainWindow(QMainWindow):
     def create_sub_area(self, name, title, wid_list, width=None):
         exec("self.{0:s}_layout = QGridLayout()".format(name))
         for wid in wid_list:
-            exec("self.{0:s}_layout.addWidget(wid[0],wid[1],wid[2])".format(name))
+            if len(wid) == 3:
+                wid.append(1)
+                wid.append(1)
+            exec("self.{0:s}_layout.addWidget(wid[0],wid[1],wid[2],wid[3],wid[4])".format(name))
         if width:
             exec("self.col_count=self.{0:s}_layout.columnCount()".format(name))
             for col in range(self.col_count):
                 exec("self.{0:s}_layout.setColumnMinimumWidth(col,{1:d})".format(name,width))
-        exec("self.{0:s}_widget = QWidget()\nself.{0:s}_widget.setLayout(self.{0:s}_layout)\nself.{0:s}_sub = QMdiSubWindow()\nself.{0:s}_sub.setWidget(self.{0:s}_widget)\nself.{0:s}_sub.setWindowTitle('{1:s}')\nself.mdi.addSubWindow(self.{0:s}_sub)\nself.{0:s}_sub.show()".format(name, title))
+        exec("self.{0:s}_widget = QWidget()\nself.{0:s}_widget.setLayout(self.{0:s}_layout)\nself.{0:s}_sub = QMdiSubWindow()\nself.{0:s}_sub.setWidget(self.{0:s}_widget)\nself.{0:s}_sub.setWindowTitle('{1:s}')\nself.mdi.addSubWindow(self.{0:s}_sub)\nself.{0:s}_sub.hide()\n{0:s}act=QAction('{1:s}', self)".format(name,title))
+        exec("def {0:s}_window_show(self):\n    self.{0:s}_sub.show()".format(name))
+        exec("self.{0:s}_window_show = types.MethodType({0:s}_window_show, self)".format(name))
+        exec("{0:s}act.triggered.connect(self.{0:s}_window_show)\nself.windowMenu.addAction({0:s}act)".format(name))
         #self.{0:s}_scroll=QScrollArea()\nself.{0:s}_scroll.setWidget(self.{0:s}_widget)\n
 
     def create_fader(self, name, label, liste, start, start1, fad_max=100):
-        exec("self.{0:s}_slid = QSlider()\nself.{0:s}_slid.setMinimumHeight(200)\nself.{0:s}_slid.setStyleSheet(slider_stylesheet)\nself.{0:s}_slid.setMinimum(0)\nself.{0:s}_slid.setMaximum(fad_max)\nself.{0:s}_slid.valueChanged.connect(self.{0:s}_slid_fader)\nliste.append([QLabel('{1:s}'),start,start1])\nliste.append([self.{0:s}_slid,start+1,start1])".format(name, label))
+        exec("self.{0:s}_slid=QSlider()\nself.{0:s}_slid.setMinimumHeight(200)\nself.{0:s}_slid.setStyleSheet(slider_stylesheet)\nself.{0:s}_slid.setMinimum(0)\nself.{0:s}_slid.setMaximum(fad_max)\nself.{0:s}_slid.valueChanged.connect(self.{0:s}_slid_fader)\nliste.append([QLabel('{1:s}'),start,start1])\nliste.append([self.{0:s}_slid,start+1,start1])".format(name, label))
 
+    @pyqtSlot(int, str, object)
+    def lampset_relay(self, x, y, z):
+        self.lampset.emit(x, y, z)
 
+    def cuelist_go(self, cuelist):
+        if cuelist.isRunning():
+            cuelist.go()
+        else:
+            cuelist.start()
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
 
     window = MainWindow()
     window.show()
+    # pdb.set_trace()
     sys.exit(app.exec_())

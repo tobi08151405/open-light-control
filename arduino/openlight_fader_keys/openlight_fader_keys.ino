@@ -26,7 +26,7 @@ const int thres = 10;
 
 void setup() {
   Serial.begin(115200);
-  Serial.setTimeout(100);
+  Serial.setTimeout(10);
   pinMode(ledPin, OUTPUT);
 //  Serial1.begin(115200);
 //  while (!Serial1) {
@@ -83,11 +83,11 @@ void readSerial() {
   String temp = Serial.readStringUntil(";");
   char string[temp.length()-1];
   temp.toCharArray(string, temp.length()-1);
-  
+
   String part_string;
   ptr = strtok(string, delimiter);
   part_string = ptr;
-  
+
   if (string != NULL) {
     while(ptr != NULL) {
       int firstA = part_string.indexOf('A');
