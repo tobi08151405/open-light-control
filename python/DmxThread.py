@@ -8,14 +8,16 @@ import socket
 from GlobalVar import universe_num, uni_map, output_freeze, error_log_global
 
 class DmxThread(QThread):
-    master_val = 1
+    master_val = 0
 
     def __init__(self):
         QThread.__init__(self)
 
         self.uni_list = []
+        self.output_last = []
         for i in range(universe_num):
             self.uni_list.append([])
+            self.output_last.append([])
 
         for uni in self.uni_list:
             for i in range(512):
@@ -30,10 +32,21 @@ class DmxThread(QThread):
         self.artnet_timer = QTimer(self)
         self.artnet_timer.timeout.connect(self.send_artnet_all)
         self.artnet_timer.start(4000)
+        self.global_timer=QTimer(self)
+        self.global_timer.timeout.connect(self.update_output)
+        self.global_timer.start(20)
 
     def run(self):
         loop = QEventLoop()
         loop.exec_()
+
+    def update_output(self):
+        # print(self.output_last == self.uni_list)
+        if not self.output_last == self.uni_list:
+            self.send_artnet_all()
+            for i in range(len(self.uni_list)):
+                self.output_last[i] = self.uni_list[i].copy()
+            # self.output_last = self.uni_list.copy()
 
     def send_artnet_all(self):
         for uni in range(universe_num):
@@ -55,13 +68,14 @@ class DmxThread(QThread):
     def add_universe(self):
         universe_num += 1
         self.uni_list.append([])
+        self.output_last.append([])
         for i in range(512):
             self.uni_list[-1].append(0)
 
     @pyqtSlot(int, int, int)
     def set_channel(self, universe, channel, value):
         self.uni_list[universe][channel] = int(value)
-        self.send_artnet(universe)
+        # self.send_artnet(universe)
 
     @pyqtSlot(int)
     def set_master(self, ma):

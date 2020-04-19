@@ -22,8 +22,10 @@ import Create_lamps
 import Reverser
 
 Create_lamps.create()
-Reverser.create_typ_to_func(["../dev/ofl-json/tao-led.json","../dev/ofl-json/generic/desk-channel.json","../dev/ofl-json/michi.json"])
-Reverser.create_typ_to_addr(["../dev/ofl-json/tao-led.json","../dev/ofl-json/generic/desk-channel.json","../dev/ofl-json/michi.json"])
+Reverser.create_typ_to_func(["../dev/ofl-json/tao-led.json","../dev/ofl-json/generic/desk-channel.json","../dev/ofl-json/michi.json","../dev/ofl-json/stockwerk-bar.json","../dev/ofl-json/stockwerk-led.json"])
+Reverser.create_typ_to_addr(["../dev/ofl-json/tao-led.json","../dev/ofl-json/generic/desk-channel.json","../dev/ofl-json/michi.json","../dev/ofl-json/stockwerk-bar.json","../dev/ofl-json/stockwerk-led.json"])
+# Reverser.create_typ_to_func(["../dev/ofl-json/tao-led.json","../dev/ofl-json/generic/desk-channel.json","../dev/ofl-json/michi.json"])
+# Reverser.create_typ_to_addr(["../dev/ofl-json/tao-led.json","../dev/ofl-json/generic/desk-channel.json","../dev/ofl-json/michi.json"])
 #Reverser.create_typ_to_func(["../dev/ofl-json/generic/rgb-fader.json","../dev/ofl-json/sola-wash.json"])
 #Reverser.create_typ_to_addr(["../dev/ofl-json/generic/rgb-fader.json","../dev/ofl-json/sola-wash.json"])
 
@@ -32,6 +34,16 @@ def change_uni(from_, to_):
     global uni_map_
     uni_map[uni_map_[int(from_)]] = int(to_)
     uni_map_ = {v: k for k, v in uni_map.items()}
+
+class ColorDialog(QColorDialog):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.setOptions(self.options() | QColorDialog.DontUseNativeDialog)
+
+        for children in self.findChildren(QWidget):
+            classname = children.metaObject().className()
+            if classname not in ("QColorPicker", "QColorLuminancePicker"):
+                children.hide()
 
 class MainWindow(QMainWindow):
     lampset = pyqtSignal(int, str, object)
@@ -130,16 +142,22 @@ class MainWindow(QMainWindow):
         ### Extras
         self.create_chase_test()
         self.create_color()
+        # self.create_color_bar()
         self.create_xy_pad()
         self.create_pb_stueck()
+        # self.create_pp_stueck()
 
         ### Show all
-        self.mslider_sub.show()
+        self.master_slid_sub.show()
         self.output_sub.show()
         self.stueck_sub.show()
+        # self.stock_sub.show()
+        self.color_sub.show()
+        # self.color1_sub.show()
 
         self.setCentralWidget(self.mdi)
         #pdb.set_trace()
+        # self.change_led()
 
     ### Essential Functions
     def closeEvent(self, event):
@@ -172,20 +190,24 @@ class MainWindow(QMainWindow):
         try:
             if pressed:
                 if key_mapping[key][0] == "pad":
-                    if key_mapping.get(key,["",False])[2]:
-                        self.statuslinebar.insert(key_mapping.get(key, [""])[1])
+                    if key_mapping.get(key,["",False])[3]:
+                        self.statuslinebar.insert(key_mapping.get(key, [""])[2])
                     else:
-                        if key_mapping.get(key,[""])[1] == "Return":
+                        if key_mapping.get(key,[""])[2] == "Enter":
                             self.statuslinebar.returnPressed.emit()
                 elif key_mapping[key][0] == "cuelist":
                     if key_mapping[key][2] == "go":
                         exec("self.cuelist_go(self.{0:s}_cue_thread)".format(key_mapping[key][1]))
+                elif key_mapping[key][0] == "command":
+                    exec("self.{0:s}()".format(key_mapping[key][1]))
+                else:
+                    raise(KeyError)
         except:
-            error_log_global.append("Key press failed: num {0:d}".format(key))
+            error_log_global.append("Key press failed: num {0:s}".format(key))
 
     def exec_program_line(self):
         text = self.statuslinebar.text()
-        on=True
+        clear=False
         try:
             if "/" in text:
                 nums=text.split("*")[0].split("c")[0]
@@ -201,9 +223,8 @@ class MainWindow(QMainWindow):
                     dim = 100
                 elif dims == "":
                     dim = 0
-                    on=False
+                    clear = True
                 elif dims == "0":
-                    on=False
                     dim = int(dims)
                 else:
                     dim = int(dims)
@@ -222,13 +243,13 @@ class MainWindow(QMainWindow):
             else:
                 lamp = [lamps]
             for i in lamp:
-                if on and not any(x == i for x in in_use):
-                    in_use.append(i)
-                elif not on:
+                if clear:
                     try:
-                        in_use.remove(i)
-                    except:
+                        in_use_programmer.pop(i)
+                    except KeyError:
                         pass
+                else:
+                    in_use_programmer[i] = dim
                 self.lampset.emit(int(i),"Dimmer",dim)
         elif "c" in text:
             if "+" in text.split("c")[0]:
@@ -250,29 +271,25 @@ class MainWindow(QMainWindow):
                 set_value = value.replace("(","").replace(")","").split(",")
             if setting == "Color":
                 for i in lamp:
-                    if on and not any(x == i for x in in_use):
-                        in_use.append(i)
-                    elif not on:
-                        try:
-                            in_use.remove(i)
-                        except:
-                            pass
+                    try:
+                        dim = in_use_programmer[i]
+                    except KeyError:
+                        dim = 0
+                    in_use_programmer[i] = dim
                     self.lampset.emit(int(i),"Red",int(set_value[0]))
                     self.lampset.emit(int(i),"Green",int(set_value[1]))
                     self.lampset.emit(int(i),"Blue",int(set_value[2]))
             else:
                 for i in lamp:
-                    if on and not any(x == i for x in in_use):
-                        in_use.append(i)
-                    elif not on:
-                        try:
-                            in_use.remove(i)
-                        except:
-                            pass
+                    try:
+                        dim = in_use_programmer[i]
+                    except KeyError:
+                        dim = 0
+                    in_use_programmer[i] = dim
                     self.lampset.emit(int(i),setting,set_value)
         else:
             error_log_global.append("Programmer Error: unkown command")
-        self.statusbarhistory.setText("+".join(in_use))
+        self.statusbarhistory.setText("+".join(in_use_programmer.keys()))
         self.statuslinebar.clear()
 
     ## build / exec func
@@ -342,41 +359,41 @@ class MainWindow(QMainWindow):
     def create_master_fader(self):
         master_list = []
 
-        self.mslider=QSlider()
-        self.mslider.setMinimum(0)
-        self.mslider.setMaximum(100)
-        self.mslider.setStyleSheet(slider_stylesheet)
-        self.mslider_max_button=QPushButton("Max")
-        self.mslider_min_button=QPushButton("Min")
-        self.mslider_resend_button=QPushButton("Resend")
-        self.mslider.valueChanged.connect(self.master_sli_fader)
-        self.mslider_max_button.clicked.connect(self.set_master_max)
-        self.mslider_min_button.clicked.connect(self.set_master_min)
-        self.mslider_resend_button.clicked.connect(self.abstract_thread.send_artnet_all_sock_relay)
+        self.master_slid=QSlider()
+        self.master_slid.setMinimum(0)
+        self.master_slid.setMaximum(100)
+        self.master_slid.setStyleSheet(slider_stylesheet)
+        self.master_slid_max_button=QPushButton("Max")
+        self.master_slid_min_button=QPushButton("Min")
+        self.master_slid_resend_button=QPushButton("Resend")
+        self.master_slid.valueChanged.connect(self.master_slid_fader)
+        self.master_slid_max_button.clicked.connect(self.set_master_max)
+        self.master_slid_min_button.clicked.connect(self.set_master_min)
+        self.master_slid_resend_button.clicked.connect(self.abstract_thread.send_artnet_all_sock_relay)
         width_edit=QLineEdit()
-        width_edit.setPlaceholderText(str(self.mslider.size().width()))
+        width_edit.setPlaceholderText(str(self.master_slid.size().width()))
         height_edit=QLineEdit()
-        height_edit.setPlaceholderText(str(self.mslider.size().height()))
-        width_edit.returnPressed.connect(lambda: self.mslider.resize(QSize(int(width_edit.text()),self.mslider.size().height())))
-        height_edit.returnPressed.connect(lambda: self.mslider.resize(QSize(self.mslider.size().width(),int(height_edit.text()))))
-        master_list.append([self.mslider, 0, 0, 2, 1])
-        master_list.append([self.mslider_max_button, 0, 1])
-        master_list.append([self.mslider_min_button, 1, 1])
-        master_list.append([self.mslider_resend_button, 0, 3])
+        height_edit.setPlaceholderText(str(self.master_slid.size().height()))
+        width_edit.returnPressed.connect(lambda: self.master_slid.resize(QSize(int(width_edit.text()),self.master_slid.size().height())))
+        height_edit.returnPressed.connect(lambda: self.master_slid.resize(QSize(self.master_slid.size().width(),int(height_edit.text()))))
+        master_list.append([self.master_slid, 0, 0, 2, 1])
+        master_list.append([self.master_slid_max_button, 0, 1])
+        master_list.append([self.master_slid_min_button, 1, 1])
+        master_list.append([self.master_slid_resend_button, 0, 3])
         master_list.append([width_edit, 0, 2])
         master_list.append([height_edit, 1, 2])
 
-        self.create_sub_area("mslider", "Master", master_list)
+        self.create_sub_area("master_slid", "Master", master_list)
 
     @pyqtSlot(int)
-    def master_sli_fader(self, i):
+    def master_slid_fader(self, i):
         self.master_change.emit(i)
 
     def set_master_max(self):
-        self.mslider.setValue(self.mslider.maximum())
+        self.master_slid.setValue(self.master_slid.maximum())
 
     def set_master_min(self):
-        self.mslider.setValue(self.mslider.minimum())
+        self.master_slid.setValue(self.master_slid.minimum())
 
     ### Serial Monitor Functions
     def create_keys(self):
@@ -489,15 +506,31 @@ class MainWindow(QMainWindow):
             self.lampset.emit(i,"Green",color_tup[2]*255)
 
     def create_color(self):
-        self.color_dia0 = QColorDialog()
-        self.color_dia0.setOption(2)
+        self.color_dia0 = ColorDialog()
+        # self.color_dia0.setOption(2)
         self.color_dia0.currentColorChanged.connect(self.test_colors)
 
-        self.create_sub_area("color", "Color Changer", [[self.color_dia0, 0, 0]])
+        self.create_sub_area("color", "Color Changer LED", [[self.color_dia0, 0, 0]])
+
+    def create_color_bar(self):
+        self.color_dia1 = ColorDialog()
+        # self.color_dia0.setOption(2)
+        self.color_dia1.currentColorChanged.connect(self.test_colors1)
+
+        self.create_sub_area("color1", "Color Changer Bar", [[self.color_dia1, 0, 0]])
 
     @pyqtSlot(QColor)
     def test_colors(self, col):
-        for i in range(110,116):
+        for i in range(110,116):#110,116
+        #i=100
+        #if True:
+            self.lampset.emit(i, 'Red', col.red())
+            self.lampset.emit(i, 'Green', col.green())
+            self.lampset.emit(i, 'Blue', col.blue())
+
+    @pyqtSlot(QColor)
+    def test_colors1(self, col):
+        for i in range(20,22):
         #i=100
         #if True:
             self.lampset.emit(i, 'Red', col.red())
@@ -546,6 +579,33 @@ class MainWindow(QMainWindow):
     def spot_slid_fader(self, i):
         self.lampset.emit(18, "Dimmer", i)
 
+    def create_pp_stueck(self):
+        stock_list = []
+
+        self.create_fader("L", "L", stock_list, 0, 0)
+        self.create_fader("R", "R", stock_list, 0, 1)
+        self.create_fader("led_d", "LED Dim", stock_list, 0, 2)
+        self.create_fader("bar_d", "Bar Dim R", stock_list, 0, 3)
+
+        self.create_sub_area("stock", "PP Stück", stock_list, width=70)
+
+    @pyqtSlot(int)
+    def L_slid_fader(self, i):
+        self.lampset.emit(1, "Dimmer", i)
+
+    @pyqtSlot(int)
+    def R_slid_fader(self, i):
+        self.lampset.emit(2, "Dimmer", i)
+
+    @pyqtSlot(int)
+    def led_d_slid_fader(self, i):
+        self.lampset.emit(10, "Dimmer", i)
+
+    @pyqtSlot(int)
+    def bar_d_slid_fader(self, i):
+        self.lampset.emit(20, "Dimmer", i)
+        self.lampset.emit(21, "Dimmer", i)
+
     def create_sub_area(self, name, title, wid_list, width=None):
         exec("self.{0:s}_layout = QGridLayout()".format(name))
         for wid in wid_list:
@@ -575,6 +635,24 @@ class MainWindow(QMainWindow):
             cuelist.go()
         else:
             cuelist.start()
+
+    def unset_pub(self):
+        if fader_mapping["2"] == "pub":
+            fader_mapping["2"] = "spot"
+        else:
+            fader_mapping["2"] = "pub"
+
+    def change_led(self):
+        self.lampset.emit(10, "Red", 255)
+        self.lampset.emit(10, "Green", 191)
+        self.lampset.emit(10, "Blue", 62)
+        self.lampset.emit(11, "Red", 255)
+        self.lampset.emit(20, "Red", 255)
+        self.lampset.emit(20, "Green", 147)
+        self.lampset.emit(20, "Blue", 52)
+        self.lampset.emit(21, "Red", 255)
+        self.lampset.emit(21, "Green", 147)
+        self.lampset.emit(21, "Blue", 52)
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)

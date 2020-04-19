@@ -1,0 +1,64 @@
+{
+  "$schema": "https://raw.githubusercontent.com/OpenLightingProject/open-fixture-library/master/schemas/fixture.json",
+  "name": "Stockwerk LED",
+  "shortName": "StockLED",
+  "categories": ["Color Changer"],
+  "meta": {
+    "authors": ["Teichi"],
+    "createDate": "2020-01-23",
+    "lastModifyDate": "2020-01-23"
+  },
+  "availableChannels": {
+    "Dimmer": {
+      "capability": {
+        "type": "Intensity"
+      }
+    },
+    "Red": {
+      "capability": {
+        "type": "ColorIntensity",
+        "color": "Red"
+      }
+    },
+    "Green": {
+      "capability": {
+        "type": "ColorIntensity",
+        "color": "Green"
+      }
+    },
+    "Blue": {
+      "capability": {
+        "type": "ColorIntensity",
+        "color": "Blue"
+      }
+    },
+    "Strobe": {
+      "capability": {
+        "type": "ShutterStrobe",
+        "shutterEffect": "Strobe",
+        "speedStart": "0.1Hz",
+        "speedEnd": "20Hz"
+      }
+    },
+    "None": {
+        "capability": {
+            "type": "Empty"
+        }
+    }
+  },
+  "modes": [
+    {
+      "name": "8 bit",
+      "shortName": "8bit",
+      "channels": [
+        "Red",
+        "Green",
+        "Blue",
+        "None",
+        "Strobe",
+        "None",
+        "Dimmer"
+      ]
+    }
+  ]
+}
