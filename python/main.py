@@ -125,9 +125,9 @@ class MainWindow(QMainWindow):
         self.mdi = QMdiArea()
 
         for cuelist in cuelist_dict.keys():
-            exec("self.{0:s}_cue_thread = CuelistThread()".format(cuelist))
-            # exec("self.{0:s}_cue_thread = types.MethodType({0:s}_cue_thread, self)".format(cuelist))
-            exec("self.{0:s}_cue_thread.lampset.connect(self.lampset_relay)\nself.{0:s}_cue_thread.set_cuelist('{0:s}')".format(cuelist))
+            setattr(self,"{0:s}_cue_thread".format(cuelist),CuelistThread())
+            getattr(self,"{0:s}_cue_thread".format(cuelist)).lampset.connect(self.lampset_relay)
+            getattr(self,"{0:s}_cue_thread".format(cuelist)).set_cuelist(str(cuelist))
 
         ### Essential subwindows
         self.create_error_log()
@@ -197,9 +197,9 @@ class MainWindow(QMainWindow):
                             self.statuslinebar.returnPressed.emit()
                 elif key_mapping[key][0] == "cuelist":
                     if key_mapping[key][2] == "go":
-                        exec("self.cuelist_go(self.{0:s}_cue_thread)".format(key_mapping[key][1]))
+                        self.cuelist_go(getatttr(self,"{0:s}_cue_thread)".format(key_mapping[key][1])))
                 elif key_mapping[key][0] == "command":
-                    exec("self.{0:s}()".format(key_mapping[key][1]))
+                    getattr(self,key_mapping[key][1]))()
                 else:
                     raise(KeyError)
         except:
@@ -310,15 +310,20 @@ class MainWindow(QMainWindow):
         for num in list(nr_to_typ.keys()):
             self.output_layout.addWidget(QLabel(str(num)),line,0)
             if typ_to_func[nr_to_typ[num]]['Dimmer']:
-                exec("""self.output_{0:d}_Dimmer = QLabel('0')\nself.output_layout.addWidget(self.output_{0:d}_Dimmer,line,1)""".format(num))
+                setattr(self,"output_{0:d}_Dimmer".format(num),QLabel('0'))
+                self.output_layout.addWidget(getattr(self,"output_{0:d}_Dimmer".format(num)),line,1)
             if not typ_to_func[nr_to_typ[num]]['Color'] == False:
-                exec("""self.output_{0:d}_Color = QLabel('(0,0,0)')\nself.output_layout.addWidget(self.output_{0:d}_Color,line,2)""".format(num))
+                setattr(self,"output_{0:d}_Color".format(num),QLabel('(0,0,0)'))
+                self.output_layout.addWidget(getattr(self,"output_{0:d}_Color".format(num)),line,2)
             # if not typ_to_func[nr_to_typ[num]]['Gobo'] == False:
-            #     exec("""self.output_{0:d}_Gobo = QLabel('Open')\nself.output_layout.addWidget(self.output_{0:d}_Gobo,line,3)""".format(num))
+            #     setattr(self,"output_{0:d}_Gobo".format(num),QLabel('Open'))
+            #     self.output_layout.addWidget(getattr(self,"output_{0:d}_Gobo".format(num)),line,3)
             # if not typ_to_func[nr_to_typ[num]]['Pan'] == False:
-            #     exec("""self.output_{0:d}_Pan = QLabel('0')\nself.output_layout.addWidget(self.output_{0:d}_Pan,line,4)""".format(num))
+            #     setattr(self,"output_{0:d}_Pan".format(num),QLabel('Open'))
+            #     self.output_layout.addWidget(getattr(self,"output_{0:d}_Pan".format(num)),line,4)
             # if not typ_to_func[nr_to_typ[num]]['Tilt'] == False:
-            #     exec("""self.output_{0:d}_Tilt = QLabel('0')\nself.output_layout.addWidget(self.output_{0:d}_Tilt,line,4)""".format(num))
+            #     setattr(self,"output_{0:d}_Tilt".format(num),QLabel('Open'))
+            #     self.output_layout.addWidget(getattr(self,"output_{0:d}_Tilt".format(num)),line,4)
             line+=1
 
         col_count=self.output_layout.columnCount()
@@ -340,7 +345,7 @@ class MainWindow(QMainWindow):
     def set_output(self, num, setting, value):
         try:
             if any(setting == x for x in ["Red", "Green", "Blue"]):
-                exec("self.text=self.output_{0:d}_Color.text()".format(num))
+                self.text=getattr(self,"output_{0:d}_Color".format(num)).text()
                 text=self.text.replace("(","")
                 text=text.replace(")","")
                 text=text.split(",")
@@ -350,9 +355,9 @@ class MainWindow(QMainWindow):
                     text[1]=str(round(value,1))
                 elif setting == "Blue":
                     text[2]=str(round(value,1))
-                exec("self.output_{0:d}_Color.setText('{1:s}')".format(num,"("+",".join(text)+")"))
+                getattr(self,"output_{0:d}_Color".format(num)).setText("("+",".join(text)+")")
             else:
-                exec("self.output_{0:d}_{1:s}.setText('{2:s}')".format(num,setting,str(value)))
+                getattr(self,"output_{0:d}_{1:s}".format(num,setting)).setText(str(value))
         except:
             pass
 
@@ -401,29 +406,29 @@ class MainWindow(QMainWindow):
         for row in range(rows):
             for col in range(cols):
                 num = (row * cols) + col
-                exec("self.key{0:d}=QPushButton('{1:s}')".format(num,key_mapping.get(str(num),["","None"])[1]))
-                #exec("self.key{0:d}.setCheckable(True)".format(num))
-                exec("self.key{0:d}.setSizePolicy(QSizePolicy.MinimumExpanding,QSizePolicy.MinimumExpanding)".format(num))
-                exec("self.key{0:d}.pressed.connect(partial(self.key_pressed, \"{0:d}\"))".format(num))
-                exec("keys_list.append([self.key{0:d},{1:d},{2:d}])".format(num,row,col))
+                setattr(self,"key"+str(num),QPushButton(key_mapping.get(str(num),["","None"])[1]))
+                # getattr(self,"keys"+str(num)).setCheckable(True)
+                getattr(self,"keys"+str(num)).setSizePolicy(QSizePolicy.MinimumExpanding,QSizePolicy.MinimumExpanding)
+                getattr(self,"keys"+str(num)).pressed.connect(partial(self.key_pressed, str(num)))
+                keys_list.append([getattr(self,"keys"+str(num)),row,col])
         self.create_sub_area("keys", "Buttons", keys_list, width=85)
 
     def create_faders(self):
         faders_list=[]
         for fader in range(faders):
-            exec("self.fader{0:d}=QLabel()".format(fader))
-            exec("self.fader{0:d}.setAlignment(Qt.AlignCenter)".format(fader))
-            exec("self.fader{0:d}.setText('0')".format(fader))
-            exec("faders_list.append([self.fader{0:d},0,{0:d}])".format(fader))
+            setattr(self,"fader"+str(fader),QLabel())
+            getattr(self,"fader"+str(fader)).setAlignment(Qt.AlignCenter)
+            getattr(self,"fader"+str(fader)).setText('0')
+            faders_list.append([getattr(self,"fader"+str(fader)),0,fader])
         self.create_sub_area("faders", "Faders", faders_list, width=50)
 
     def create_encoders(self):
         encoder_list=[]
         for encoder in range(encoders):
-            exec("self.encoder{0:d}=QLabel()".format(encoder))
-            exec("self.encoder{0:d}.setAlignment(Qt.AlignCenter)".format(encoder))
-            exec("self.encoder{0:d}.setText('0')".format(encoder))
-            exec("encoder_list.append([self.encoder{0:d},0,{0:d}])".format(encoder))
+            setattr(self,"encoder"+str(encoder),QLabel())
+            getattr(self,"encoder"+str(encoder)).setAlignment(Qt.AlignCenter)
+            getattr(self,"encoder"+str(encoder)).setText('0')
+            encoder_list.append([getattr(self,"encoder"+str(encoder)),0,encoder])
         self.create_sub_area("encoders", "Encoders", encoder_list, width=30)
 
 
@@ -438,15 +443,15 @@ class MainWindow(QMainWindow):
     def map_faders(self, fader, value):
         try:
             fader_to_set = fader_mapping[fader]+"_slid"
-            exec("self.{0:s}.setValue(({1:d}/1023)*self.{0:s}.maximum())".format(fader_to_set,value))
+            getattr(self,fader_to_set).setValue((value/1023)*self.{0:s}.maximum())
         except KeyError:
             pass
 
     @pyqtSlot(str, int)
     def map_encoders(self, encoder, value):
         try:
-            exec("cur = int(self.encoder{0:s}.text())".format(encoder))
-            exec("self.encoder{0:s}.setText('{1:d}')".format(encoder, cur-value))
+            cur = int(getattr(self,"encoder"+encoder).text())
+            getattr(self,"encoder"+encoder).setText(str(cur-value))
         except NameError:
             print("encoder {0:s} not found!".format(encoder))
 
@@ -543,8 +548,8 @@ class MainWindow(QMainWindow):
         else:
             next_page = 0
         for i in range(faders):
-            exec("fader_map[GlobalVar.curr_page][i] = self.fader_{0:d}_ma_slid.value()".format(i))
-            exec("self.fader_{0:d}_ma_slid.setValue(fader_map[next_page][i])".format(i))
+            fader_map[GlobalVar.curr_page][i] = getattr(self,"fader_{0:d}_ma_slid".format(i)).value()
+            getattr(self,"fader_{0:d}_ma_slid".format(i)).setValue(fader_map[next_page][i])
             self.faderset.emit(i, fader_map[next_page][i])
             GlobalVar.curr_page = next_page
 
@@ -607,24 +612,39 @@ class MainWindow(QMainWindow):
         self.lampset.emit(21, "Dimmer", i)
 
     def create_sub_area(self, name, title, wid_list, width=None):
-        exec("self.{0:s}_layout = QGridLayout()".format(name))
+        setattr(self,name+"_layout",QGridLayout())
         for wid in wid_list:
             if len(wid) == 3:
                 wid.append(1)
                 wid.append(1)
-            exec("self.{0:s}_layout.addWidget(wid[0],wid[1],wid[2],wid[3],wid[4])".format(name))
+            getattr(self,name+"_layout").addWidget(wid[0],wid[1],wid[2],wid[3],wid[4])
         if width:
-            exec("self.col_count=self.{0:s}_layout.columnCount()".format(name))
+            self.col_count=getattr(self,name+"_layout").columnCount()
             for col in range(self.col_count):
-                exec("self.{0:s}_layout.setColumnMinimumWidth(col,{1:d})".format(name,width))
-        exec("self.{0:s}_widget = QWidget()\nself.{0:s}_widget.setLayout(self.{0:s}_layout)\nself.{0:s}_sub = QMdiSubWindow()\nself.{0:s}_sub.setWidget(self.{0:s}_widget)\nself.{0:s}_sub.setWindowTitle('{1:s}')\nself.mdi.addSubWindow(self.{0:s}_sub)\nself.{0:s}_sub.hide()\n{0:s}act=QAction('{1:s}', self)".format(name,title))
-        exec("def {0:s}_window_show(self):\n    self.{0:s}_sub.show()".format(name))
-        exec("self.{0:s}_window_show = types.MethodType({0:s}_window_show, self)".format(name))
-        exec("{0:s}act.triggered.connect(self.{0:s}_window_show)\nself.windowMenu.addAction({0:s}act)".format(name))
-        #self.{0:s}_scroll=QScrollArea()\nself.{0:s}_scroll.setWidget(self.{0:s}_widget)\n
+                getattr(self,name+"_layout").setColumnMinimumWidth(col,width)
+        setattr(self,name+"_widget",QWidget())
+        getattr(self,name+"_widget").setLayout(self.name+"_layout")
+        setattr(self,name+"_sub",QMdiSubWindow())
+        getattr(self,name+"_sub").setWidget(getattr(self,name+"_widget"))
+        getattr(self,name+"_sub").setWindowTitle(title)
+        self.mdi.addSubWindow(getattr(self,name+"_sub"))
+        getattr(self,name+"_sub").hide()
+        setattr(self,name+"act",QAction(title, self))
+        getattr(self,name+"act").triggered.connect(lambda: getattr(self,name+"_sub").show())
+        self.windowMenu.addAction(getattr(self,name+"act"))
+
+        # setattr(self,name+"_scroll",QScrollArea())
+        # getattr(self,name+"_scroll").setWidget(getattr(self,name+"_widget"))
 
     def create_fader(self, name, label, liste, start, start1, fad_max=100):
-        exec("self.{0:s}_slid=QSlider()\nself.{0:s}_slid.setMinimumHeight(200)\nself.{0:s}_slid.setStyleSheet(slider_stylesheet)\nself.{0:s}_slid.setMinimum(0)\nself.{0:s}_slid.setMaximum(fad_max)\nself.{0:s}_slid.valueChanged.connect(self.{0:s}_slid_fader)\nliste.append([QLabel('{1:s}'),start,start1])\nliste.append([self.{0:s}_slid,start+1,start1])".format(name, label))
+        setattr(self,name+"_slid",QSlider())
+        getattr(self,name+"_slid").setMinimumHeight(200)
+        getattr(self,name+"_slid").setStyleSheet(slider_stylesheet)
+        getattr(self,name+"_slid").setMinimum(0)
+        getattr(self,name+"_slid").setMaximum(fad_max)
+        getattr(self,name+"_slid").valueChanged.connect(getattr(self,name+"_slid_fader"))
+        liste.append([QLabel(label),start,start1])
+        liste.append([getattr(self,name+"_slid"),start+1,start1])
 
     @pyqtSlot(int, str, object)
     def lampset_relay(self, x, y, z):
