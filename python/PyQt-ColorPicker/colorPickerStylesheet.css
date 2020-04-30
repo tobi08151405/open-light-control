@@ -1,6 +1,6 @@
-QWidget{
+/* QWidget{
   background-color: rgb(17, 34, 49);
-}
+} */
 
 QPushButton#saturation_icon{
   qproperty-icon: url(saturation_icon.png);
@@ -11,7 +11,7 @@ QPushButton#saturation_icon{
   width: 25px;
   border-radius: 15px;
   }
-  
+
 QPushButton#brightness_icon{
   qproperty-icon: url(brightness_icon.png);
   qproperty-iconSize: 25px;

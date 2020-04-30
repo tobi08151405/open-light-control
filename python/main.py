@@ -12,6 +12,9 @@ from functools import partial
 
 import pdb
 
+sys.path.insert(1, "PyQt-ColorPicker")
+from PyQt_Circular_Colorpicker import ColorPicker as NewColorPicker
+
 from GlobalVar import *
 import GlobalVar
 from SerialThread import SerialThread
@@ -35,15 +38,20 @@ def change_uni(from_, to_):
     uni_map[uni_map_[int(from_)]] = int(to_)
     uni_map_ = {v: k for k, v in uni_map.items()}
 
-class ColorDialog(QColorDialog):
+class ColorDialog(NewColorPicker):
     def __init__(self, parent=None):
-        super().__init__(parent)
-        self.setOptions(self.options() | QColorDialog.DontUseNativeDialog)
+        NewColorPicker.__init__(self, width=250, startupcolor=[0,255,255], parent=parent)
 
-        for children in self.findChildren(QWidget):
-            classname = children.metaObject().className()
-            if classname not in ("QColorPicker", "QColorLuminancePicker"):
-                children.hide()
+
+# class ColorDialog(QColorDialog):
+#     def __init__(self, parent=None):
+#         super().__init__(parent)
+#         self.setOptions(self.options() | QColorDialog.DontUseNativeDialog)
+#
+#         for children in self.findChildren(QWidget):
+#             classname = children.metaObject().className()
+#             if classname not in ("QColorPicker", "QColorLuminancePicker"):
+#                 children.hide()
 
 class MainWindow(QMainWindow):
     lampset = pyqtSignal(int, str, object)
@@ -199,7 +207,7 @@ class MainWindow(QMainWindow):
                     if key_mapping[key][2] == "go":
                         self.cuelist_go(getatttr(self,"{0:s}_cue_thread)".format(key_mapping[key][1])))
                 elif key_mapping[key][0] == "command":
-                    getattr(self,key_mapping[key][1]))()
+                    getattr(self,key_mapping[key][1])()
                 else:
                     raise(KeyError)
         except:
@@ -408,9 +416,9 @@ class MainWindow(QMainWindow):
                 num = (row * cols) + col
                 setattr(self,"key"+str(num),QPushButton(key_mapping.get(str(num),["","None"])[1]))
                 # getattr(self,"keys"+str(num)).setCheckable(True)
-                getattr(self,"keys"+str(num)).setSizePolicy(QSizePolicy.MinimumExpanding,QSizePolicy.MinimumExpanding)
-                getattr(self,"keys"+str(num)).pressed.connect(partial(self.key_pressed, str(num)))
-                keys_list.append([getattr(self,"keys"+str(num)),row,col])
+                getattr(self,"key"+str(num)).setSizePolicy(QSizePolicy.MinimumExpanding,QSizePolicy.MinimumExpanding)
+                getattr(self,"key"+str(num)).pressed.connect(partial(self.key_pressed, str(num)))
+                keys_list.append([getattr(self,"key"+str(num)),row,col])
         self.create_sub_area("keys", "Buttons", keys_list, width=85)
 
     def create_faders(self):
@@ -443,7 +451,7 @@ class MainWindow(QMainWindow):
     def map_faders(self, fader, value):
         try:
             fader_to_set = fader_mapping[fader]+"_slid"
-            getattr(self,fader_to_set).setValue((value/1023)*self.{0:s}.maximum())
+            getattr(self,fader_to_set).setValue((value/1023)*getattr(self,fader_to_set).maximum())
         except KeyError:
             pass
 
@@ -511,14 +519,14 @@ class MainWindow(QMainWindow):
             self.lampset.emit(i,"Green",color_tup[2]*255)
 
     def create_color(self):
-        self.color_dia0 = ColorDialog()
+        self.color_dia0 = ColorDialog(parent=self)
         # self.color_dia0.setOption(2)
         self.color_dia0.currentColorChanged.connect(self.test_colors)
 
         self.create_sub_area("color", "Color Changer LED", [[self.color_dia0, 0, 0]])
 
     def create_color_bar(self):
-        self.color_dia1 = ColorDialog()
+        self.color_dia1 = ColorDialog(parent=self)
         # self.color_dia0.setOption(2)
         self.color_dia1.currentColorChanged.connect(self.test_colors1)
 
@@ -623,7 +631,7 @@ class MainWindow(QMainWindow):
             for col in range(self.col_count):
                 getattr(self,name+"_layout").setColumnMinimumWidth(col,width)
         setattr(self,name+"_widget",QWidget())
-        getattr(self,name+"_widget").setLayout(self.name+"_layout")
+        getattr(self,name+"_widget").setLayout(getattr(self,name+"_layout"))
         setattr(self,name+"_sub",QMdiSubWindow())
         getattr(self,name+"_sub").setWidget(getattr(self,name+"_widget"))
         getattr(self,name+"_sub").setWindowTitle(title)

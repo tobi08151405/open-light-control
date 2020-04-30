@@ -1,17 +1,18 @@
-from PyQt4 import QtGui, QtCore
+from PyQt5 import QtGui, QtCore, QtWidgets
 import colorsys
 import inspect
 import math
 import os
 import sys
 
+working_directory = os.path.dirname(os.path.realpath(__file__))
 
-class defaultColors(QtGui.QWidget):
+class defaultColors(QtWidgets.QWidget):
     def __init__(self, colorpickerWidget, parent=None):
         super(defaultColors, self).__init__(parent)
-        self.layout = QtGui.QVBoxLayout(self)
-        row0 = QtGui.QHBoxLayout()
-        row1 = QtGui.QHBoxLayout()
+        self.layout = QtWidgets.QVBoxLayout(self)
+        row0 = QtWidgets.QHBoxLayout()
+        row1 = QtWidgets.QHBoxLayout()
 
         self.layout.addLayout(row0)
         self.layout.addSpacing(5)
@@ -33,57 +34,57 @@ class defaultColors(QtGui.QWidget):
                 self.buttonsHoverColor, self.buttonsWidht, self.buttonsHeight, self.buttonsWidht, self.buttonsHeight,
                 self.buttonsRadius))
 
-        red = QtGui.QPushButton()
+        red = QtWidgets.QPushButton()
         red.setToolTip("Red")
         red.setStyleSheet("QPushButton{background-color: rgb(255,0,0); }")
         red.clicked.connect(lambda: colorpickerWidget.setColor(0))  # HSV
 
-        green = QtGui.QPushButton()
+        green = QtWidgets.QPushButton()
         green.setToolTip("Green")
         green.setStyleSheet("QPushButton{background-color: rgb(0,255,0); }")
         green.clicked.connect(lambda: colorpickerWidget.setColor(120))  # HSV
 
-        blue = QtGui.QPushButton()
+        blue = QtWidgets.QPushButton()
         blue.setToolTip("Blue")
         blue.setStyleSheet("QPushButton{background-color: rgb(0,0,255); }")
         blue.clicked.connect(lambda: colorpickerWidget.setColor(240))  # HSV
 
-        aqua = QtGui.QPushButton()
+        aqua = QtWidgets.QPushButton()
         aqua.setToolTip("Aqua")
         aqua.setStyleSheet("QPushButton{background-color: rgb(0,255,255); }")
         aqua.clicked.connect(lambda: colorpickerWidget.setColor(180))  # HSV
 
-        tomato = QtGui.QPushButton()
+        tomato = QtWidgets.QPushButton()
         tomato.setToolTip("Tomato")
         tomato.setStyleSheet("QPushButton{background-color: rgb(255, 99, 71); }")
         tomato.clicked.connect(lambda: colorpickerWidget.setColor(9))  # HSV
 
-        yellow = QtGui.QPushButton()
+        yellow = QtWidgets.QPushButton()
         yellow.setToolTip("Yellow")
         yellow.setStyleSheet("QPushButton{background-color: rgb(255, 255, 0); }")
         yellow.clicked.connect(lambda: colorpickerWidget.setColor(60))  # HSV
 
-        blueviolet = QtGui.QPushButton()
+        blueviolet = QtWidgets.QPushButton()
         blueviolet.setToolTip("BlueViolet")
         blueviolet.setStyleSheet("QPushButton{background-color: rgb(138, 43, 226); }")
         blueviolet.clicked.connect(lambda: colorpickerWidget.setColor(271))  # HSV
 
-        violet = QtGui.QPushButton()
+        violet = QtWidgets.QPushButton()
         violet.setToolTip("Violet")
         violet.setStyleSheet("QPushButton{background-color: rgb(255, 0, 255); }")
         violet.clicked.connect(lambda: colorpickerWidget.setColor(300))  # HSV
 
-        orange = QtGui.QPushButton()
+        orange = QtWidgets.QPushButton()
         orange.setToolTip("Orange")
         orange.setStyleSheet("QPushButton{background-color: rgb(255, 165, 0); }")
         orange.clicked.connect(lambda: colorpickerWidget.setColor(39))  # HSV
 
-        orangered = QtGui.QPushButton()
+        orangered = QtWidgets.QPushButton()
         orangered.setToolTip("OrangeRed")
         orangered.setStyleSheet("QPushButton{background-color: rgb(255, 68, 0); }")
         orangered.clicked.connect(lambda: colorpickerWidget.setColor(16))  # HSV
 
-        lightgreen = QtGui.QPushButton()
+        lightgreen = QtWidgets.QPushButton()
         lightgreen.setToolTip("Lightgreen")
         lightgreen.setStyleSheet("QPushButton{background-color: rgb(0, 255, 157); }")
         lightgreen.clicked.connect(lambda: colorpickerWidget.setColor(157))  # HSV
@@ -95,7 +96,7 @@ class defaultColors(QtGui.QWidget):
         row0.addWidget(aqua)
         row0.addWidget(violet)
 
-        # space_for_secondRow = QtGui.QWidget()
+        # space_for_secondRow = QtWidgets.QWidget()
         row1.addSpacing(self.spaceForSeconfRow)
         row1.addWidget(orange)
         row1.addWidget(lightgreen)
@@ -105,7 +106,7 @@ class defaultColors(QtGui.QWidget):
         row1.addSpacing(self.spaceForSeconfRow)
 
 
-class colorpicker_sliders(QtGui.QWidget):
+class colorpicker_sliders(QtWidgets.QWidget):
     def __init__(self, slidersWidgetWidth, spaceBetweenColorpickerAndSliders, spaceBetweenSliders, parent=None):
         super(colorpicker_sliders, self).__init__(parent)
 
@@ -115,7 +116,7 @@ class colorpicker_sliders(QtGui.QWidget):
         self.spaceBetweenColorpickerAndSliders = spaceBetweenColorpickerAndSliders
         self.spaceBetweenSliders = spaceBetweenSliders
 
-        self.brightnessSlider = QtGui.QSlider(1)
+        self.brightnessSlider = QtWidgets.QSlider(1)
         self.brightnessSlider.setObjectName("brightnessSlider")
         self.brightnessSlider.setMinimum(0)
         self.brightnessSlider.setMaximum(255)
@@ -123,11 +124,11 @@ class colorpicker_sliders(QtGui.QWidget):
         self.brightnessSlider.setSingleStep(1)
         self.brightnessSlider.setToolTip("Brightness")
 
-        self.brightness_icon = QtGui.QPushButton()
+        self.brightness_icon = QtWidgets.QPushButton()
         self.brightness_icon.setObjectName("brightness_icon")
         self.brightness_icon.setToolTip("Brightness")
 
-        self.saturationSlider = QtGui.QSlider(1)
+        self.saturationSlider = QtWidgets.QSlider(1)
         self.saturationSlider.setObjectName("saturationSlider")
         self.saturationSlider.setMinimum(0)
         self.saturationSlider.setMaximum(255)
@@ -135,22 +136,22 @@ class colorpicker_sliders(QtGui.QWidget):
         self.saturationSlider.setSingleStep(1)
         self.saturationSlider.setToolTip("Saturation")
 
-        self.saturation_icon = QtGui.QPushButton()
+        self.saturation_icon = QtWidgets.QPushButton()
         self.saturation_icon.setToolTip("Saturation")
         self.saturation_icon.setObjectName("saturation_icon")
 
         # ------Layout------
-        self.layout = QtGui.QVBoxLayout(self)
+        self.layout = QtWidgets.QVBoxLayout(self)
         self.layout.addSpacing(self.spaceBetweenColorpickerAndSliders)
 
-        self.brightnessSliderLayout = QtGui.QHBoxLayout()
+        self.brightnessSliderLayout = QtWidgets.QHBoxLayout()
         self.brightnessSliderLayout.addWidget(self.brightnessSlider)
         self.brightnessSliderLayout.addWidget(self.brightness_icon)
         self.layout.addLayout(self.brightnessSliderLayout)
 
         self.layout.addSpacing(self.spaceBetweenSliders)
 
-        self.saturationSliderLayout = QtGui.QHBoxLayout()
+        self.saturationSliderLayout = QtWidgets.QHBoxLayout()
         self.saturationSliderLayout.addWidget(self.saturationSlider)
         self.saturationSliderLayout.addWidget(self.saturation_icon)
         self.layout.addLayout(self.saturationSliderLayout)
@@ -158,8 +159,9 @@ class colorpicker_sliders(QtGui.QWidget):
         self.layout.addStretch()
         # /-/-/-Layout-\-\-\
 
+class colorpickerWheel(QtWidgets.QWidget):
+    color_changed=QtCore.pyqtSignal(QtGui.QColor)
 
-class colorpickerWheel(QtGui.QWidget):
     def __init__(self, colorpickerSize, startupcolor, mouseDot_size, mouseDotDistance_changer, centralColorWidget_size,
                  centralColorWidget_radius, centerColorWidget_isCircle, sliders, parent=None):
         super(colorpickerWheel, self).__init__(parent)
@@ -181,15 +183,15 @@ class colorpickerWheel(QtGui.QWidget):
         self.class_that_called_name = stack[1][0].f_locals["self"].__class__.__name__
         # gets the class from which the colorpicker was called to call the function onCurrentColorChanged
 
-        self.colorPickerHueWheelImage = QtGui.QPixmap(r'%s\colorpicker_wheel.png' % working_directory)
+        self.colorPickerHueWheelImage = QtGui.QPixmap(working_directory+'/colorpicker_wheel.png')
         self.colorPickerHueWheelImage = self.colorPickerHueWheelImage.scaled(self.width, self.height,
                                                                              QtCore.Qt.KeepAspectRatio,
                                                                              QtCore.Qt.SmoothTransformation)
-        self.colorPickerHueWheelImageWdiget = QtGui.QLabel()
+        self.colorPickerHueWheelImageWdiget = QtWidgets.QLabel()
         self.colorPickerHueWheelImageWdiget.setPixmap(self.colorPickerHueWheelImage)
         self.colorPickerHueWheelImageWdiget.setFixedSize(self.width, self.height)
 
-        self.centerColorWidget = QtGui.QLabel(parent=self.colorPickerHueWheelImageWdiget)
+        self.centerColorWidget = QtWidgets.QLabel(parent=self.colorPickerHueWheelImageWdiget)
         self.centerColorWidget.setFixedSize(self.centerColorwidth, self.centerColorheight)
         self.centerColorWidget.move(int(self.width / 2 - self.centerColorWidget.width() / 2),
                                     int(self.height / 2 - self.centerColorWidget.height() / 2))
@@ -200,7 +202,7 @@ class colorpickerWheel(QtGui.QWidget):
         self.centerColorWidget.setStyleSheet(
             "QLabel{background-color: #ff0000; border-radius: %s; border}" % str(self.centerColorWidgetRadius))
 
-        self.mouseDot = QtGui.QLabel(parent=self.colorPickerHueWheelImageWdiget)
+        self.mouseDot = QtWidgets.QLabel(parent=self.colorPickerHueWheelImageWdiget)
         self.mouseDot.setFixedSize(self.mouseDot_size, self.mouseDot_size)
         self.mouseDotRadius = str(int(self.mouseDot.width() / 2))
         self.mouseDot.setStyleSheet(
@@ -208,7 +210,7 @@ class colorpickerWheel(QtGui.QWidget):
         self.mouseDot.setObjectName("mouseDot")
 
         # ------Layout------
-        self.layout = QtGui.QVBoxLayout(self)
+        self.layout = QtWidgets.QVBoxLayout(self)
         self.layout.setContentsMargins(0, 0, 0, 0)
         self.layout.addWidget(self.colorPickerHueWheelImageWdiget)
         # /-/-/-Layout-\-\-\
@@ -333,7 +335,7 @@ class colorpickerWheel(QtGui.QWidget):
             "QLabel{background-color: rgba%s; border-radius:%s;}" % (rgba_color, str(self.centerColorWidgetRadius)))
 
     def change_centerColorHueValue(self, color, value):
-        rgba_color = (str(color)).replace(")", ", ") + str(value) + ")"
+        rgba_color = (str(color)).replace(")", ", ") + str(1) + ")"
         self.centerColorWidget.setStyleSheet(
             "QLabel{background-color: rgba%s; border-radius:%s;}" % (rgba_color, str(self.centerColorWidgetRadius)))
 
@@ -422,6 +424,7 @@ class colorpickerWheel(QtGui.QWidget):
         try:
             self.class_that_called.onCurrentColorChanged(
                 [self.HSV_color, self.rgb_color, self.hsv_color_array_360_base])
+            self.color_changed.emit(QtGui.QColor(self.rgb_color[0],self.rgb_color[1],self.rgb_color[2]))
         except Exception as e:
             print("To get the color on the main class of colorpicker create this function on it: \n"
                   "def onCurrentColorChanged(color):\n"
@@ -433,12 +436,14 @@ class colorpickerWheel(QtGui.QWidget):
                   "This lets you use the values from the class that the colorpicker was CALLED!\n", e)
 
 
-class ColorPicker(QtGui.QWidget):
+class ColorPicker(QtWidgets.QWidget):
+    currentColorChanged = QtCore.pyqtSignal(QtGui.QColor)
+
     def __init__(self, width, startupcolor, parent=None):
         super(ColorPicker, self).__init__(parent)
         self.width = width
         self.startup_color = startupcolor  # HSV (0-360, 0-255, 0-255)
-        self.setStyleSheet(open(r'%s\colorPickerStylesheet.css' % working_directory).read())
+        self.setStyleSheet(open(working_directory+'/colorPickerStylesheet.css').read())
 
         ColorPicker.hsv_color_array = 0
         ColorPicker.rgb_color_array = 0
@@ -453,17 +458,18 @@ class ColorPicker(QtGui.QWidget):
                                                   mouseDot_size=30, mouseDotDistance_changer=2,
                                                   centralColorWidget_size=55, centralColorWidget_radius=20,
                                                   centerColorWidget_isCircle=True, sliders=self.sliders)
+        self.colorpickerWidget.color_changed.connect(lambda x: self.currentColorChanged.emit(x))
 
         self.colorpickerWidget.setFixedSize(self.colorpickerWidget.width, self.colorpickerWidget.height)  # do not forget to set a fixed size same as the size when initialising the class/otherwise set layouts with stretches.
 
-        self.defaultColors = defaultColors(self.colorpickerWidget)
-        self.defaultColors.setFixedWidth(self.colorpickerWidget.width)  # do not forget to set a fixed size same as the size when initialising the class/otherwise set layouts with stretches.
+        # self.defaultColors = defaultColors(self.colorpickerWidget)
+        # self.defaultColors.setFixedWidth(self.colorpickerWidget.width)  # do not forget to set a fixed size same as the size when initialising the class/otherwise set layouts with stretches.
 
         # ------Layout------
-        self.layout = QtGui.QVBoxLayout(self)
+        self.layout = QtWidgets.QVBoxLayout(self)
         self.layout.addWidget(self.colorpickerWidget)
         self.layout.addWidget(self.sliders)
-        self.layout.addWidget(self.defaultColors)
+        # self.layout.addWidget(self.defaultColors)
         self.layout.addStretch(1)
         # /-/-/-Layout-\-\-\
 
@@ -478,9 +484,8 @@ class ColorPicker(QtGui.QWidget):
         # print(ColorPicker.hsv_color_array_360_base)
         # print("RGB color", ColorPicker.rgb_color_array)
 
-
 def run():
-    app = QtGui.QApplication(sys.argv)
+    app = QtWidgets.QApplication(sys.argv)
     global working_directory
     working_directory = os.path.dirname(os.path.realpath(__file__)) #directory where files are placed in this case same as the executable directory
     Colorpicker = ColorPicker(width=250, startupcolor=[0, 255, 255])  # HSV (0-360, 0-255, 0-255)
@@ -491,4 +496,4 @@ def run():
 
     sys.exit(app.exec_())
 
-run()
+# run()
