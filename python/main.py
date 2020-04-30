@@ -12,8 +12,7 @@ from functools import partial
 
 import pdb
 
-sys.path.insert(1, "PyQt-ColorPicker")
-from PyQt_Circular_Colorpicker import ColorPicker as NewColorPicker
+from PyQt_ColorPicker.PyQt_Circular_Colorpicker import ColorPicker as NewColorPicker
 
 from GlobalVar import *
 import GlobalVar
