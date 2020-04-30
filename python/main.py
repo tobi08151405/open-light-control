@@ -37,20 +37,20 @@ def change_uni(from_, to_):
     uni_map[uni_map_[int(from_)]] = int(to_)
     uni_map_ = {v: k for k, v in uni_map.items()}
 
-class ColorDialog(NewColorPicker):
+class NewColorDialog(NewColorPicker):
     def __init__(self, parent=None):
         NewColorPicker.__init__(self, width=250, startupcolor=[0,255,255], parent=parent)
 
 
-# class ColorDialog(QColorDialog):
-#     def __init__(self, parent=None):
-#         super().__init__(parent)
-#         self.setOptions(self.options() | QColorDialog.DontUseNativeDialog)
-#
-#         for children in self.findChildren(QWidget):
-#             classname = children.metaObject().className()
-#             if classname not in ("QColorPicker", "QColorLuminancePicker"):
-#                 children.hide()
+class ColorDialog(QColorDialog):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.setOptions(self.options() | QColorDialog.DontUseNativeDialog)
+
+        for children in self.findChildren(QWidget):
+            classname = children.metaObject().className()
+            if classname not in ("QColorPicker", "QColorLuminancePicker"):
+                children.hide()
 
 class MainWindow(QMainWindow):
     lampset = pyqtSignal(int, str, object)
