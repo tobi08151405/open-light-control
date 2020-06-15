@@ -126,5 +126,7 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
+.idea/
+PyQt_ColorPicker/
 
 *.zip
