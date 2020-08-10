@@ -13,9 +13,8 @@ from functools import partial
 
 import pdb
 
-from PyQt_ColorPicker.PyQt_Circular_Colorpicker import ColorPicker as NewColorPicker
-
 import GlobalVar
+from Circular_Colorpicker import ColorPicker as NewColorPicker
 from SerialThread import SerialThread
 from AbstractThread import AbstractThread
 from CuelistThread import CuelistThread
@@ -523,7 +522,7 @@ class MainWindow(QMainWindow):
             self.lampset.emit(i,"Green",color_tup[2]*255)
 
     def create_color(self):
-        self.color_dia0 = ColorDialog(parent=self)
+        self.color_dia0 = NewColorDialog(parent=self)
         # self.color_dia0.setOption(2)
         self.color_dia0.currentColorChanged.connect(self.test_colors)
 
