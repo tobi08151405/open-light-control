@@ -8,13 +8,13 @@ import time
 import math
 import colorsys
 import types
+import os
 from functools import partial
 
 import pdb
 
 from PyQt_ColorPicker.PyQt_Circular_Colorpicker import ColorPicker as NewColorPicker
 
-from GlobalVar import *
 import GlobalVar
 from SerialThread import SerialThread
 from AbstractThread import AbstractThread
@@ -23,19 +23,20 @@ from XY_Pad import XY_Pad
 import Create_lamps
 import Reverser
 
+path = os.getcwd()
+
 Create_lamps.create()
-Reverser.create_typ_to_func(["../dev/ofl-json/tao-led.json","../dev/ofl-json/generic/desk-channel.json","../dev/ofl-json/michi.json","../dev/ofl-json/stockwerk-bar.json","../dev/ofl-json/stockwerk-led.json"])
-Reverser.create_typ_to_addr(["../dev/ofl-json/tao-led.json","../dev/ofl-json/generic/desk-channel.json","../dev/ofl-json/michi.json","../dev/ofl-json/stockwerk-bar.json","../dev/ofl-json/stockwerk-led.json"])
-# Reverser.create_typ_to_func(["../dev/ofl-json/tao-led.json","../dev/ofl-json/generic/desk-channel.json","../dev/ofl-json/michi.json"])
-# Reverser.create_typ_to_addr(["../dev/ofl-json/tao-led.json","../dev/ofl-json/generic/desk-channel.json","../dev/ofl-json/michi.json"])
-#Reverser.create_typ_to_func(["../dev/ofl-json/generic/rgb-fader.json","../dev/ofl-json/sola-wash.json"])
-#Reverser.create_typ_to_addr(["../dev/ofl-json/generic/rgb-fader.json","../dev/ofl-json/sola-wash.json"])
+Reverser.create_typ_to_func([path+"/dev/ofl-json/tao-led.json", path+"/dev/ofl-json/generic/desk-channel.json",
+                             path+"/dev/ofl-json/michi.json", path+"/dev/ofl-json/stockwerk-bar.json", path+"/dev/ofl-json/stockwerk-led.json"])
+Reverser.create_typ_to_addr([path+"/dev/ofl-json/tao-led.json",path+"/dev/ofl-json/generic/desk-channel.json",path+"/dev/ofl-json/michi.json",path+"/dev/ofl-json/stockwerk-bar.json",path+"/dev/ofl-json/stockwerk-led.json"])
+# Reverser.create_typ_to_func([path+"/dev/ofl-json/tao-led.json",path+"/dev/ofl-json/generic/desk-channel.json",path+"/dev/ofl-json/michi.json"])
+# Reverser.create_typ_to_addr([path+"/dev/ofl-json/tao-led.json",path+"/dev/ofl-json/generic/desk-channel.json",path+"/dev/ofl-json/michi.json"])
+#Reverser.create_typ_to_func([path+"/dev/ofl-json/generic/rgb-fader.json",path+"/dev/ofl-json/sola-wash.json"])
+#Reverser.create_typ_to_addr([path+"/dev/ofl-json/generic/rgb-fader.json",path+"/dev/ofl-json/sola-wash.json"])
 
 def change_uni(from_, to_):
-    global uni_map
-    global uni_map_
-    uni_map[uni_map_[int(from_)]] = int(to_)
-    uni_map_ = {v: k for k, v in uni_map.items()}
+    GlobalVar.uni_map[GlobalVar.uni_map_[int(from_)]] = int(to_)
+    GlobalVar.uni_map_ = {v: k for k, v in GlobalVar.uni_map.items()}
 
 class NewColorDialog(NewColorPicker):
     def __init__(self, parent=None):
@@ -69,7 +70,7 @@ class MainWindow(QMainWindow):
         self.global_timer.timeout.connect(self.update_error_log)
         self.global_timer.start(500)
 
-        if serial_enable:
+        if GlobalVar.serial_enable:
             self.serial_thread = SerialThread()
             self.serial_thread.keystroke.connect(self.map_keys)
             self.serial_thread.fadermove.connect(self.map_faders)
@@ -131,7 +132,7 @@ class MainWindow(QMainWindow):
 
         self.mdi = QMdiArea()
 
-        for cuelist in cuelist_dict.keys():
+        for cuelist in GlobalVar.cuelist_dict.keys():
             setattr(self,"{0:s}_cue_thread".format(cuelist),CuelistThread())
             getattr(self,"{0:s}_cue_thread".format(cuelist)).lampset.connect(self.lampset_relay)
             getattr(self,"{0:s}_cue_thread".format(cuelist)).set_cuelist(str(cuelist))
@@ -178,10 +179,10 @@ class MainWindow(QMainWindow):
     def toggle_freeze(self, toggled):
         if toggled:
             self.freezelabel.setText("Output freezed")
-            output_freeze[0] = True
+            GlobalVar.output_freeze[0] = True
         else:
             self.freezelabel.setText("")
-            output_freeze[0] = False
+            GLobalVar.output_freeze[0] = False
             self.abstract_thread.send_artnet_all_sock_relay()
 
     def sort(self):
@@ -189,28 +190,30 @@ class MainWindow(QMainWindow):
 
     @pyqtSlot()
     def update_error_log(self):
-        self.error_text.setPlainText("\n".join(error_log_global))
+        self.error_text.setPlainText("\n".join(GlobalVar.error_log_global))
         self.error_text.verticalScrollBar().setValue(self.error_text.verticalScrollBar().maximum())
 
     # @pyqtSlot(str)
     def key_pressed(self, key, pressed=True):
         try:
             if pressed:
-                if key_mapping[key][0] == "pad":
-                    if key_mapping.get(key,["",False])[3]:
-                        self.statuslinebar.insert(key_mapping.get(key, [""])[2])
+                if GlobalVar.key_mapping[key][0] == "pad":
+                    if GlobalVar.key_mapping.get(key,["",False])[3]:
+                        self.statuslinebar.insert(
+                            GlobalVar.key_mapping.get(key, [""])[2])
                     else:
-                        if key_mapping.get(key,[""])[2] == "Enter":
+                        if GlobalVar.key_mapping.get(key, [""])[2] == "Enter":
                             self.statuslinebar.returnPressed.emit()
-                elif key_mapping[key][0] == "cuelist":
-                    if key_mapping[key][2] == "go":
-                        self.cuelist_go(getatttr(self,"{0:s}_cue_thread)".format(key_mapping[key][1])))
-                elif key_mapping[key][0] == "command":
-                    getattr(self,key_mapping[key][1])()
+                elif GlobalVar.key_mapping[key][0] == "cuelist":
+                    if GlobalVar.key_mapping[key][2] == "go":
+                        self.cuelist_go(getattr(self, "{0:s}_cue_thread)".format(
+                            GlobalVar.key_mapping[key][1])))
+                elif GlobalVar.key_mapping[key][0] == "command":
+                    getattr(self, GlobalVar.key_mapping[key][1])()
                 else:
                     raise(KeyError)
         except:
-            error_log_global.append("Key press failed: num {0:s}".format(key))
+            GlobalVar.error_log_global.append("Key press failed: num {0:s}".format(key))
 
     def exec_program_line(self):
         text = self.statuslinebar.text()
@@ -222,7 +225,8 @@ class MainWindow(QMainWindow):
                 numbers="+".join([str(x) for x in range(int(number[0]),int(number[1])+1)])
                 text=numbers+text[text.index(nums)+len(nums):]
         except:
-            error_log_global.append("Programmer Error: unkown command")
+            GlobalVar.error_log_global.append(
+                "Programmer Error: unkown command")
         if "*" in text:
             try:
                 dims = text.split("*")[1]
@@ -238,7 +242,7 @@ class MainWindow(QMainWindow):
                     if dim > 100:
                         raise ValueError
             except ValueError:
-                error_log_global.append("Programmer Error: value out of range")
+                GlobalVar.error_log_global.append("Programmer Error: value out of range")
                 self.statuslinebar.clear()
                 return
             if text.split("*")[0] == "":
@@ -252,11 +256,11 @@ class MainWindow(QMainWindow):
             for i in lamp:
                 if clear:
                     try:
-                        in_use_programmer.pop(i)
+                        GlobalVar.in_use_programmer.pop(i)
                     except KeyError:
                         pass
                 else:
-                    in_use_programmer[i] = dim
+                    GlobalVar.in_use_programmer[i] = dim
                 self.lampset.emit(int(i),"Dimmer",dim)
         elif "c" in text:
             if "+" in text.split("c")[0]:
@@ -279,24 +283,24 @@ class MainWindow(QMainWindow):
             if setting == "Color":
                 for i in lamp:
                     try:
-                        dim = in_use_programmer[i]
+                        dim = GlobalVar.in_use_programmer[i]
                     except KeyError:
                         dim = 0
-                    in_use_programmer[i] = dim
+                    GlobalVar.in_use_programmer[i] = dim
                     self.lampset.emit(int(i),"Red",int(set_value[0]))
                     self.lampset.emit(int(i),"Green",int(set_value[1]))
                     self.lampset.emit(int(i),"Blue",int(set_value[2]))
             else:
                 for i in lamp:
                     try:
-                        dim = in_use_programmer[i]
+                        dim = GlobalVar.in_use_programmer[i]
                     except KeyError:
                         dim = 0
-                    in_use_programmer[i] = dim
+                    GlobalVar.in_use_programmer[i] = dim
                     self.lampset.emit(int(i),setting,set_value)
         else:
-            error_log_global.append("Programmer Error: unkown command")
-        self.statusbarhistory.setText("+".join(in_use_programmer.keys()))
+            GlobalVar.error_log_global.append("Programmer Error: unkown command")
+        self.statusbarhistory.setText("+".join(GlobalVar.in_use_programmer.keys()))
         self.statuslinebar.clear()
 
     ## build / exec func
@@ -314,21 +318,21 @@ class MainWindow(QMainWindow):
         # self.output_layout.addWidget(QLabel("Pan"),0,4)
         # self.output_layout.addWidget(QLabel("Tilt"),0,5)
         line=1
-        for num in list(nr_to_typ.keys()):
+        for num in list(GlobalVar.nr_to_typ.keys()):
             self.output_layout.addWidget(QLabel(str(num)),line,0)
-            if typ_to_func[nr_to_typ[num]]['Dimmer']:
+            if GlobalVar.typ_to_func[GlobalVar.nr_to_typ[num]]['Dimmer']:
                 setattr(self,"output_{0:d}_Dimmer".format(num),QLabel('0'))
                 self.output_layout.addWidget(getattr(self,"output_{0:d}_Dimmer".format(num)),line,1)
-            if not typ_to_func[nr_to_typ[num]]['Color'] == False:
+            if not GlobalVar.typ_to_func[GlobalVar.nr_to_typ[num]]['Color'] == False:
                 setattr(self,"output_{0:d}_Color".format(num),QLabel('(0,0,0)'))
                 self.output_layout.addWidget(getattr(self,"output_{0:d}_Color".format(num)),line,2)
-            # if not typ_to_func[nr_to_typ[num]]['Gobo'] == False:
+            # if not GlobalVar.typ_to_func[GlobalVar.nr_to_typ[num]]['Gobo'] == False:
             #     setattr(self,"output_{0:d}_Gobo".format(num),QLabel('Open'))
             #     self.output_layout.addWidget(getattr(self,"output_{0:d}_Gobo".format(num)),line,3)
-            # if not typ_to_func[nr_to_typ[num]]['Pan'] == False:
+            # if not GlobalVar.typ_to_func[GlobalVar.nr_to_typ[num]]['Pan'] == False:
             #     setattr(self,"output_{0:d}_Pan".format(num),QLabel('Open'))
             #     self.output_layout.addWidget(getattr(self,"output_{0:d}_Pan".format(num)),line,4)
-            # if not typ_to_func[nr_to_typ[num]]['Tilt'] == False:
+            # if not GlobalVar.typ_to_func[GlobalVar.nr_to_typ[num]]['Tilt'] == False:
             #     setattr(self,"output_{0:d}_Tilt".format(num),QLabel('Open'))
             #     self.output_layout.addWidget(getattr(self,"output_{0:d}_Tilt".format(num)),line,4)
             line+=1
@@ -374,7 +378,7 @@ class MainWindow(QMainWindow):
         self.master_slid=QSlider()
         self.master_slid.setMinimum(0)
         self.master_slid.setMaximum(100)
-        self.master_slid.setStyleSheet(slider_stylesheet)
+        self.master_slid.setStyleSheet(GlobalVar.slider_stylesheet)
         self.master_slid_max_button=QPushButton("Max")
         self.master_slid_min_button=QPushButton("Min")
         self.master_slid_resend_button=QPushButton("Resend")
@@ -410,10 +414,11 @@ class MainWindow(QMainWindow):
     ### Serial Monitor Functions
     def create_keys(self):
         keys_list=[]
-        for row in range(rows):
-            for col in range(cols):
-                num = (row * cols) + col
-                setattr(self,"key"+str(num),QPushButton(key_mapping.get(str(num),["","None"])[1]))
+        for row in range(GlobalVar.rows):
+            for col in range(GlobalVar.cols):
+                num = (row * GlobalVar.cols) + col
+                setattr(self, "key"+str(num),
+                        QPushButton(GlobalVar.key_mapping.get(str(num), ["", "None"])[1]))
                 # getattr(self,"keys"+str(num)).setCheckable(True)
                 getattr(self,"key"+str(num)).setSizePolicy(QSizePolicy.MinimumExpanding,QSizePolicy.MinimumExpanding)
                 getattr(self,"key"+str(num)).pressed.connect(partial(self.key_pressed, str(num)))
@@ -422,7 +427,7 @@ class MainWindow(QMainWindow):
 
     def create_faders(self):
         faders_list=[]
-        for fader in range(faders):
+        for fader in range(GlobalVar.faders):
             setattr(self,"fader"+str(fader),QLabel())
             getattr(self,"fader"+str(fader)).setAlignment(Qt.AlignCenter)
             getattr(self,"fader"+str(fader)).setText('0')
@@ -431,7 +436,7 @@ class MainWindow(QMainWindow):
 
     def create_encoders(self):
         encoder_list=[]
-        for encoder in range(encoders):
+        for encoder in range(GlobalVar.encoders):
             setattr(self,"encoder"+str(encoder),QLabel())
             getattr(self,"encoder"+str(encoder)).setAlignment(Qt.AlignCenter)
             getattr(self,"encoder"+str(encoder)).setText('0')
@@ -449,7 +454,7 @@ class MainWindow(QMainWindow):
     @pyqtSlot(str, int)
     def map_faders(self, fader, value):
         try:
-            fader_to_set = fader_mapping[fader]+"_slid"
+            fader_to_set = GlobalVar.fader_mapping[fader]+"_slid"
             getattr(self,fader_to_set).setValue((value/1023)*getattr(self,fader_to_set).maximum())
         except KeyError:
             pass
@@ -550,14 +555,16 @@ class MainWindow(QMainWindow):
             self.lampset.emit(i, 'Blue', col.blue())
 
     def faders_next_com(self):
-        if GlobalVar.curr_page+1 < len(fader_map):
+        if GlobalVar.curr_page+1 < len(GlobalVar.fader_map):
             next_page = GlobalVar.curr_page + 1
         else:
             next_page = 0
-        for i in range(faders):
-            fader_map[GlobalVar.curr_page][i] = getattr(self,"fader_{0:d}_ma_slid".format(i)).value()
-            getattr(self,"fader_{0:d}_ma_slid".format(i)).setValue(fader_map[next_page][i])
-            self.faderset.emit(i, fader_map[next_page][i])
+        for i in range(GlobalVar.faders):
+            GlobalVar.fader_map[GlobalVar.curr_page][i] = getattr(
+                self, "fader_{0:d}_ma_slid".format(i)).value()
+            getattr(self, "fader_{0:d}_ma_slid".format(i)).setValue(
+                GlobalVar.fader_map[next_page][i])
+            self.faderset.emit(i, GlobalVar.fader_map[next_page][i])
             GlobalVar.curr_page = next_page
 
     def create_pb_stueck(self):
@@ -646,7 +653,7 @@ class MainWindow(QMainWindow):
     def create_fader(self, name, label, liste, start, start1, fad_max=100):
         setattr(self,name+"_slid",QSlider())
         getattr(self,name+"_slid").setMinimumHeight(200)
-        getattr(self,name+"_slid").setStyleSheet(slider_stylesheet)
+        getattr(self, name+"_slid").setStyleSheet(GlobalVar.slider_stylesheet)
         getattr(self,name+"_slid").setMinimum(0)
         getattr(self,name+"_slid").setMaximum(fad_max)
         getattr(self,name+"_slid").valueChanged.connect(getattr(self,name+"_slid_fader"))
@@ -664,10 +671,10 @@ class MainWindow(QMainWindow):
             cuelist.start()
 
     def unset_pub(self):
-        if fader_mapping["2"] == "pub":
-            fader_mapping["2"] = "spot"
+        if GlobalVar.fader_mapping["2"] == "pub":
+            GlobalVar.fader_mapping["2"] = "spot"
         else:
-            fader_mapping["2"] = "pub"
+            GlobalVar.fader_mapping["2"] = "pub"
 
     def change_led(self):
         self.lampset.emit(10, "Red", 255)

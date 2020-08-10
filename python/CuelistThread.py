@@ -2,7 +2,7 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 
-from GlobalVar import *
+import GlobalVar
 
 from time import time
 # import pdb
@@ -30,17 +30,18 @@ class CuelistThread(QThread):
 
     def set_cuelist(self, cuelist):
         try:
-            self.cuelist = cuelist_dict[cuelist]
+            self.cuelist = GlobalVar.cuelist_dict[cuelist]
             self.options = self.cuelist.get("options", {})
         except KeyError:
-            error_log_global.append("CuelistThread: cuelist {0:s} not defined".format(cuelist))
+            GlobalVar.error_log_global.append(
+                "CuelistThread: cuelist {0:s} not defined".format(cuelist))
 
     def run(self):
         # for lamp in self.used_lamps:
         #     try:
         #         nr_in_use[lamp] += 1
         #     except KeyError:
-        #         error_log_global.append("CuelistThread: failed to find lamp nr {0:d}".format(lamp))
+        #         GlobalVar.error_log_global.append("CuelistThread: failed to find lamp nr {0:d}".format(lamp))
         self.goto(min([x for x in self.cuelist.keys() if not isinstance(x, str)]))
         loop = QEventLoop()
         loop.exec_()
@@ -106,7 +107,8 @@ class CuelistThread(QThread):
                 self.fade_time_begin = time()
                 self.fade = True
         except KeyError:
-            error_log_global.append("CuelistThread: cue {0:d} not defined".format(cue))
+            GlobalVar.error_log_global.append(
+                "CuelistThread: cue {0:d} not defined".format(cue))
 
     def go(self):
         self.goto(-1)
@@ -114,8 +116,9 @@ class CuelistThread(QThread):
     def release(self):
         for lamp_num in self.used_lamps:
             try:
-                nr_in_use[lamp_num] -= 1
-                if nr_in_use[lamp_num] == 1:
+                GlobalVar.nr_in_use[lamp_num] -= 1
+                if GlobalVar.nr_in_use[lamp_num] == 1:
                     self.lampset.emit(lamp_num, "Dimmer", 0)
             except KeyError:
-                error_log_global.append("CuelistThread: failed to find lamp nr {0:d}".format(lamp_num))
+                GlobalVar.error_log_global.append(
+                    "CuelistThread: failed to find lamp nr {0:d}".format(lamp_num))

@@ -19,7 +19,7 @@ void setup() {
 
 void loop() {
   for (int encIndex=0; encIndex<encCount; encIndex++) {
-    curValue = digitalRead(pulse[encIndex]);
+    int curValue = digitalRead(pulse[encIndex]);
     if (curValue == HIGH) {
       int currDir = digitalRead(direction[encIndex]);
       if (currDir == HIGH) {
@@ -30,11 +30,11 @@ void loop() {
       }
     }
   }
-  message = Serial.readStringUntil('\n');
+  String message = Serial.readStringUntil('\n');
   if (message == "get") {
     for (int encIndex=0; encIndex<encCount; encIndex++) {
       Serial.println(curDeriva[encIndex]);
-      curDeriva[encIndex] = 0
+      curDeriva[encIndex] = 0;
     }
   }
 }

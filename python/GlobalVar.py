@@ -23,12 +23,12 @@ nr_in_use={}
 
 in_use_programmer={}
 
-# curr_page=0
-# fader_map = [[],[],[]]
-# for i in range(faders):
-#     fader_map[0].append(0)
-#     fader_map[1].append(0)
-#     fader_map[2].append(0)
+curr_page=0
+fader_map = [[],[],[]]
+for i in range(faders):
+    fader_map[0].append(0)
+    fader_map[1].append(0)
+    fader_map[2].append(0)
 
 cuelist_dict = {
     "papa_spot": {
