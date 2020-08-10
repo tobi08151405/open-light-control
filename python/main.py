@@ -27,7 +27,8 @@ path = os.getcwd()
 Create_lamps.create()
 Reverser.create_typ_to_func([path+"/dev/ofl-json/tao-led.json", path+"/dev/ofl-json/generic/desk-channel.json",
                              path+"/dev/ofl-json/michi.json", path+"/dev/ofl-json/stockwerk-bar.json", path+"/dev/ofl-json/stockwerk-led.json"])
-Reverser.create_typ_to_addr([path+"/dev/ofl-json/tao-led.json",path+"/dev/ofl-json/generic/desk-channel.json",path+"/dev/ofl-json/michi.json",path+"/dev/ofl-json/stockwerk-bar.json",path+"/dev/ofl-json/stockwerk-led.json"])
+Reverser.create_typ_to_addr([path+"/dev/ofl-json/tao-led.json", path+"/dev/ofl-json/generic/desk-channel.json",
+                             path+"/dev/ofl-json/michi.json", path+"/dev/ofl-json/stockwerk-bar.json", path+"/dev/ofl-json/stockwerk-led.json"])
 # Reverser.create_typ_to_func([path+"/dev/ofl-json/tao-led.json",path+"/dev/ofl-json/generic/desk-channel.json",path+"/dev/ofl-json/michi.json"])
 # Reverser.create_typ_to_addr([path+"/dev/ofl-json/tao-led.json",path+"/dev/ofl-json/generic/desk-channel.json",path+"/dev/ofl-json/michi.json"])
 #Reverser.create_typ_to_func([path+"/dev/ofl-json/generic/rgb-fader.json",path+"/dev/ofl-json/sola-wash.json"])
