@@ -511,6 +511,7 @@ class ColorPicker(QtWidgets.QWidget):
 
         self.show()
 
+    @staticmethod
     def onCurrentColorChanged(color):
         # this function is called every time the color changes
         # (H(0-255), S(0-255), V(0-255))
