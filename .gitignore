@@ -12,3 +12,4 @@ python/PyQt_ColorPicker/
 python/environments
 python/__pycache__/
 FixtureLibrary/
+*fp-info-cache
