@@ -1,9 +1,5 @@
-import json
-
-#import pdb
-
 from GlobalVar import typ_to_func, typ_to_addr
-
+import json
 
 def mode_to_func(json_dic, mode):
     color = ''

@@ -3,15 +3,11 @@ from PyQt5.QtCore import Qt, QTimer, pyqtSignal, pyqtSlot, QSize
 from PyQt5.QtGui import QFont, QColor
 
 import sys
-import json
 import time
 import math
 import colorsys
-import types
 import os
 from functools import partial
-
-import pdb
 
 import GlobalVar
 from Circular_Colorpicker import ColorPicker as NewColorPicker

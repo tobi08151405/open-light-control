@@ -1,6 +1,4 @@
-import json
-
-from GlobalVar import nr_to_typ, nr_to_addr, typ_to_func, typ_to_addr, nr_in_use
+from GlobalVar import nr_to_typ, nr_to_addr, nr_in_use
 
 
 def create():
