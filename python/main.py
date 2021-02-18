@@ -233,79 +233,83 @@ class MainWindow(QMainWindow):
         except:
             GlobalVar.error_log_global.append(
                 "Programmer Error: unkown command")
-        if "*" in text:
-            try:
-                dims = text.split("*")[1]
-                if len(text.split("*")) == 3:
-                    dim = 100
-                elif dims == "":
-                    dim = 0
-                    clear = True
-                elif dims == "0":
-                    dim = int(dims)
+        try:
+            if "*" in text:
+                try:
+                    dims = text.split("*")[1]
+                    if len(text.split("*")) == 3:
+                        dim = 100
+                    elif dims == "":
+                        dim = 0
+                        clear = True
+                    elif dims == "0":
+                        dim = int(dims)
+                    else:
+                        dim = int(dims)
+                        if dim > 100:
+                            raise ValueError
+                except ValueError:
+                    GlobalVar.error_log_global.append(
+                        "Programmer Error: value out of range")
+                    self.statuslinebar.clear()
+                    return
+                if text.split("*")[0] == "":
+                    lamps = self.statusbarhistory.text()
                 else:
-                    dim = int(dims)
-                    if dim > 100:
-                        raise ValueError
-            except ValueError:
+                    lamps = text.split("*")[0]
+                if "+" in lamps:
+                    lamp = lamps.split("+")
+                else:
+                    lamp = [lamps]
+                for i in lamp:
+                    if clear:
+                        try:
+                            GlobalVar.in_use_programmer.pop(i)
+                        except KeyError:
+                            pass
+                    else:
+                        GlobalVar.in_use_programmer[i] = dim
+                    self.lampset.emit(int(i), "Dimmer", dim)
+            elif "c" in text:
+                if "+" in text.split("c")[0]:
+                    lamp = text.split("c")[0].split("+")
+                else:
+                    lamp = [text.split("c")[0]]
+                value = text.split("c")[1]
+                if "r" in value:
+                    setting = "Red"
+                    set_value = int(value.split("r")[1])
+                elif "g" in value:
+                    setting = "Green"
+                    set_value = int(value.split("g")[1])
+                elif "b" in value:
+                    setting = "Blue"
+                    set_value = int(value.split("b")[1])
+                else:
+                    setting = "Color"
+                    set_value = value.replace("(", "").replace(")", "").split(",")
+                if setting == "Color":
+                    for i in lamp:
+                        try:
+                            dim = GlobalVar.in_use_programmer[i]
+                        except KeyError:
+                            dim = 0
+                        GlobalVar.in_use_programmer[i] = dim
+                        self.lampset.emit(int(i), "Red", int(set_value[0]))
+                        self.lampset.emit(int(i), "Green", int(set_value[1]))
+                        self.lampset.emit(int(i), "Blue", int(set_value[2]))
+                else:
+                    for i in lamp:
+                        try:
+                            dim = GlobalVar.in_use_programmer[i]
+                        except KeyError:
+                            dim = 0
+                        GlobalVar.in_use_programmer[i] = dim
+                        self.lampset.emit(int(i), setting, set_value)
+            else:
                 GlobalVar.error_log_global.append(
-                    "Programmer Error: value out of range")
-                self.statuslinebar.clear()
-                return
-            if text.split("*")[0] == "":
-                lamps = self.statusbarhistory.text()
-            else:
-                lamps = text.split("*")[0]
-            if "+" in lamps:
-                lamp = lamps.split("+")
-            else:
-                lamp = [lamps]
-            for i in lamp:
-                if clear:
-                    try:
-                        GlobalVar.in_use_programmer.pop(i)
-                    except KeyError:
-                        pass
-                else:
-                    GlobalVar.in_use_programmer[i] = dim
-                self.lampset.emit(int(i), "Dimmer", dim)
-        elif "c" in text:
-            if "+" in text.split("c")[0]:
-                lamp = text.split("c")[0].split("+")
-            else:
-                lamp = [text.split("c")[0]]
-            value = text.split("c")[1]
-            if "r" in value:
-                setting = "Red"
-                set_value = int(value.split("r")[1])
-            elif "g" in value:
-                setting = "Green"
-                set_value = int(value.split("g")[1])
-            elif "b" in value:
-                setting = "Blue"
-                set_value = int(value.split("b")[1])
-            else:
-                setting = "Color"
-                set_value = value.replace("(", "").replace(")", "").split(",")
-            if setting == "Color":
-                for i in lamp:
-                    try:
-                        dim = GlobalVar.in_use_programmer[i]
-                    except KeyError:
-                        dim = 0
-                    GlobalVar.in_use_programmer[i] = dim
-                    self.lampset.emit(int(i), "Red", int(set_value[0]))
-                    self.lampset.emit(int(i), "Green", int(set_value[1]))
-                    self.lampset.emit(int(i), "Blue", int(set_value[2]))
-            else:
-                for i in lamp:
-                    try:
-                        dim = GlobalVar.in_use_programmer[i]
-                    except KeyError:
-                        dim = 0
-                    GlobalVar.in_use_programmer[i] = dim
-                    self.lampset.emit(int(i), setting, set_value)
-        else:
+                    "Programmer Error: unkown command")
+        except:
             GlobalVar.error_log_global.append(
                 "Programmer Error: unkown command")
         self.statusbarhistory.setText(
