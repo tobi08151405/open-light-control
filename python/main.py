@@ -1,6 +1,6 @@
-from PyQt5.QtWidgets import *
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
+from PyQt5.QtWidgets import QMainWindow, QWidget, QColorDialog, QLabel, QLineEdit, QMdiArea, QMdiSubWindow, QMessageBox, QTextEdit, QGridLayout, QScrollArea, QSlider, QPushButton, QApplication, QAction, QSizePolicy
+from PyQt5.QtCore import Qt, QTimer, pyqtSignal, pyqtSlot, QSize
+from PyQt5.QtGui import QFont, QColor
 
 import sys
 import json
@@ -182,7 +182,7 @@ class MainWindow(QMainWindow):
             GlobalVar.output_freeze[0] = True
         else:
             self.freezelabel.setText("")
-            GLobalVar.output_freeze[0] = False
+            GlobalVar.output_freeze[0] = False
             self.abstract_thread.send_artnet_all_sock_relay()
 
     def sort(self):
