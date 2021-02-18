@@ -1,16 +1,15 @@
-from PyQt5.QtWidgets import *
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
+from PyQt5.QtCore import QEventLoop, QThread, pyqtSignal
 
 import GlobalVar
 
 from time import time
 # import pdb
 
+
 class CuelistThread(QThread):
     lampset = pyqtSignal(int, str, object)
-    cuelist={}
-    options={}
+    cuelist = {}
+    options = {}
 
     fade = False
     cur_cue = 0
@@ -42,7 +41,8 @@ class CuelistThread(QThread):
         #         nr_in_use[lamp] += 1
         #     except KeyError:
         #         GlobalVar.error_log_global.append("CuelistThread: failed to find lamp nr {0:d}".format(lamp))
-        self.goto(min([x for x in self.cuelist.keys() if not isinstance(x, str)]))
+        self.goto(
+            min([x for x in self.cuelist.keys() if not isinstance(x, str)]))
         loop = QEventLoop()
         loop.exec_()
 
@@ -53,23 +53,28 @@ class CuelistThread(QThread):
         if self.fade:
             for lamp in self.lamp_to_fade:
                 try:
-                    A = [x for x in self.cuelist[self.cur_cue][2:] if lamp[:2] == x[:2]][0][2]
+                    A = [x for x in self.cuelist[self.cur_cue]
+                         [2:] if lamp[:2] == x[:2]][0][2]
                 except IndexError:
                     A = 0
                 #B = lamp[2]
                 try:
-                    B = [x for x in self.cuelist[self.next_cue][2:] if lamp[0] == x[0]][0][2]
+                    B = [x for x in self.cuelist[self.next_cue]
+                         [2:] if lamp[0] == x[0]][0][2]
                 except IndexError:
                     print(self.cuelist[self.next_cue][2:])
                     print(lamp)
-                    print([x for x in self.cuelist[self.next_cue][2:] if lamp[0] == x[0]])
+                    print([x for x in self.cuelist[self.next_cue]
+                           [2:] if lamp[0] == x[0]])
+                    continue
                 #B = [x[2] for x in self.cuelist[self.next_cue][2:] if lamp == x[:2]][0]
-                value=round(A + (time()-self.fade_time_begin)*((B-A)/(self.fade_time_end-self.fade_time_begin)))
+                value = round(A + (time()-self.fade_time_begin) *
+                              ((B-A)/(self.fade_time_end-self.fade_time_begin)))
                 self.lampset.emit(lamp[0], lamp[1], value)
             if time() >= self.fade_time_end:
-                for lamp in self.cuelist.get(self.next_cue,self.cuelist[0])[2:]:
+                for lamp in self.cuelist.get(self.next_cue, self.cuelist[0])[2:]:
                     self.lampset.emit(lamp[0], lamp[1], lamp[2])
-                self.fade=False
+                self.fade = False
                 self.cur_cue = self.next_cue
 
     def get_alter_lamps(self, current, _next):
@@ -78,7 +83,7 @@ class CuelistThread(QThread):
         else:
             return_list = []
             for i in current:
-                if not any(i == x for x in _next) or any(i[0] == x[0] and not [i[1],i[2]] == [x[1],x[2]] for x in _next):
+                if not any(i == x for x in _next) or any(i[0] == x[0] and not [i[1], i[2]] == [x[1], x[2]] for x in _next):
                     return_list.append(i)
             return return_list
 
@@ -93,17 +98,19 @@ class CuelistThread(QThread):
         except KeyError:
             cue = 0
         try:
-            print(self.cuelist.get(cue,self.cuelist[0]))
-            if self.cuelist.get(cue,self.cuelist[0])[1] == 0:
-                for lamp in self.cuelist.get(cue,self.cuelist[0])[2:]:
+            print(self.cuelist.get(cue, self.cuelist[0]))
+            if self.cuelist.get(cue, self.cuelist[0])[1] == 0:
+                for lamp in self.cuelist.get(cue, self.cuelist[0])[2:]:
                     self.lampset.emit(lamp[0], lamp[1], lamp[2])
-                self.cur_cue=cue
+                self.cur_cue = cue
             else:
                 cur_cue_list = self.cuelist[self.cur_cue][2:]
-                next_cue_list = self.cuelist.get(cue,self.cuelist[0])[2:]
-                self.lamp_to_fade = self.get_alter_lamps(cur_cue_list,next_cue_list)
-                self.next_cue=cue
-                self.fade_time_end = time() + self.cuelist.get(cue,self.cuelist[0])[1]
+                next_cue_list = self.cuelist.get(cue, self.cuelist[0])[2:]
+                self.lamp_to_fade = self.get_alter_lamps(
+                    cur_cue_list, next_cue_list)
+                self.next_cue = cue
+                self.fade_time_end = time() + self.cuelist.get(cue,
+                                                               self.cuelist[0])[1]
                 self.fade_time_begin = time()
                 self.fade = True
         except KeyError:

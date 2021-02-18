@@ -12,6 +12,7 @@ import sys
 
 working_directory = os.path.dirname(os.path.realpath(__file__))+"/assets"
 
+
 class defaultColors(QtWidgets.QWidget):
     def __init__(self, colorpickerWidget, parent=None):
         super(defaultColors, self).__init__(parent)
@@ -27,7 +28,8 @@ class defaultColors(QtWidgets.QWidget):
         row1_number_of_colors = 5
         self.spaceBetweenButtons = 10
 
-        self.buttonsWidht = colorpickerWidget.width / row0_number_of_colors - self.spaceBetweenButtons
+        self.buttonsWidht = colorpickerWidget.width / \
+            row0_number_of_colors - self.spaceBetweenButtons
         self.spaceForSeconfRow = self.buttonsWidht / 2
         self.buttonsWidht = str(self.buttonsWidht)
         self.buttonsHeight = str(self.buttonsWidht)
@@ -61,38 +63,48 @@ class defaultColors(QtWidgets.QWidget):
 
         tomato = QtWidgets.QPushButton()
         tomato.setToolTip("Tomato")
-        tomato.setStyleSheet("QPushButton{background-color: rgb(255, 99, 71); }")
+        tomato.setStyleSheet(
+            "QPushButton{background-color: rgb(255, 99, 71); }")
         tomato.clicked.connect(lambda: colorpickerWidget.setColor(9))  # HSV
 
         yellow = QtWidgets.QPushButton()
         yellow.setToolTip("Yellow")
-        yellow.setStyleSheet("QPushButton{background-color: rgb(255, 255, 0); }")
+        yellow.setStyleSheet(
+            "QPushButton{background-color: rgb(255, 255, 0); }")
         yellow.clicked.connect(lambda: colorpickerWidget.setColor(60))  # HSV
 
         blueviolet = QtWidgets.QPushButton()
         blueviolet.setToolTip("BlueViolet")
-        blueviolet.setStyleSheet("QPushButton{background-color: rgb(138, 43, 226); }")
-        blueviolet.clicked.connect(lambda: colorpickerWidget.setColor(271))  # HSV
+        blueviolet.setStyleSheet(
+            "QPushButton{background-color: rgb(138, 43, 226); }")
+        blueviolet.clicked.connect(
+            lambda: colorpickerWidget.setColor(271))  # HSV
 
         violet = QtWidgets.QPushButton()
         violet.setToolTip("Violet")
-        violet.setStyleSheet("QPushButton{background-color: rgb(255, 0, 255); }")
+        violet.setStyleSheet(
+            "QPushButton{background-color: rgb(255, 0, 255); }")
         violet.clicked.connect(lambda: colorpickerWidget.setColor(300))  # HSV
 
         orange = QtWidgets.QPushButton()
         orange.setToolTip("Orange")
-        orange.setStyleSheet("QPushButton{background-color: rgb(255, 165, 0); }")
+        orange.setStyleSheet(
+            "QPushButton{background-color: rgb(255, 165, 0); }")
         orange.clicked.connect(lambda: colorpickerWidget.setColor(39))  # HSV
 
         orangered = QtWidgets.QPushButton()
         orangered.setToolTip("OrangeRed")
-        orangered.setStyleSheet("QPushButton{background-color: rgb(255, 68, 0); }")
-        orangered.clicked.connect(lambda: colorpickerWidget.setColor(16))  # HSV
+        orangered.setStyleSheet(
+            "QPushButton{background-color: rgb(255, 68, 0); }")
+        orangered.clicked.connect(
+            lambda: colorpickerWidget.setColor(16))  # HSV
 
         lightgreen = QtWidgets.QPushButton()
         lightgreen.setToolTip("Lightgreen")
-        lightgreen.setStyleSheet("QPushButton{background-color: rgb(0, 255, 157); }")
-        lightgreen.clicked.connect(lambda: colorpickerWidget.setColor(157))  # HSV
+        lightgreen.setStyleSheet(
+            "QPushButton{background-color: rgb(0, 255, 157); }")
+        lightgreen.clicked.connect(
+            lambda: colorpickerWidget.setColor(157))  # HSV
 
         row0.addWidget(red)
         row0.addWidget(green)
@@ -191,26 +203,33 @@ class colorpickerWheel(QtWidgets.QWidget):
         # gets the class from which the colorpicker was called to call the function onCurrentColorChanged
 
         self.colorPickerHueWheelImage_File = working_directory+'/colorpicker_wheel.png'
-        self.colorPickerHueWheelImage = QtGui.QPixmap(os.path.join(working_directory, self.colorPickerHueWheelImage_File))
+        self.colorPickerHueWheelImage = QtGui.QPixmap(os.path.join(
+            working_directory, self.colorPickerHueWheelImage_File))
         self.colorPickerHueWheelImage = self.colorPickerHueWheelImage.scaled(self.width, self.height,
                                                                              QtCore.Qt.KeepAspectRatio,
                                                                              QtCore.Qt.SmoothTransformation)
         self.colorPickerHueWheelImageWdiget = QtWidgets.QLabel()
-        self.colorPickerHueWheelImageWdiget.setPixmap(self.colorPickerHueWheelImage)
-        self.colorPickerHueWheelImageWdiget.setFixedSize(self.width, self.height)
+        self.colorPickerHueWheelImageWdiget.setPixmap(
+            self.colorPickerHueWheelImage)
+        self.colorPickerHueWheelImageWdiget.setFixedSize(
+            self.width, self.height)
 
-        self.centerColorWidget = QtWidgets.QLabel(parent=self.colorPickerHueWheelImageWdiget)
-        self.centerColorWidget.setFixedSize(self.centerColorwidth, self.centerColorheight)
+        self.centerColorWidget = QtWidgets.QLabel(
+            parent=self.colorPickerHueWheelImageWdiget)
+        self.centerColorWidget.setFixedSize(
+            self.centerColorwidth, self.centerColorheight)
         self.centerColorWidget.move(int(self.width / 2 - self.centerColorWidget.width() / 2),
                                     int(self.height / 2 - self.centerColorWidget.height() / 2))
         if self.centerColorWidget_is_Circle:
-            self.centerColorWidgetRadius = int(self.centerColorWidget.width() / 2)
+            self.centerColorWidgetRadius = int(
+                self.centerColorWidget.width() / 2)
         else:
             self.centerColorWidgetRadius = centralColorWidget_radius
         self.centerColorWidget.setStyleSheet(
             "QLabel{background-color: #ff0000; border-radius: %s; border}" % str(self.centerColorWidgetRadius))
 
-        self.mouseDot = QtWidgets.QLabel(parent=self.colorPickerHueWheelImageWdiget)
+        self.mouseDot = QtWidgets.QLabel(
+            parent=self.colorPickerHueWheelImageWdiget)
         self.mouseDot.setFixedSize(self.mouseDot_size, self.mouseDot_size)
         self.mouseDotRadius = str(int(self.mouseDot.width() / 2))
         self.mouseDot.setStyleSheet(
@@ -224,7 +243,8 @@ class colorpickerWheel(QtWidgets.QWidget):
         # /-/-/-Layout-\-\-\
 
         # sliders change events
-        self.sliders.brightnessSlider.valueChanged.connect(lambda: self.setValue(self.sliders.brightnessSlider.value()))
+        self.sliders.brightnessSlider.valueChanged.connect(
+            lambda: self.setValue(self.sliders.brightnessSlider.value()))
         self.sliders.saturationSlider.valueChanged.connect(
             lambda: self.setSaturation(self.sliders.saturationSlider.value()))
 
@@ -239,7 +259,8 @@ class colorpickerWheel(QtWidgets.QWidget):
         self.startupColor[1] = startupcolor[1]
         self.startupColor[2] = startupcolor[2]
         self.HSV_color = self.startupColor
-        self.rgb_color = self.hsv2rgb(self.HSV_color[0] / 255, self.HSV_color[1] / 255, self.HSV_color[2] / 255)
+        self.rgb_color = self.hsv2rgb(
+            self.HSV_color[0] / 255, self.HSV_color[1] / 255, self.HSV_color[2] / 255)
         self.hsv_color_array_360_base = [round(self.HSV_color[0] / 255 * 360), round(self.HSV_color[1] / 255 * 100),
                                          round(self.HSV_color[2] / 255 * 100)]  # (H(0-255), S(0-255), V(0-255))
         self.setMouseDotPositionFromHue(self.HSV_color[0])
@@ -253,14 +274,16 @@ class colorpickerWheel(QtWidgets.QWidget):
 
     def setValue(self, val):
         self.HSV_color[2] = val
-        self.rgb_color = self.hsv2rgb(self.HSV_color[0] / 255, self.HSV_color[1] / 255, self.HSV_color[2] / 255)
+        self.rgb_color = self.hsv2rgb(
+            self.HSV_color[0] / 255, self.HSV_color[1] / 255, self.HSV_color[2] / 255)
         self.hsv_color_array_360_base[2] = round(self.HSV_color[2] / 255 * 100)
         self.change_centerColorHueValue(self.rgb_color, self.HSV_color[2])
         self.currentColorChanged()
 
     def setSaturation(self, sat):
         self.HSV_color[1] = sat
-        self.rgb_color = self.hsv2rgb(self.HSV_color[0] / 255, self.HSV_color[1] / 255, self.HSV_color[2] / 255)
+        self.rgb_color = self.hsv2rgb(
+            self.HSV_color[0] / 255, self.HSV_color[1] / 255, self.HSV_color[2] / 255)
         self.hsv_color_array_360_base[1] = round(self.HSV_color[1] / 255 * 100)
         self.change_centerColorHueSaturation(self.rgb_color, self.HSV_color[2])
         self.currentColorChanged()
@@ -280,19 +303,22 @@ class colorpickerWheel(QtWidgets.QWidget):
             # print(x, y, round(tangente), current_angle)
             if x >= 0 >= y:
                 angle = -round(current_angle)
-            if x >= 0 <= y:
+            elif x >= 0 <= y:
                 angle = 180 - round(current_angle)
-            if x <= 0 <= y:
+            elif x <= 0 <= y:
                 angle = 180 - round(current_angle)
-            if x <= 0 >= y:
+            elif x <= 0 >= y:
                 angle = 360 - round(current_angle)
+            else:
+                angle = 0
             # print(angle)
         self.hue = angle / 360 * 255
         if self.hue == 255:
             self.hue = 0
         # print(self.hue)
         self.HSV_color[0] = round(self.hue)
-        self.rgb_color = self.hsv2rgb(self.HSV_color[0] / 255, self.HSV_color[1] / 255, self.HSV_color[2] / 255)
+        self.rgb_color = self.hsv2rgb(
+            self.HSV_color[0] / 255, self.HSV_color[1] / 255, self.HSV_color[2] / 255)
         self.hsv_color_array_360_base = [round(self.HSV_color[0] / 255 * 360), round(self.HSV_color[1] / 255 * 100),
                                          round(self.HSV_color[2] / 255 * 100)]  # (H(0-255), S(0-255), V(0-255))
         rgb_color_for_central_color = self.hsv2rgb(self.HSV_color[0] / 255, self.HSV_color[1] / 255,
@@ -318,19 +344,22 @@ class colorpickerWheel(QtWidgets.QWidget):
             current_angle = math.degrees(math.atan(tangente))
             if x >= 0 >= y:
                 angle = -round(current_angle)
-            if x >= 0 <= y:
+            elif x >= 0 <= y:
                 angle = 180 - round(current_angle)
-            if x <= 0 <= y:
+            elif x <= 0 <= y:
                 angle = 180 - round(current_angle)
-            if x <= 0 >= y:
+            elif x <= 0 >= y:
                 angle = 360 - round(current_angle)
+            else:
+                angle = 0
 
         self.hue = angle / 360 * 255
         if self.hue == 255:
             self.hue = 0
         # print(self.hue)
         self.HSV_color[0] = round(self.hue)
-        self.rgb_color = self.hsv2rgb(self.HSV_color[0] / 255, self.HSV_color[1] / 255, self.HSV_color[2] / 255)
+        self.rgb_color = self.hsv2rgb(
+            self.HSV_color[0] / 255, self.HSV_color[1] / 255, self.HSV_color[2] / 255)
         self.hsv_color_array_360_base = [round(self.HSV_color[0] / 255 * 360), round(self.HSV_color[1] / 255 * 100),
                                          round(self.HSV_color[2] / 255 * 100)]  # (H(0-255), S(0-255), V(0-255))
         rgb_color_for_central_color = self.hsv2rgb(self.HSV_color[0] / 255, self.HSV_color[1] / 255,
@@ -340,7 +369,8 @@ class colorpickerWheel(QtWidgets.QWidget):
         self.changeMouseDotColor(self.HSV_color[0])
         self.change_sliderColor(self.HSV_color)
         self.movePointer(x, y)
-        self.rgb_color = self.hsv2rgb(self.HSV_color[0] / 255, self.HSV_color[1] / 255, self.HSV_color[2] / 255)
+        self.rgb_color = self.hsv2rgb(
+            self.HSV_color[0] / 255, self.HSV_color[1] / 255, self.HSV_color[2] / 255)
         self.currentColorChanged()
 
     def change_centerColor(self, color, value):
@@ -381,11 +411,13 @@ class colorpickerWheel(QtWidgets.QWidget):
         self.sliders.setStyleSheet(
             "QSlider#brightnessSlider::groove:horizontal{background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, x3:2, y3:0, stop:0 hsv(%s, 100, 100),  stop:1 hsv(%s,255,255));}"
             "QSlider#saturationSlider::groove:horizontal{background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, x3:2, y3:0, stop:0 hsv(%s, 0, 200), stop:1 hsv(%s,255,255));}" % (
-                str(color[0] / 255 * 360), str(color[0] / 255 * 360), str(color[0] / 255 * 360),
+                str(color[0] / 255 * 360), str(color[0] /
+                                               255 * 360), str(color[0] / 255 * 360),
                 str(color[0] / 255 * 360)))
 
     def movePointer(self, x, y):
-        radius = self.height / 2 - self.mouseDot.height() / 2 + self.mouseDotDistance_changer
+        radius = self.height / 2 - self.mouseDot.height() / 2 + \
+            self.mouseDotDistance_changer
         if y == 0 and x < 0:
             angle = 270
             angle_in_radians = math.radians(angle)
@@ -409,21 +441,24 @@ class colorpickerWheel(QtWidgets.QWidget):
                 angle_in_radians = math.radians(angle)
                 change_in_y = math.cos(angle_in_radians) * radius
                 change_in_x = math.sin(angle_in_radians) * radius
-            if x >= 0 and y >= 0:
+            elif x >= 0 and y >= 0:
                 angle = 180 - round(current_angle)
                 angle_in_radians = math.radians(angle)
                 change_in_y = math.cos(angle_in_radians) * radius
                 change_in_x = math.sin(angle_in_radians) * radius
-            if x <= 0 and y >= 0:
+            elif x <= 0 and y >= 0:
                 angle = 180 - round(current_angle)
                 angle_in_radians = math.radians(angle)
                 change_in_y = math.cos(angle_in_radians) * radius
                 change_in_x = math.sin(angle_in_radians) * radius
-            if x <= 0 and y <= 0:
+            elif x <= 0 and y <= 0:
                 angle = 360 - round(current_angle)
                 angle_in_radians = math.radians(angle)
                 change_in_y = math.cos(angle_in_radians) * radius
                 change_in_x = math.sin(angle_in_radians) * radius
+            else:
+                change_in_x = 0
+                change_in_y = 0
 
         self.mouseDot.move(self.centerx + change_in_x - self.mouseDot.width() / 2,
                            self.centery - change_in_y - self.mouseDot.height() / 2)
@@ -432,7 +467,8 @@ class colorpickerWheel(QtWidgets.QWidget):
         self.HSV_color[0] = round(color / 360 * 255)
         self.HSV_color[1] = 255
         self.HSV_color[2] = 255
-        self.rgb_color = self.hsv2rgb(self.HSV_color[0] / 255, self.HSV_color[1] / 255, self.HSV_color[2] / 255)
+        self.rgb_color = self.hsv2rgb(
+            self.HSV_color[0] / 255, self.HSV_color[1] / 255, self.HSV_color[2] / 255)
         self.hsv_color_array_360_base = [round(self.HSV_color[0] / 255 * 360), round(self.HSV_color[1] / 255 * 100),
                                          round(self.HSV_color[2] / 255 * 100)]  # (H(0-255), S(0-255), V(0-255))
         rgb_color_for_central_color = self.hsv2rgb(self.HSV_color[0] / 255, self.HSV_color[1] / 255,
@@ -446,7 +482,8 @@ class colorpickerWheel(QtWidgets.QWidget):
         self.currentColorChanged()
 
     def setMouseDotPositionFromHue(self, hue):
-        radius = self.height / 2 - self.mouseDot.height() / 2 + self.mouseDotDistance_changer
+        radius = self.height / 2 - self.mouseDot.height() / 2 + \
+            self.mouseDotDistance_changer
         angle = hue * 360 / 255
         angle_in_radians = math.radians(angle)
         change_in_y = math.cos(angle_in_radians) * radius
@@ -458,7 +495,8 @@ class colorpickerWheel(QtWidgets.QWidget):
         try:
             self.class_that_called.onCurrentColorChanged(
                 [self.HSV_color, self.rgb_color, self.hsv_color_array_360_base])
-            self.color_changed.emit(QtGui.QColor(self.rgb_color[0],self.rgb_color[1],self.rgb_color[2]))
+            self.color_changed.emit(QtGui.QColor(
+                self.rgb_color[0], self.rgb_color[1], self.rgb_color[2]))
         except Exception as e:
             print("To get the color on the main class of colorpicker create this function on it: \n"
                   "def onCurrentColorChanged(color):\n"
@@ -477,7 +515,8 @@ class ColorPicker(QtWidgets.QWidget):
         super(ColorPicker, self).__init__(parent)
         self.width = width
         self.startup_color = startupcolor  # HSV (0-360, 0-255, 0-255)
-        self.setStyleSheet(open(working_directory+'/colorPickerStylesheet.css').read())
+        self.setStyleSheet(
+            open(working_directory+'/colorPickerStylesheet.css').read())
 
         ColorPicker.hsv_color_array = 0
         ColorPicker.rgb_color_array = 0
@@ -494,9 +533,12 @@ class ColorPicker(QtWidgets.QWidget):
                                                   centralColorWidget_size=55, centralColorWidget_radius=20,
                                                   centerColorWidget_isCircle=True, change_alpha_channel=False,
                                                   sliders=self.sliders)
-        self.colorpickerWidget.color_changed.connect(lambda x: self.currentColorChanged.emit(x))
+        self.colorpickerWidget.color_changed.connect(
+            lambda x: self.currentColorChanged.emit(x))
 
-        self.colorpickerWidget.setFixedSize(self.colorpickerWidget.width, self.colorpickerWidget.height)  # do not forget to set a fixed size same as the size when initialising the class/otherwise set layouts with stretches.
+        # do not forget to set a fixed size same as the size when initialising the class/otherwise set layouts with stretches.
+        self.colorpickerWidget.setFixedSize(
+            self.colorpickerWidget.width, self.colorpickerWidget.height)
 
         # self.defaultColors = defaultColors(self.colorpickerWidget)
         # self.defaultColors.setFixedWidth(self.colorpickerWidget.width)  # do not forget to set a fixed size same as the size when initialising the class/otherwise set layouts with stretches.
@@ -530,8 +572,10 @@ class ColorPicker(QtWidgets.QWidget):
 def run():
     app = QtWidgets.QApplication(sys.argv)
     global working_directory
-    working_directory = os.path.dirname(os.path.realpath(__file__))  # directory where files are placed in this case same as the executable directory
-    Colorpicker = ColorPicker(width=250, startupcolor=[0, 255, 255]) # HSV (0-360, 0-255, 0-255)
+    # directory where files are placed in this case same as the executable directory
+    working_directory = os.path.dirname(os.path.realpath(__file__))
+    # HSV (0-360, 0-255, 0-255)
+    Colorpicker = ColorPicker(width=250, startupcolor=[0, 255, 255])
     # check the ColorPicker to change more values
 
     # You can get the updated values outside the class using an other event like this

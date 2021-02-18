@@ -19,12 +19,12 @@ typ_to_addr = {}
 
 nr_to_typ = {}
 nr_to_addr = {}
-nr_in_use={}
+nr_in_use = {}
 
-in_use_programmer={}
+in_use_programmer = {}
 
-curr_page=0
-fader_map = [[],[],[]]
+curr_page = 0
+fader_map = [[], [], []]
 for i in range(faders):
     fader_map[0].append(0)
     fader_map[1].append(0)
@@ -62,11 +62,11 @@ cuelist_dict = {
     #     1: ["off", 1, [10, 'Dimmer', 100]]
     # },
     #"pub":{
-        #"options": {"warp_at_end": True},
-        #0: ["Pub On", 10, [10, 'Dimmer', 50],[19, 'Dimmer', 50],[7, 'Dimmer', 50]],
-        #1: ["Pub On", 1, [10, 'Dimmer', 100],[19, 'Dimmer', 100],[7, 'Dimmer', 100]],
-        #2: ["Pub On", 0, [10, 'Dimmer', 50],[19, 'Dimmer', 50],[7, 'Dimmer', 50]],
-        #3: ["Pub Off", 5, [10, 'Dimmer', 0],[19, 'Dimmer', 0],[7, 'Dimmer', 0]]
+    #"options": {"warp_at_end": True},
+    #0: ["Pub On", 10, [10, 'Dimmer', 50],[19, 'Dimmer', 50],[7, 'Dimmer', 50]],
+    #1: ["Pub On", 1, [10, 'Dimmer', 100],[19, 'Dimmer', 100],[7, 'Dimmer', 100]],
+    #2: ["Pub On", 0, [10, 'Dimmer', 50],[19, 'Dimmer', 50],[7, 'Dimmer', 50]],
+    #3: ["Pub Off", 5, [10, 'Dimmer', 0],[19, 'Dimmer', 0],[7, 'Dimmer', 0]]
     #}
 }
 

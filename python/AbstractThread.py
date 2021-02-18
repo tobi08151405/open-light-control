@@ -1,6 +1,4 @@
-from PyQt5.QtWidgets import *
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
+from PyQt5.QtCore import QThread, QEventLoop, pyqtSignal, pyqtSlot
 
 from DmxThread import DmxThread
 from GlobalVar import typ_to_addr, nr_to_typ, nr_to_addr, error_log_global
@@ -28,6 +26,8 @@ class AbstractThread(QThread):
                 return_value = int(value)
             else:
                 return_value = (value / 100) * 255
+        else:
+            return_value = 0
         return channel_plus, return_value
 
     @pyqtSlot(int, str, object)
@@ -38,6 +38,7 @@ class AbstractThread(QThread):
                 local_channel, set_value = self.get_func_from_type(lamp_type, setting, value)
             except KeyError:
                 error_log_global.append("AbstractThread: Fixturetype {0:s} not found".format(lamp_type))
+                return
             #if setting == 'Intensity' or setting == 'Dimmer':
                 #set_value = set_value
             univer, addr = nr_to_addr[lamp]

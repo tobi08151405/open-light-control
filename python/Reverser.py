@@ -4,6 +4,7 @@ import json
 
 from GlobalVar import typ_to_func, typ_to_addr
 
+
 def mode_to_func(json_dic, mode):
     color = ''
     gobo = ''
@@ -30,11 +31,16 @@ def mode_to_func(json_dic, mode):
                             else:
                                 slot_name = 'Color'
                             slot_color = slot['colors'][0]
+                        else:
+                            continue
+                    else:
+                        continue
                     try:
-                        color_slots.append({'name':slot_name,'color':slot_color})
+                        color_slots.append(
+                            {'name': slot_name, 'color': slot_color})
                     except:
                         pass
-            
+
             if 'Gobo' in wheel:
                 gobo = 'Wheel'
                 gobo_slots = []
@@ -43,11 +49,13 @@ def mode_to_func(json_dic, mode):
                         slot_name = 'Open'
                     elif slot['type'] == 'Gobo':
                         slot_name = slot['name']
+                    else:
+                        continue
                     try:
                         gobo_slots.append(slot_name)
                     except:
                         pass
-                
+
     if all(any(channel in i for i in mode['channels']) for channel in ['Red', 'Green', 'Blue']) or all(any(channel in i for i in mode['channels']) for channel in ['Cyan', 'Magenta', 'Yellow']):
         color += 'RGB'
         if 'Amber' in mode['channels']:
@@ -66,21 +74,24 @@ def mode_to_func(json_dic, mode):
         tilt = True
     else:
         tilt = False
-    
+
     if not color:
         color = False
     if not gobo:
         gobo = False
-    
-    typ_to_func[typ_mode_name] = {"ChannelSpan": len(mode['channels']), "Dimmer": dimmer, "Color": color, "Gobo": gobo, "Pan": pan, "Tilt": tilt}
+
+    typ_to_func[typ_mode_name] = {"ChannelSpan": len(
+        mode['channels']), "Dimmer": dimmer, "Color": color, "Gobo": gobo, "Pan": pan, "Tilt": tilt}
     if color_slots:
         typ_to_func[typ_mode_name]["ColorWheel"] = color_slots
     if gobo_slots:
         typ_to_func[typ_mode_name]["GoboWheel"] = gobo_slots
 
+
 def typ_to_modes_func(json_dic):
     for mode in json_dic['modes']:
         mode_to_func(json_dic, mode)
+
 
 def create_typ_to_func(json_names):
     for json_name in json_names:
@@ -90,6 +101,7 @@ def create_typ_to_func(json_names):
                 typ_to_modes_func(json_dic)
         except FileNotFoundError:
             print("file {0:s} not found!".format(json_name))
+
 
 def mode_to_addr(json_dic, mode):
     name = json_dic['name']
@@ -107,15 +119,19 @@ def mode_to_addr(json_dic, mode):
                 split_list = []
             if channel_name == "Intensity":
                 channel_name = "Dimmer"
-            typ_to_addr[typ_mode_name][channel_name] = {"Channel": channel_num, "Mode": channel_mode}
+            typ_to_addr[typ_mode_name][channel_name] = {
+                "Channel": channel_num, "Mode": channel_mode}
             if channel_mode == "split":
-                typ_to_addr[typ_mode_name][channel_name]['Split'] = {split_list}
+                typ_to_addr[typ_mode_name][channel_name]['Split'] = {
+                    split_list}
         except KeyError:
             pass
+
 
 def typ_to_modes_addr(json_dic):
     for mode in json_dic['modes']:
         mode_to_addr(json_dic, mode)
+
 
 def create_typ_to_addr(json_names):
     for json_name in json_names:
