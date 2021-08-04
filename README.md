@@ -1,4 +1,4 @@
-# This Project moved to GitLab<br>https://gitlab.com/tobi08151405/open-light-control
+# This Project was restarted<br>https://github.com/teigigutesiegel/open-light-control-gui
 
 # Open source controller for ArtNet / Lighting Desk
 
